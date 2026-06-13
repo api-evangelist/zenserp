@@ -1,0 +1,180 @@
+name: Zenserp Plans and Pricing
+description: >-
+  Zenserp offers subscription-based pricing plans for its Google SERP API,
+  ranging from a free tier to enterprise plans. All paid plans include access to
+  all SERP types (web, images, news, shopping, maps, YouTube, Bing, Yandex,
+  DuckDuckGo, trends, reverse image). A 20% discount is applied for annual
+  billing. Users are only charged for successful responses; failed or invalid
+  requests do not count against usage quotas.
+version: '0.1'
+url: https://zenserp.com/pricing-plans/
+plans:
+  - name: Free
+    description: >-
+      Free tier providing basic access to the Zenserp API for evaluation and
+      small-scale testing.
+    price: 0
+    currency: USD
+    billingCycle: monthly
+    searches: 50
+    features:
+      - Google Web Search
+      - Google Image Search
+      - Google News Search
+      - Google Shopping Search
+      - Google Maps Search
+      - YouTube Search
+      - Bing Search
+      - Yandex Search
+      - DuckDuckGo Search
+      - Reverse Image Search
+      - Trends Search
+    limitations:
+      - 50 searches per month
+      - No batch endpoint
+      - No keyword search volume data
+      - No CPC data
+      - No bulk index checker
+      - No SLA
+      - No personal support
+
+  - name: Small
+    description: >-
+      Entry-level paid plan for developers and small projects requiring moderate
+      search query volume.
+    price: 49.99
+    pricingPageUrl: https://zenserp.com/pricing-plans/
+    currency: USD
+    billingCycle: monthly
+    annualDiscount: 20
+    searches: 25000
+    features:
+      - All SERP Types
+      - Google Web Search
+      - Google Image Search
+      - Google News Search
+      - Google Shopping Search
+      - Google Maps Search
+      - YouTube Search
+      - Bing Search
+      - Yandex Search
+      - DuckDuckGo Search
+      - Reverse Image Search
+      - Trends Search
+      - Only charged for successful responses
+      - Usage alerts at 90% and 100% of monthly limit
+    limitations:
+      - No batch endpoint
+      - No keyword search volume data
+      - No CPC data
+      - No bulk index checker
+      - No SLA
+      - No personal support
+
+  - name: Medium
+    description: >-
+      Mid-tier plan for growing businesses and professional SEO tools requiring
+      higher volumes and advanced features.
+    price: 149.99
+    pricingPageUrl: https://zenserp.com/pricing-plans/
+    currency: USD
+    billingCycle: monthly
+    annualDiscount: 20
+    searches: 100000
+    features:
+      - All SERP Types
+      - Batch Endpoint
+      - Keyword Search Volume
+      - Keyword CPC Data
+      - Bulk Index Checker
+      - Personal Support
+      - Concierge Onboarding
+      - SLA
+      - Only charged for successful responses
+      - Usage alerts at 90% and 100% of monthly limit
+
+  - name: Large
+    description: >-
+      High-volume plan for established businesses and agencies with significant
+      search data needs.
+    price: 299.99
+    pricingPageUrl: https://zenserp.com/pricing-plans/
+    currency: USD
+    billingCycle: monthly
+    annualDiscount: 20
+    searches: 250000
+    features:
+      - All SERP Types
+      - Batch Endpoint
+      - Keyword Search Volume
+      - Keyword CPC Data
+      - Bulk Index Checker
+      - Personal Support
+      - Concierge Onboarding
+      - SLA
+      - Only charged for successful responses
+      - Usage alerts at 90% and 100% of monthly limit
+
+  - name: Premium
+    description: >-
+      Premium plan for high-volume operations requiring dedicated infrastructure
+      and custom queue management.
+    price: 499.99
+    pricingPageUrl: https://zenserp.com/pricing-plans/
+    currency: USD
+    billingCycle: monthly
+    annualDiscount: 20
+    searches: 500000
+    features:
+      - All SERP Types
+      - Batch Endpoint
+      - Keyword Search Volume
+      - Keyword CPC Data
+      - Bulk Index Checker
+      - Personal Support
+      - Concierge Onboarding
+      - SLA
+      - Custom Queue
+      - Only charged for successful responses
+      - Usage alerts at 90% and 100% of monthly limit
+
+  - name: Enterprise
+    description: >-
+      Enterprise plan for large-scale operations requiring maximum search volume
+      and full feature access with dedicated support.
+    price: 899.99
+    pricingPageUrl: https://zenserp.com/pricing-plans/
+    currency: USD
+    billingCycle: monthly
+    annualDiscount: 20
+    searches: 1000000
+    features:
+      - All SERP Types
+      - Batch Endpoint
+      - Keyword Search Volume
+      - Keyword CPC Data
+      - Bulk Index Checker
+      - Personal Support
+      - Concierge Onboarding
+      - SLA
+      - Custom Queue
+      - Bank Transfer Payment Option
+      - Only charged for successful responses
+      - Usage alerts at 90% and 100% of monthly limit
+    notes: >-
+      Custom quotes available for volumes exceeding 1,000,000 searches per month.
+      Bank transfers accepted in addition to credit cards.
+
+paymentMethods:
+  - Visa
+  - MasterCard
+  - American Express
+  - Diners Club
+  - Bank Transfer (Enterprise only)
+
+billingNotes:
+  - Only successful responses are charged; invalid or failed requests do not count against quota
+  - Email notifications sent at 90% and 100% of monthly usage limit
+  - Annual billing provides a 20% discount on all paid plans
+  - Pricing per 1,000 searches is approximately $0.60 on the Small plan
+  - Price per 1M SERPs is approximately $600 on entry plans

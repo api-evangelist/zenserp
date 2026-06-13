@@ -1,0 +1,110 @@
+name: Zenserp Rate Limits
+description: >-
+  Zenserp enforces monthly search quota limits based on the subscribed plan.
+  Concurrent connection limits apply across all plans, with the ability to
+  increase concurrency upon request. The service targets 99.9% uptime and
+  only counts successful responses against a user's quota. Failed or invalid
+  API requests do not consume quota.
+version: '0.1'
+url: https://zenserp.com/pricing-plans/
+rateLimits:
+  - name: Free Plan Monthly Quota
+    description: Maximum number of API searches per month on the free tier.
+    plan: Free
+    limit: 50
+    period: month
+    unit: searches
+    scope: account
+
+  - name: Small Plan Monthly Quota
+    description: Maximum number of API searches per month on the Small paid plan.
+    plan: Small
+    limit: 25000
+    period: month
+    unit: searches
+    scope: account
+
+  - name: Medium Plan Monthly Quota
+    description: Maximum number of API searches per month on the Medium paid plan.
+    plan: Medium
+    limit: 100000
+    period: month
+    unit: searches
+    scope: account
+
+  - name: Large Plan Monthly Quota
+    description: Maximum number of API searches per month on the Large paid plan.
+    plan: Large
+    limit: 250000
+    period: month
+    unit: searches
+    scope: account
+
+  - name: Premium Plan Monthly Quota
+    description: Maximum number of API searches per month on the Premium paid plan.
+    plan: Premium
+    limit: 500000
+    period: month
+    unit: searches
+    scope: account
+
+  - name: Enterprise Plan Monthly Quota
+    description: Maximum number of API searches per month on the Enterprise paid plan.
+    plan: Enterprise
+    limit: 1000000
+    period: month
+    unit: searches
+    scope: account
+
+  - name: Concurrent Connections
+    description: >-
+      Maximum number of concurrent connections allowed. Standard accounts are
+      encouraged not to exceed 400 concurrent connections. This limit can be
+      increased upon request for high-volume or enterprise customers.
+    limit: 400
+    period: instant
+    unit: concurrent connections
+    scope: account
+    notes: Contact support to request a higher concurrent connection limit.
+
+  - name: Custom Queue (Premium and Enterprise)
+    description: >-
+      Premium and Enterprise plan customers have access to a dedicated custom
+      queue, providing better throughput management and reduced latency for
+      high-volume requests.
+    plan: Premium, Enterprise
+    unit: custom queue
+
+quotaBehavior:
+  chargeOnSuccess: true
+  chargeOnFailure: false
+  chargeOnInvalidRequest: false
+  notes: >-
+    Only successful API responses count against the monthly search quota.
+    Invalid requests and failed responses are not charged.
+
+alertThresholds:
+  - threshold: 90
+    unit: percent
+    action: Email notification sent to account holder
+  - threshold: 100
+    unit: percent
+    action: Email notification sent; additional searches may be blocked until plan renewal or upgrade
+
+uptime:
+  sla: 99.9
+  period: annual
+  applicablePlans:
+    - Medium
+    - Large
+    - Premium
+    - Enterprise
+  notes: >-
+    SLA is included in Medium, Large, Premium, and Enterprise plans.
+    Free and Small plans do not include a formal SLA.
+
+responseTime:
+  average: 5-7 seconds
+  notes: >-
+    Zenserp average response time is approximately 5 to 7 seconds per request
+    due to real-time scraping of search engine results pages.

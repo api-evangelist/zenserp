@@ -1,0 +1,132 @@
+aid: zenserp
+name: Zenserp
+description: >-
+  Zenserp is a Google SERP API that enables developers to fetch live, structured
+  search engine results in real time without interruption. The API supports web,
+  image, video, news, shopping, maps, YouTube, Bing, Yandex, DuckDuckGo, reverse
+  image, and trends search types across 200+ countries, returning clean JSON
+  responses. It offers geolocation-based queries, batch endpoints, keyword search
+  volume and CPC data, and a bulk index checker tool, with a 99.9% uptime SLA.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/zenserp/refs/heads/main/apis.yml
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+tags:
+  - SERP
+  - Search Engine Results
+  - Google Search
+  - Web Scraping
+  - SEO
+  - Image Search
+  - News Search
+  - Shopping Search
+  - Maps
+  - YouTube Search
+  - Bing
+  - Yandex
+  - DuckDuckGo
+  - Geolocation
+  - Keyword Research
+apis:
+  - aid: zenserp:search
+    name: Zenserp Search API
+    description: >-
+      REST API for scraping real-time Google search results including organic
+      results, paid ads, featured snippets, knowledge graphs, related questions,
+      maps, news, shopping, images, videos, YouTube, Bing, Yandex, and DuckDuckGo
+      search results. Supports geolocation targeting across 200+ countries and
+      languages.
+    humanURL: https://zenserp.com/
+    baseURL: https://app.zenserp.com/api/v2
+    tags:
+      - Google Search
+      - SERP API
+      - Web Search
+      - Image Search
+      - News Search
+      - Shopping
+      - Maps
+      - YouTube
+      - Bing
+      - Yandex
+      - DuckDuckGo
+    properties:
+      - type: Documentation
+        url: https://app.zenserp.com/documentation
+      - type: OpenAPI
+        url: https://app.zenserp.com/documentation
+      - type: Pricing
+        url: https://zenserp.com/pricing-plans/
+      - type: Authentication
+        url: https://app.zenserp.com/documentation
+      - type: StatusPage
+        url: https://zenserp.freshstatus.io
+    contact:
+      - FN: Zenserp Support
+        url: https://zenserp.com/
+        email: support@zenserp.com
+    endpoints:
+      - name: Google Search
+        path: /search
+        description: Scrape Google organic results, ads, featured snippets, knowledge graph
+      - name: Google Image Search
+        path: /search?tbm=isch
+        description: Retrieve Google image search results
+      - name: Google News Search
+        path: /search?tbm=nws
+        description: Retrieve Google news search results
+      - name: Google Shopping Search
+        path: /search?tbm=shop
+        description: Retrieve Google Shopping product results
+      - name: Google Maps Search
+        path: /search?tbm=map
+        description: Retrieve Google Maps local business results
+      - name: YouTube Search
+        path: /search?tbm=vid
+        description: Retrieve YouTube video search results
+      - name: Reverse Image Search
+        path: /search?tbm=isch&reverse=true
+        description: Find pages containing a specific image
+      - name: Bing Search
+        path: /search?engine=bing
+        description: Retrieve Bing search results
+      - name: Yandex Search
+        path: /search?engine=yandex
+        description: Retrieve Yandex search results in JSON format
+      - name: DuckDuckGo Search
+        path: /search?engine=duckduckgo
+        description: Retrieve DuckDuckGo search results
+      - name: Trends Search
+        path: /search?tbm=trends
+        description: Compare search phrase popularity over time
+      - name: Batch Search
+        path: /batch
+        description: Submit multiple search queries in a single request (Medium plan and above)
+common:
+  - type: Website
+    url: https://zenserp.com/
+  - type: Documentation
+    url: https://app.zenserp.com/documentation
+  - type: Pricing
+    url: https://zenserp.com/pricing-plans/
+  - type: StatusPage
+    url: https://zenserp.freshstatus.io
+  - type: Blog
+    url: https://zenserp.com/blog/
+  - type: GitHubOrg
+    url: https://github.com/zenserp
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/apilayer/
+  - type: X
+    url: https://twitter.com/apilayer
+  - type: Plans
+    url: plans/zenserp-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/zenserp-rate-limits.yml
+  - type: FinOps
+    url: finops/zenserp-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,161 @@
+name: Zenserp FinOps Framework
+description: >-
+  FinOps Framework 1.0 FOCUS-aligned cost management reference for Zenserp
+  Google SERP API consumption. Covers cost visibility, optimization, and
+  governance for teams using Zenserp for search data extraction, SEO tooling,
+  rank tracking, and competitive intelligence workflows.
+version: '1.0'
+framework: FinOps Framework
+alignment: FOCUS 1.0
+url: https://zenserp.com/pricing-plans/
+provider: Zenserp
+providerUrl: https://zenserp.com/
+
+costStructure:
+  model: subscription
+  billingCycle: monthly
+  annualOption: true
+  annualDiscount: 20
+  currency: USD
+  unit: search
+  chargingModel: >-
+    Flat monthly subscription fee based on the selected plan tier. Only successful
+    API responses consume quota. Failed and invalid requests are not charged.
+  overageHandling: >-
+    No automatic overage charges documented. Usage is capped at the plan limit
+    unless the user upgrades. Custom quotes available for volumes above Enterprise.
+
+plans:
+  - name: Free
+    monthlyPrice: 0
+    searches: 50
+    pricePerSearch: 0
+    pricePerThousandSearches: 0
+  - name: Small
+    monthlyPrice: 49.99
+    searches: 25000
+    pricePerSearch: 0.002
+    pricePerThousandSearches: 2.00
+    annualMonthlyPrice: 39.99
+  - name: Medium
+    monthlyPrice: 149.99
+    searches: 100000
+    pricePerSearch: 0.0015
+    pricePerThousandSearches: 1.50
+    annualMonthlyPrice: 119.99
+  - name: Large
+    monthlyPrice: 299.99
+    searches: 250000
+    pricePerSearch: 0.0012
+    pricePerThousandSearches: 1.20
+    annualMonthlyPrice: 239.99
+  - name: Premium
+    monthlyPrice: 499.99
+    searches: 500000
+    pricePerSearch: 0.001
+    pricePerThousandSearches: 1.00
+    annualMonthlyPrice: 399.99
+  - name: Enterprise
+    monthlyPrice: 899.99
+    searches: 1000000
+    pricePerSearch: 0.0009
+    pricePerThousandSearches: 0.90
+    annualMonthlyPrice: 719.99
+
+focusColumns:
+  - name: ChargeCategory
+    value: Usage
+    description: Monthly subscription for API search quota consumption
+  - name: ServiceName
+    value: Zenserp Search API
+  - name: ServiceCategory
+    value: Developer Tools / Data Extraction
+  - name: ProviderName
+    value: Zenserp
+  - name: RegionName
+    value: Global
+    description: API is globally accessible with no region-specific pricing
+  - name: ResourceType
+    value: API Search Quota
+  - name: PricingUnit
+    value: search
+  - name: BilledCurrency
+    value: USD
+
+costOptimization:
+  recommendations:
+    - name: Use Annual Billing
+      description: >-
+        Switch to annual billing to receive a 20% discount on all paid plans,
+        reducing total annual spend by one-fifth compared to monthly billing.
+      savingsPotential: 20%
+
+    - name: Right-size Plan Selection
+      description: >-
+        Monitor monthly search consumption via usage alerts and select the
+        smallest plan that covers actual demand. Moving from Small (25k) to
+        Medium (100k) is only cost-effective once consistently using over 25k
+        searches per month.
+
+    - name: Cache Results Where Possible
+      description: >-
+        Cache frequently repeated search queries at the application layer to
+        avoid redundant API calls for identical queries, reducing consumption
+        against the monthly quota.
+
+    - name: Use Batch Endpoint (Medium+)
+      description: >-
+        On Medium plan and above, use the batch endpoint to submit multiple
+        queries in a single request. This reduces network overhead and can
+        improve throughput efficiency.
+
+    - name: Monitor Usage Alerts
+      description: >-
+        Configure application-level monitoring in addition to Zenserp's built-in
+        email alerts at 90% and 100% quota thresholds. Proactively upgrade or
+        reduce consumption before hitting the monthly ceiling.
+
+    - name: Filter to Required Search Types
+      description: >-
+        Only call the specific search type endpoint required (web, image, news,
+        shopping, etc.) rather than making broad searches and filtering results
+        client-side. Targeted requests avoid unnecessary quota consumption.
+
+    - name: Only Count Successful Requests
+      description: >-
+        Implement retry logic with exponential backoff for failed requests.
+        Since failed requests are not charged, retrying transient failures does
+        not incur additional cost.
+
+costAllocation:
+  taggingSupport: false
+  notes: >-
+    Zenserp does not document project-level or team-level tagging for cost
+    allocation. Teams using a single API key should track usage at the
+    application or team level using their own internal accounting. Separate
+    API keys (separate accounts) may be used to isolate costs by team or project.
+
+governance:
+  budgetAlerts:
+    - threshold: 90
+      action: Zenserp sends email notification to account holder
+    - threshold: 100
+      action: Zenserp sends email notification; quota exhausted
+  recommendedControls:
+    - Implement application-level request counters to track real-time usage
+    - Set internal budget thresholds below Zenserp's 90% alert for early warning
+    - Review search volume growth monthly to anticipate plan upgrades
+    - For enterprise workloads, negotiate custom pricing and bank transfer options
+
+benchmarks:
+  pricePerThousandSearches:
+    free: 0
+    small: 2.00
+    medium: 1.50
+    large: 1.20
+    premium: 1.00
+    enterprise: 0.90
+  notes: >-
+    Volume discounting is built into higher-tier plans. At enterprise scale
+    (1M searches/month), the effective cost per 1,000 searches is $0.90
+    compared to $2.00 at the Small tier.
