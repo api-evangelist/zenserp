@@ -1,0 +1,97 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "zenserp": "https://zenserp.com/vocabulary#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "SearchResponse": "zenserp:SearchResponse",
+    "SearchQuery": "zenserp:SearchQuery",
+    "OrganicResult": "zenserp:OrganicResult",
+    "PaidResult": "zenserp:PaidResult",
+    "FeaturedSnippet": "zenserp:FeaturedSnippet",
+    "KnowledgeGraph": "zenserp:KnowledgeGraph",
+    "RelatedQuestion": "zenserp:RelatedQuestion",
+    "RelatedSearch": "zenserp:RelatedSearch",
+    "ImageResult": "zenserp:ImageResult",
+    "NewsResult": "zenserp:NewsResult",
+    "ShoppingResult": "zenserp:ShoppingResult",
+    "MapResult": "zenserp:MapResult",
+    "VideoResult": "zenserp:VideoResult",
+    "TrendsResult": "zenserp:TrendsResult",
+    "RequestInfo": "zenserp:RequestInfo",
+    "BatchRequest": "zenserp:BatchRequest",
+    "BatchResponse": "zenserp:BatchResponse",
+
+    "request_info": { "@id": "zenserp:requestInfo", "@type": "@id" },
+    "query": { "@id": "zenserp:query", "@type": "@id" },
+    "organic_results": { "@id": "zenserp:organicResults", "@container": "@list" },
+    "paid_results": { "@id": "zenserp:paidResults", "@container": "@list" },
+    "featured_snippet": { "@id": "zenserp:featuredSnippet", "@type": "@id" },
+    "knowledge_graph": { "@id": "zenserp:knowledgeGraph", "@type": "@id" },
+    "related_questions": { "@id": "zenserp:relatedQuestions", "@container": "@list" },
+    "related_searches": { "@id": "zenserp:relatedSearches", "@container": "@list" },
+    "image_results": { "@id": "zenserp:imageResults", "@container": "@list" },
+    "news_results": { "@id": "zenserp:newsResults", "@container": "@list" },
+    "shopping_results": { "@id": "zenserp:shoppingResults", "@container": "@list" },
+    "map_results": { "@id": "zenserp:mapResults", "@container": "@list" },
+    "video_results": { "@id": "zenserp:videoResults", "@container": "@list" },
+    "trends_results": { "@id": "zenserp:trendsResults", "@container": "@list" },
+
+    "success": { "@id": "zenserp:success", "@type": "xsd:boolean" },
+    "credits_used": { "@id": "zenserp:creditsUsed", "@type": "xsd:integer" },
+    "credits_remaining": { "@id": "zenserp:creditsRemaining", "@type": "xsd:integer" },
+
+    "q": { "@id": "schema:query", "@type": "xsd:string" },
+    "gl": { "@id": "zenserp:countryCode", "@type": "xsd:string" },
+    "hl": { "@id": "zenserp:languageCode", "@type": "xsd:string" },
+    "num": { "@id": "zenserp:numResults", "@type": "xsd:integer" },
+    "engine": { "@id": "zenserp:searchEngine", "@type": "xsd:string" },
+    "tbm": { "@id": "zenserp:searchTypeModifier", "@type": "xsd:string" },
+    "location": { "@id": "schema:location", "@type": "xsd:string" },
+    "device": { "@id": "zenserp:device", "@type": "xsd:string" },
+
+    "position": { "@id": "zenserp:position", "@type": "xsd:integer" },
+    "title": { "@id": "schema:name", "@type": "xsd:string" },
+    "url": { "@id": "schema:url", "@type": "@id" },
+    "domain": { "@id": "zenserp:domain", "@type": "xsd:string" },
+    "description": { "@id": "schema:description", "@type": "xsd:string" },
+    "favicon": { "@id": "zenserp:favicon", "@type": "@id" },
+    "sitelinks": { "@id": "zenserp:sitelinks", "@container": "@list" },
+    "displayed_url": { "@id": "zenserp:displayedUrl", "@type": "xsd:string" },
+
+    "question": { "@id": "schema:question", "@type": "xsd:string" },
+    "answer": { "@id": "schema:answer", "@type": "xsd:string" },
+
+    "image_url": { "@id": "schema:image", "@type": "@id" },
+    "thumbnail": { "@id": "schema:thumbnailUrl", "@type": "@id" },
+    "source": { "@id": "zenserp:source", "@type": "xsd:string" },
+
+    "published_at": { "@id": "schema:datePublished", "@type": "xsd:string" },
+
+    "price": { "@id": "schema:price", "@type": "xsd:string" },
+    "store": { "@id": "zenserp:store", "@type": "xsd:string" },
+    "rating": { "@id": "schema:ratingValue", "@type": "xsd:decimal" },
+    "reviews": { "@id": "schema:reviewCount", "@type": "xsd:integer" },
+
+    "address": { "@id": "schema:address", "@type": "xsd:string" },
+    "phone": { "@id": "schema:telephone", "@type": "xsd:string" },
+    "website": { "@id": "schema:url", "@type": "@id" },
+    "category": { "@id": "schema:category", "@type": "xsd:string" },
+    "hours": { "@id": "schema:openingHours", "@type": "xsd:string" },
+    "latitude": { "@id": "schema:latitude", "@type": "xsd:decimal" },
+    "longitude": { "@id": "schema:longitude", "@type": "xsd:decimal" },
+
+    "channel": { "@id": "zenserp:channel", "@type": "xsd:string" },
+    "duration": { "@id": "schema:duration", "@type": "xsd:string" },
+    "views": { "@id": "zenserp:viewCount", "@type": "xsd:string" },
+
+    "date": { "@id": "schema:date", "@type": "xsd:string" },
+    "value": { "@id": "zenserp:trendValue", "@type": "xsd:integer" },
+
+    "queries": { "@id": "zenserp:queries", "@container": "@list" },
+    "results": { "@id": "zenserp:results", "@container": "@list" },
+    "error": { "@id": "zenserp:error", "@type": "xsd:string" },
+    "code": { "@id": "zenserp:errorCode", "@type": "xsd:integer" }
+  }
+}

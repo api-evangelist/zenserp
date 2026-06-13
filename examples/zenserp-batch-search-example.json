@@ -1,0 +1,41 @@
+{
+  "request": {
+    "queries": [
+      { "q": "best SERP API", "gl": "us", "hl": "en", "num": 5 },
+      { "q": "google search API", "gl": "us", "hl": "en", "num": 5 }
+    ]
+  },
+  "response": {
+    "request_info": {
+      "success": true,
+      "credits_used": 2,
+      "credits_remaining": 4997
+    },
+    "results": [
+      {
+        "query": { "q": "best SERP API", "gl": "us", "hl": "en", "num": 5, "engine": "google" },
+        "organic_results": [
+          {
+            "position": 1,
+            "title": "Top 10 SERP API Providers in 2024",
+            "url": "https://example.com/best-serp-apis",
+            "domain": "example.com",
+            "description": "Compare the best SERP APIs for developers including pricing and features."
+          }
+        ]
+      },
+      {
+        "query": { "q": "google search API", "gl": "us", "hl": "en", "num": 5, "engine": "google" },
+        "organic_results": [
+          {
+            "position": 1,
+            "title": "Google Custom Search JSON API",
+            "url": "https://developers.google.com/custom-search/v1/overview",
+            "domain": "developers.google.com",
+            "description": "Google's official Custom Search JSON API for programmatic search."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,833 @@
+openapi: 3.0.3
+info:
+  title: Zenserp Search API
+  description: >-
+    REST API for scraping real-time Google search results including organic results,
+    paid ads, featured snippets, knowledge graphs, related questions, maps, news,
+    shopping, images, videos, YouTube, Bing, Yandex, and DuckDuckGo search results.
+    Supports geolocation targeting across 200+ countries and languages.
+  version: '2.0'
+  contact:
+    name: Zenserp Support
+    url: https://zenserp.com/
+    email: support@zenserp.com
+  termsOfService: https://zenserp.com/terms-of-service/
+  x-logo:
+    url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
+servers:
+  - url: https://app.zenserp.com/api/v2
+    description: Zenserp API v2
+
+security:
+  - apiKeyHeader: []
+  - apiKeyQuery: []
+
+paths:
+  /search:
+    get:
+      operationId: search
+      summary: Universal Search
+      description: >-
+        Submit a search query to Google (default), Bing, Yandex, or DuckDuckGo.
+        The search type is controlled via the `tbm` parameter for Google variants
+        (images, news, shopping, maps, video, trends) and via `engine` for
+        alternative search engines.
+      tags:
+        - Search
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: The search query string.
+          schema:
+            type: string
+          example: pied piper
+        - name: apikey
+          in: query
+          required: false
+          description: Your Zenserp API key (alternative to header-based auth).
+          schema:
+            type: string
+        - name: tbm
+          in: query
+          required: false
+          description: >-
+            Google search type modifier. Omit for web search. Use `isch` for
+            image search, `nws` for news, `shop` for shopping, `map` for maps,
+            `vid` for YouTube/video search, `trends` for Google Trends.
+          schema:
+            type: string
+            enum:
+              - isch
+              - nws
+              - shop
+              - map
+              - vid
+              - trends
+        - name: engine
+          in: query
+          required: false
+          description: >-
+            Target search engine. Defaults to `google`. Set to `bing`, `yandex`,
+            or `duckduckgo` for alternative engines.
+          schema:
+            type: string
+            enum:
+              - google
+              - bing
+              - yandex
+              - duckduckgo
+            default: google
+        - name: gl
+          in: query
+          required: false
+          description: >-
+            Country code for geolocation targeting (ISO 3166-1 alpha-2).
+            Determines the country-specific Google domain and results.
+          schema:
+            type: string
+          example: us
+        - name: hl
+          in: query
+          required: false
+          description: >-
+            Language code for results (IETF BCP 47 / Google hl parameter).
+          schema:
+            type: string
+          example: en
+        - name: location
+          in: query
+          required: false
+          description: >-
+            Canonical location name used for geolocation-specific results.
+            Use the /locations list endpoint to get valid values.
+          schema:
+            type: string
+          example: "New York,New York,United States"
+        - name: num
+          in: query
+          required: false
+          description: Number of results to return (1–100).
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: start
+          in: query
+          required: false
+          description: Offset for pagination (0-based index of the first result).
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: device
+          in: query
+          required: false
+          description: Emulate results for a specific device type.
+          schema:
+            type: string
+            enum:
+              - desktop
+              - mobile
+              - tablet
+            default: desktop
+        - name: tbs
+          in: query
+          required: false
+          description: >-
+            Advanced Google search filters (time range, etc.).
+            Example: `qdr:d` for past day, `qdr:w` for past week.
+          schema:
+            type: string
+        - name: cr
+          in: query
+          required: false
+          description: >-
+            Filter results to a specific country using a `country<ISO>` value
+            (e.g., `countryUS`).
+          schema:
+            type: string
+        - name: lr
+          in: query
+          required: false
+          description: >-
+            Restrict results to a specific language (e.g., `lang_en`).
+          schema:
+            type: string
+        - name: safe
+          in: query
+          required: false
+          description: Safe search setting.
+          schema:
+            type: string
+            enum:
+              - active
+              - off
+            default: off
+        - name: reverse
+          in: query
+          required: false
+          description: >-
+            Set to `true` to perform a reverse image search. Requires `tbm=isch`
+            and supplying an image URL via `q`.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful search response with structured JSON results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              example:
+                request_info:
+                  success: true
+                  credits_used: 1
+                  credits_remaining: 99
+                query:
+                  q: pied piper
+                  gl: us
+                  hl: en
+                  num: 10
+                  engine: google
+                organic_results:
+                  - position: 1
+                    title: Pied Piper - Wikipedia
+                    url: https://en.wikipedia.org/wiki/Pied_Piper
+                    domain: en.wikipedia.org
+                    description: The Pied Piper of Hamelin is a character in a German legend...
+                    favicon: https://www.google.com/s2/favicons?domain=en.wikipedia.org
+        '401':
+          description: Unauthorized – invalid or missing API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /batch:
+    post:
+      operationId: batchSearch
+      summary: Batch Search
+      description: >-
+        Submit multiple search queries in a single API request. Available on
+        Medium plan and above. Each item in the batch uses the same parameters
+        as the `/search` endpoint.
+      tags:
+        - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+            example:
+              queries:
+                - q: pied piper
+                  gl: us
+                  hl: en
+                - q: silicon valley tv show
+                  gl: us
+                  hl: en
+      responses:
+        '200':
+          description: Batch search results array.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '402':
+          description: Plan does not support batch requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /languages:
+    get:
+      operationId: listLanguages
+      summary: List Supported Languages
+      description: Returns a list of all supported language codes (hl parameter values).
+      tags:
+        - Lists
+      responses:
+        '200':
+          description: Array of supported language objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LanguageItem'
+
+  /countries:
+    get:
+      operationId: listCountries
+      summary: List Supported Countries
+      description: Returns a list of all supported country codes (gl parameter values).
+      tags:
+        - Lists
+      responses:
+        '200':
+          description: Array of supported country objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountryItem'
+
+  /locations:
+    get:
+      operationId: listLocations
+      summary: List Geo Locations
+      description: Returns a list of canonical geo location strings for use with the `location` parameter.
+      tags:
+        - Lists
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Filter locations by name prefix.
+          schema:
+            type: string
+          example: New York
+      responses:
+        '200':
+          description: Array of location objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationItem'
+
+  /engines:
+    get:
+      operationId: listEngines
+      summary: List Search Engines
+      description: Returns a list of supported search engines.
+      tags:
+        - Lists
+      responses:
+        '200':
+          description: Array of search engine objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EngineItem'
+
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key passed in the request header.
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key passed as a query parameter.
+
+  schemas:
+    SearchResponse:
+      type: object
+      description: Top-level search result object returned by the /search endpoint.
+      properties:
+        request_info:
+          $ref: '#/components/schemas/RequestInfo'
+        query:
+          $ref: '#/components/schemas/QueryInfo'
+        organic_results:
+          type: array
+          description: List of organic (non-paid) search results.
+          items:
+            $ref: '#/components/schemas/OrganicResult'
+        paid_results:
+          type: array
+          description: List of paid advertisement results.
+          items:
+            $ref: '#/components/schemas/PaidResult'
+        featured_snippet:
+          $ref: '#/components/schemas/FeaturedSnippet'
+        knowledge_graph:
+          $ref: '#/components/schemas/KnowledgeGraph'
+        related_questions:
+          type: array
+          description: People Also Ask questions and answers.
+          items:
+            $ref: '#/components/schemas/RelatedQuestion'
+        related_searches:
+          type: array
+          description: Related search suggestions.
+          items:
+            $ref: '#/components/schemas/RelatedSearch'
+        image_results:
+          type: array
+          description: Image results (when tbm=isch).
+          items:
+            $ref: '#/components/schemas/ImageResult'
+        news_results:
+          type: array
+          description: News article results (when tbm=nws).
+          items:
+            $ref: '#/components/schemas/NewsResult'
+        shopping_results:
+          type: array
+          description: Shopping product results (when tbm=shop).
+          items:
+            $ref: '#/components/schemas/ShoppingResult'
+        map_results:
+          type: array
+          description: Local business results (when tbm=map).
+          items:
+            $ref: '#/components/schemas/MapResult'
+        video_results:
+          type: array
+          description: Video/YouTube results (when tbm=vid).
+          items:
+            $ref: '#/components/schemas/VideoResult'
+        trends_results:
+          type: array
+          description: Google Trends data points (when tbm=trends).
+          items:
+            $ref: '#/components/schemas/TrendsResult'
+
+    RequestInfo:
+      type: object
+      description: Metadata about the API request.
+      properties:
+        success:
+          type: boolean
+          description: Whether the request was successful.
+        credits_used:
+          type: integer
+          description: Number of API credits consumed by this request.
+        credits_remaining:
+          type: integer
+          description: Remaining credits in the current billing period.
+
+    QueryInfo:
+      type: object
+      description: Echo of the query parameters used for this search.
+      properties:
+        q:
+          type: string
+          description: The search query.
+        gl:
+          type: string
+          description: Country code used.
+        hl:
+          type: string
+          description: Language code used.
+        num:
+          type: integer
+          description: Number of results requested.
+        engine:
+          type: string
+          description: Search engine used.
+        tbm:
+          type: string
+          description: Search type modifier used.
+        location:
+          type: string
+          description: Geo location used.
+
+    OrganicResult:
+      type: object
+      description: A single organic (non-paid) search result.
+      properties:
+        position:
+          type: integer
+          description: 1-based ranking position in results.
+        title:
+          type: string
+          description: Title of the result.
+        url:
+          type: string
+          format: uri
+          description: URL of the result page.
+        domain:
+          type: string
+          description: Domain of the result.
+        description:
+          type: string
+          description: Snippet/description text for the result.
+        favicon:
+          type: string
+          format: uri
+          description: URL of the site favicon.
+        sitelinks:
+          type: array
+          description: Additional sub-links shown below the main result.
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+                format: uri
+
+    PaidResult:
+      type: object
+      description: A paid advertisement result.
+      properties:
+        position:
+          type: integer
+          description: Ad position.
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        domain:
+          type: string
+        description:
+          type: string
+        displayed_url:
+          type: string
+          description: The URL as displayed in the ad.
+
+    FeaturedSnippet:
+      type: object
+      description: Google featured snippet (answer box).
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        description:
+          type: string
+        type:
+          type: string
+          description: Snippet type (paragraph, table, list, etc.).
+
+    KnowledgeGraph:
+      type: object
+      description: Google Knowledge Graph panel data.
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+          format: uri
+        image:
+          type: string
+          format: uri
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value entity attributes from the knowledge panel.
+
+    RelatedQuestion:
+      type: object
+      description: A People Also Ask question-answer pair.
+      properties:
+        question:
+          type: string
+        answer:
+          type: string
+        url:
+          type: string
+          format: uri
+        title:
+          type: string
+
+    RelatedSearch:
+      type: object
+      description: A related search suggestion.
+      properties:
+        query:
+          type: string
+          description: Related query text.
+
+    ImageResult:
+      type: object
+      description: A single image search result.
+      properties:
+        position:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        image_url:
+          type: string
+          format: uri
+          description: Direct URL to the image.
+        thumbnail:
+          type: string
+          format: uri
+          description: URL to thumbnail version.
+        source:
+          type: string
+          description: Originating website domain.
+
+    NewsResult:
+      type: object
+      description: A single news article result.
+      properties:
+        position:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        source:
+          type: string
+          description: News source name.
+        published_at:
+          type: string
+          description: Publication timestamp or relative time.
+        thumbnail:
+          type: string
+          format: uri
+
+    ShoppingResult:
+      type: object
+      description: A single Google Shopping product result.
+      properties:
+        position:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        price:
+          type: string
+          description: Product price as a formatted string (e.g., "$29.99").
+        store:
+          type: string
+          description: Merchant/store name.
+        rating:
+          type: number
+          format: float
+          description: Product rating (0-5).
+        reviews:
+          type: integer
+          description: Number of reviews.
+        thumbnail:
+          type: string
+          format: uri
+
+    MapResult:
+      type: object
+      description: A single Google Maps local business result.
+      properties:
+        position:
+          type: integer
+        title:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        website:
+          type: string
+          format: uri
+        rating:
+          type: number
+          format: float
+        reviews:
+          type: integer
+        category:
+          type: string
+        hours:
+          type: string
+          description: Business hours summary.
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+
+    VideoResult:
+      type: object
+      description: A single YouTube/video search result.
+      properties:
+        position:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        channel:
+          type: string
+          description: Channel or uploader name.
+        published_at:
+          type: string
+          description: Video publication date or relative time.
+        duration:
+          type: string
+          description: Video duration (e.g., "5:32").
+        views:
+          type: string
+          description: View count as formatted string.
+        thumbnail:
+          type: string
+          format: uri
+
+    TrendsResult:
+      type: object
+      description: A Google Trends comparison data point.
+      properties:
+        query:
+          type: string
+          description: The search term being tracked.
+        date:
+          type: string
+          description: Date or time period.
+        value:
+          type: integer
+          description: Relative popularity score (0-100).
+
+    BatchRequest:
+      type: object
+      description: Batch search request body.
+      required:
+        - queries
+      properties:
+        queries:
+          type: array
+          description: Array of search query objects (same parameters as /search).
+          minItems: 1
+          maxItems: 100
+          items:
+            type: object
+            required:
+              - q
+            properties:
+              q:
+                type: string
+              gl:
+                type: string
+              hl:
+                type: string
+              num:
+                type: integer
+                minimum: 1
+                maximum: 100
+              engine:
+                type: string
+                enum:
+                  - google
+                  - bing
+                  - yandex
+                  - duckduckgo
+              tbm:
+                type: string
+              location:
+                type: string
+              device:
+                type: string
+
+    BatchResponse:
+      type: object
+      description: Batch search response.
+      properties:
+        request_info:
+          $ref: '#/components/schemas/RequestInfo'
+        results:
+          type: array
+          description: Array of search result objects, one per query.
+          items:
+            $ref: '#/components/schemas/SearchResponse'
+
+    ErrorResponse:
+      type: object
+      description: API error response.
+      properties:
+        error:
+          type: string
+          description: Human-readable error message.
+        code:
+          type: integer
+          description: HTTP status code.
+
+    LanguageItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable language name.
+        code:
+          type: string
+          description: Language code (hl value).
+
+    CountryItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable country name.
+        code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (gl value).
+
+    LocationItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Canonical location string for use with the location parameter.
+        country_code:
+          type: string
+          description: Country this location is in.
+
+    EngineItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable engine name.
+        value:
+          type: string
+          description: Engine identifier for use with the engine parameter.
+
+tags:
+  - name: Search
+    description: Core search endpoints supporting all search types and engines.
+  - name: Batch
+    description: Batch processing for multiple simultaneous queries.
+  - name: Lists
+    description: Reference list endpoints for supported languages, countries, locations, and engines.

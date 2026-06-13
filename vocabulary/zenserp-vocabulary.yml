@@ -1,0 +1,118 @@
+vocabulary:
+  - term: SERP
+    definition: >-
+      Search Engine Results Page. The page displayed by a search engine in
+      response to a query, containing organic results, paid ads, and various
+      rich result types (featured snippets, knowledge panels, etc.).
+    tags: [search, seo]
+
+  - term: organic_result
+    definition: >-
+      A non-paid search result ranked by a search engine's algorithm based on
+      relevance and authority signals. Distinct from paid advertisement results.
+    tags: [search, results]
+
+  - term: paid_result
+    definition: >-
+      An advertisement that appears in search results, purchased via auction
+      platforms such as Google Ads. Also called a sponsored result or ad.
+    tags: [search, advertising]
+
+  - term: featured_snippet
+    definition: >-
+      A summary answer box that appears at the top of Google search results,
+      extracted from a web page to directly answer a query. Also called
+      "position zero."
+    tags: [search, results, google]
+
+  - term: knowledge_graph
+    definition: >-
+      A sidebar panel in Google search results that displays structured
+      information about an entity (person, place, organization, etc.) drawn
+      from Google's Knowledge Graph database.
+    tags: [search, results, google]
+
+  - term: related_questions
+    definition: >-
+      "People Also Ask" expandable question-answer boxes surfaced by Google
+      based on queries related to the main search term.
+    tags: [search, results, google]
+
+  - term: tbm
+    definition: >-
+      Google search type modifier query parameter. Controls the vertical
+      returned: `isch` (images), `nws` (news), `shop` (shopping), `map`
+      (maps), `vid` (video/YouTube), `trends` (Google Trends).
+    tags: [parameters, google]
+
+  - term: gl
+    definition: >-
+      Country targeting parameter (ISO 3166-1 alpha-2 code). Determines which
+      Google country domain is queried and biases results toward that country.
+    tags: [parameters, geolocation]
+
+  - term: hl
+    definition: >-
+      Language parameter (IETF BCP 47 language tag). Sets the language of the
+      search interface and influences result language prioritization.
+    tags: [parameters, language]
+
+  - term: engine
+    definition: >-
+      Search engine selector parameter. Specifies which search engine to query:
+      `google` (default), `bing`, `yandex`, or `duckduckgo`.
+    tags: [parameters, engines]
+
+  - term: geolocation
+    definition: >-
+      The combination of `gl` (country), `hl` (language), and `location`
+      (canonical location string) parameters used to simulate a search from
+      a specific geographic position.
+    tags: [geolocation, parameters]
+
+  - term: batch_search
+    definition: >-
+      The ability to submit multiple search queries in a single API request via
+      the `/batch` endpoint. Available on Medium plan and above. Reduces
+      round-trip overhead for high-volume use cases.
+    tags: [batch, performance]
+
+  - term: credits
+    definition: >-
+      The unit of API consumption in Zenserp. Each search request typically
+      consumes one credit. Batch requests consume one credit per query within
+      the batch.
+    tags: [billing, usage]
+
+  - term: reverse_image_search
+    definition: >-
+      A search mode (`tbm=isch&reverse=true`) that accepts an image URL as
+      the query and returns pages that contain or are visually similar to
+      that image.
+    tags: [search, images]
+
+  - term: sitelinks
+    definition: >-
+      Additional sub-links shown beneath a main organic result, typically
+      linking to key internal pages of a website. Returned as an array within
+      an organic result object.
+    tags: [results, google]
+
+  - term: position
+    definition: >-
+      The 1-based integer ranking of a result on the search results page.
+      Position 1 is the highest-ranked result.
+    tags: [results, ranking]
+
+  - term: domain
+    definition: >-
+      The root domain extracted from a result's URL (e.g., `wikipedia.org`).
+      Returned as a convenience field alongside the full URL.
+    tags: [results]
+
+  - term: apikey
+    definition: >-
+      The authentication credential required for all Zenserp API requests.
+      Can be passed as an `apikey` query parameter or as an `apikey` request
+      header. Obtain from the Zenserp dashboard after registration.
+    tags: [authentication, security]

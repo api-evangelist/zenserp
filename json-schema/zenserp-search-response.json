@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zenserp/main/json-schema/zenserp-search-response.json",
+  "title": "Zenserp Search Response",
+  "description": "JSON Schema for the Zenserp /search endpoint response object.",
+  "type": "object",
+  "properties": {
+    "request_info": {
+      "type": "object",
+      "description": "Metadata about the API request.",
+      "properties": {
+        "success": { "type": "boolean" },
+        "credits_used": { "type": "integer", "minimum": 0 },
+        "credits_remaining": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["success"]
+    },
+    "query": {
+      "type": "object",
+      "description": "Echo of the query parameters used.",
+      "properties": {
+        "q": { "type": "string" },
+        "gl": { "type": "string" },
+        "hl": { "type": "string" },
+        "num": { "type": "integer" },
+        "engine": { "type": "string" },
+        "tbm": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "required": ["q"]
+    },
+    "organic_results": {
+      "type": "array",
+      "description": "Organic (non-paid) search results.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "domain": { "type": "string" },
+          "description": { "type": "string" },
+          "favicon": { "type": "string", "format": "uri" },
+          "sitelinks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string" },
+                "url": { "type": "string", "format": "uri" }
+              }
+            }
+          }
+        },
+        "required": ["position", "title", "url"]
+      }
+    },
+    "paid_results": {
+      "type": "array",
+      "description": "Paid advertisement results.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "domain": { "type": "string" },
+          "description": { "type": "string" },
+          "displayed_url": { "type": "string" }
+        },
+        "required": ["position", "title", "url"]
+      }
+    },
+    "featured_snippet": {
+      "type": "object",
+      "description": "Google featured snippet / answer box.",
+      "properties": {
+        "title": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "description": { "type": "string" },
+        "type": { "type": "string" }
+      }
+    },
+    "knowledge_graph": {
+      "type": "object",
+      "description": "Google Knowledge Graph panel.",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "image": { "type": "string", "format": "uri" },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "related_questions": {
+      "type": "array",
+      "description": "People Also Ask question-answer pairs.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "title": { "type": "string" }
+        },
+        "required": ["question"]
+      }
+    },
+    "related_searches": {
+      "type": "array",
+      "description": "Related search suggestions.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string" }
+        },
+        "required": ["query"]
+      }
+    },
+    "image_results": {
+      "type": "array",
+      "description": "Image search results (tbm=isch).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "image_url": { "type": "string", "format": "uri" },
+          "thumbnail": { "type": "string", "format": "uri" },
+          "source": { "type": "string" }
+        },
+        "required": ["position", "image_url"]
+      }
+    },
+    "news_results": {
+      "type": "array",
+      "description": "News article results (tbm=nws).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "source": { "type": "string" },
+          "published_at": { "type": "string" },
+          "thumbnail": { "type": "string", "format": "uri" }
+        },
+        "required": ["position", "title", "url"]
+      }
+    },
+    "shopping_results": {
+      "type": "array",
+      "description": "Google Shopping results (tbm=shop).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "price": { "type": "string" },
+          "store": { "type": "string" },
+          "rating": { "type": "number" },
+          "reviews": { "type": "integer" },
+          "thumbnail": { "type": "string", "format": "uri" }
+        },
+        "required": ["position", "title"]
+      }
+    },
+    "map_results": {
+      "type": "array",
+      "description": "Google Maps local business results (tbm=map).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "title": { "type": "string" },
+          "address": { "type": "string" },
+          "phone": { "type": "string" },
+          "website": { "type": "string", "format": "uri" },
+          "rating": { "type": "number" },
+          "reviews": { "type": "integer" },
+          "category": { "type": "string" },
+          "hours": { "type": "string" },
+          "latitude": { "type": "number" },
+          "longitude": { "type": "number" }
+        },
+        "required": ["position", "title"]
+      }
+    },
+    "video_results": {
+      "type": "array",
+      "description": "YouTube/video search results (tbm=vid).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "title": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "channel": { "type": "string" },
+          "published_at": { "type": "string" },
+          "duration": { "type": "string" },
+          "views": { "type": "string" },
+          "thumbnail": { "type": "string", "format": "uri" }
+        },
+        "required": ["position", "title", "url"]
+      }
+    },
+    "trends_results": {
+      "type": "array",
+      "description": "Google Trends comparison data (tbm=trends).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string" },
+          "date": { "type": "string" },
+          "value": { "type": "integer", "minimum": 0, "maximum": 100 }
+        },
+        "required": ["query", "value"]
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "request_info": {
+    "success": true,
+    "credits_used": 1,
+    "credits_remaining": 4998
+  },
+  "query": {
+    "q": "sunset over mountains",
+    "tbm": "isch",
+    "gl": "us",
+    "hl": "en",
+    "num": 10,
+    "engine": "google"
+  },
+  "image_results": [
+    {
+      "position": 1,
+      "title": "Beautiful Sunset Over Mountain Range",
+      "url": "https://example.com/photo/sunset-mountains",
+      "image_url": "https://example.com/images/sunset-mountains-full.jpg",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:example1",
+      "source": "example.com"
+    },
+    {
+      "position": 2,
+      "title": "Golden Hour Mountain Sunset Photography",
+      "url": "https://photos.example.com/mountain-sunset",
+      "image_url": "https://photos.example.com/images/golden-hour.jpg",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:example2",
+      "source": "photos.example.com"
+    }
+  ]
+}

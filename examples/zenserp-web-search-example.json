@@ -1,0 +1,51 @@
+{
+  "request_info": {
+    "success": true,
+    "credits_used": 1,
+    "credits_remaining": 4999
+  },
+  "query": {
+    "q": "open source search engine",
+    "gl": "us",
+    "hl": "en",
+    "num": 10,
+    "engine": "google"
+  },
+  "organic_results": [
+    {
+      "position": 1,
+      "title": "Top Open Source Search Engines",
+      "url": "https://example.com/open-source-search-engines",
+      "domain": "example.com",
+      "description": "A comprehensive list of the best open-source search engines for developers and enterprises.",
+      "favicon": "https://www.google.com/s2/favicons?domain=example.com"
+    },
+    {
+      "position": 2,
+      "title": "Elasticsearch - Open Source Search & Analytics",
+      "url": "https://www.elastic.co/elasticsearch/",
+      "domain": "elastic.co",
+      "description": "Elasticsearch is a distributed, free and open search and analytics engine for all types of data.",
+      "favicon": "https://www.google.com/s2/favicons?domain=elastic.co"
+    }
+  ],
+  "featured_snippet": {
+    "title": "What is an open source search engine?",
+    "url": "https://example.com/what-is-open-source-search",
+    "description": "An open-source search engine is software whose source code is publicly available for anyone to use, modify, and distribute.",
+    "type": "paragraph"
+  },
+  "related_questions": [
+    {
+      "question": "What is the best free open source search engine?",
+      "answer": "Elasticsearch, Solr, and MeiliSearch are popular open-source search engines.",
+      "url": "https://example.com/best-open-source-search",
+      "title": "Best Free Open Source Search Engines"
+    }
+  ],
+  "related_searches": [
+    { "query": "open source search engine self hosted" },
+    { "query": "elasticsearch vs solr" },
+    { "query": "apache solr tutorial" }
+  ]
+}
