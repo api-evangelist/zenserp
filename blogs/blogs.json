@@ -8,91 +8,160 @@
       "url": "https://zenserp.com/maximizing-your-search-results-with-zenserp-tips-and-tricks/",
       "author": "Shamal",
       "date": null,
-      "tags": ["tips", "search", "optimization"]
+      "tags": [
+        "tips",
+        "search",
+        "optimization"
+      ]
     },
     {
       "title": "Integrating Zenserp with Python for Google Image Search",
       "url": "https://zenserp.com/integrating-zenserp-with-python-for-google-image-search/",
       "author": "Shamal",
       "date": null,
-      "tags": ["python", "image search", "tutorial"]
+      "tags": [
+        "python",
+        "image search",
+        "tutorial"
+      ]
     },
     {
       "title": "Real-World Applications of Zenserp: Boosting SEO with Search Engine Rankings API",
       "url": "https://zenserp.com/boosting-seo-with-search-engine-rankings-api/",
       "author": "Shamal",
       "date": null,
-      "tags": ["seo", "rankings", "use cases"]
+      "tags": [
+        "seo",
+        "rankings",
+        "use cases"
+      ]
     },
     {
       "title": "Scrape Naver News Results with Python",
       "url": "https://zenserp.com/scrape-naver-news-results-with-python/",
       "author": null,
       "date": null,
-      "tags": ["python", "naver", "news", "scraping"]
+      "tags": [
+        "python",
+        "naver",
+        "news",
+        "scraping"
+      ]
     },
     {
       "title": "Best SERP API - Top 10 in 2020 [Detailed Comparison]",
       "url": "https://zenserp.com/serp-api-review/",
       "author": null,
       "date": null,
-      "tags": ["comparison", "serp api", "review"]
+      "tags": [
+        "comparison",
+        "serp api",
+        "review"
+      ]
     },
     {
       "title": "Scrape and Download Google Images with Python Google Image Search API",
       "url": "https://zenserp.com/scrape-and-download-google-images-with-python-google-image-search-api/",
       "author": null,
       "date": null,
-      "tags": ["python", "google images", "scraping", "tutorial"]
+      "tags": [
+        "python",
+        "google images",
+        "scraping",
+        "tutorial"
+      ]
     },
     {
       "title": "Unveiling the Power of Google Reverse Image Search API with Zenserp",
       "url": "https://zenserp.com/google-reverse-image-search-api-zenserp/",
       "author": "ahmet",
       "date": null,
-      "tags": ["reverse image search", "google", "api"]
+      "tags": [
+        "reverse image search",
+        "google",
+        "api"
+      ]
     },
     {
       "title": "Mastering Google News API: The Ultimate Guide for Developers",
       "url": "https://zenserp.com/developers-guide-google-news-api/",
       "author": "ayesha",
       "date": null,
-      "tags": ["google news", "api", "developers", "guide"]
+      "tags": [
+        "google news",
+        "api",
+        "developers",
+        "guide"
+      ]
     },
     {
       "title": "How Does Yandex Reverse Image Search Work? Detailed Guide",
       "url": "https://zenserp.com/how-does-yandex-reverse-image-search-work-detailed-guide/",
       "author": "Shubham Chauhan",
       "date": null,
-      "tags": ["yandex", "reverse image search", "guide"]
+      "tags": [
+        "yandex",
+        "reverse image search",
+        "guide"
+      ]
     },
     {
       "title": "Building a Custom Search Engine with Search Engine APIs",
       "url": "https://zenserp.com/building-a-custom-search-engine-with-search-engine-apis/",
       "author": "Shubham Chauhan",
       "date": null,
-      "tags": ["custom search", "search engine api", "tutorial"]
+      "tags": [
+        "custom search",
+        "search engine api",
+        "tutorial"
+      ]
     },
     {
       "title": "Optimizing Search Results with Bing Search Engine API",
       "url": "https://zenserp.com/optimizing-search-results-bing-search-engine-api/",
       "author": "Babita",
       "date": null,
-      "tags": ["bing", "search api", "optimization"]
+      "tags": [
+        "bing",
+        "search api",
+        "optimization"
+      ]
     },
     {
       "title": "Integrating Bing API: Simplifying Complex Searches for Developers",
       "url": "https://zenserp.com/integrating-bing-api-for-developers/",
       "author": "Sidra Arif",
       "date": null,
-      "tags": ["bing", "api", "developers", "integration"]
+      "tags": [
+        "bing",
+        "api",
+        "developers",
+        "integration"
+      ]
     },
     {
       "title": "Exploring the Google Image Search API: A Python Tutorial",
       "url": "https://zenserp.com/exploring-the-google-image-search-api-a-python-tutorial/",
       "author": "Shubham Chauhan",
       "date": null,
-      "tags": ["google", "image search", "python", "tutorial"]
+      "tags": [
+        "google",
+        "image search",
+        "python",
+        "tutorial"
+      ]
     }
-  ]
+  ],
+  "repo": "zenserp",
+  "feeds": [
+    {
+      "source": "https://zenserp.freshstatus.io",
+      "feed_url": "https://zenserp.freshstatus.io",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-06-14T20:42:17Z"
 }
