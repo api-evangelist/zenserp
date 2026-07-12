@@ -1,0 +1,24 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/zenserp-search-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+  - query
+schemes:
+- name: apiKeyHeader
+  type: apiKey
+  in: header
+  parameter: apikey
+  description: API key passed in the request header.
+  sources:
+  - openapi/zenserp-search-openapi.yml
+- name: apiKeyQuery
+  type: apiKey
+  in: query
+  parameter: apikey
+  description: API key passed as a query parameter.
+  sources:
+  - openapi/zenserp-search-openapi.yml

@@ -105,6 +105,10 @@ apis:
         path: /batch
         description: Submit multiple search queries in a single request (Medium plan and above)
 common:
+  - type: DomainSecurity
+    url: security/zenserp-domain-security.yml
+  - type: Authentication
+    url: authentication/zenserp-authentication.yml
   - type: Website
     url: https://zenserp.com/
   - type: Documentation
