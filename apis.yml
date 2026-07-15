@@ -105,6 +105,8 @@ apis:
         path: /batch
         description: Submit multiple search queries in a single request (Medium plan and above)
 common:
+  - type: AgenticAccess
+    url: agentic-access/zenserp-agentic-access.yml
   - type: DomainSecurity
     url: security/zenserp-domain-security.yml
   - type: Authentication
