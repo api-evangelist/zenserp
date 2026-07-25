@@ -1,0 +1,143 @@
+openapi: 3.0.3
+info:
+  title: Zenserp Search Batch Lists API
+  description: REST API for scraping real-time Google search results including organic results, paid ads, featured snippets, knowledge graphs, related questions, maps, news, shopping, images, videos, YouTube, Bing, Yandex, and DuckDuckGo search results. Supports geolocation targeting across 200+ countries and languages.
+  version: '2.0'
+  contact:
+    name: Zenserp Support
+    url: https://zenserp.com/
+    email: support@zenserp.com
+  termsOfService: https://zenserp.com/terms-of-service/
+  x-logo:
+    url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
+servers:
+- url: https://app.zenserp.com/api/v2
+  description: Zenserp API v2
+security:
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags:
+- name: Lists
+  description: Reference list endpoints for supported languages, countries, locations, and engines.
+paths:
+  /languages:
+    get:
+      operationId: listLanguages
+      summary: List Supported Languages
+      description: Returns a list of all supported language codes (hl parameter values).
+      tags:
+      - Lists
+      responses:
+        '200':
+          description: Array of supported language objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LanguageItem'
+  /countries:
+    get:
+      operationId: listCountries
+      summary: List Supported Countries
+      description: Returns a list of all supported country codes (gl parameter values).
+      tags:
+      - Lists
+      responses:
+        '200':
+          description: Array of supported country objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountryItem'
+  /locations:
+    get:
+      operationId: listLocations
+      summary: List Geo Locations
+      description: Returns a list of canonical geo location strings for use with the `location` parameter.
+      tags:
+      - Lists
+      parameters:
+      - name: q
+        in: query
+        required: false
+        description: Filter locations by name prefix.
+        schema:
+          type: string
+        example: New York
+      responses:
+        '200':
+          description: Array of location objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationItem'
+  /engines:
+    get:
+      operationId: listEngines
+      summary: List Search Engines
+      description: Returns a list of supported search engines.
+      tags:
+      - Lists
+      responses:
+        '200':
+          description: Array of search engine objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EngineItem'
+components:
+  schemas:
+    EngineItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable engine name.
+        value:
+          type: string
+          description: Engine identifier for use with the engine parameter.
+    CountryItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable country name.
+        code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (gl value).
+    LanguageItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable language name.
+        code:
+          type: string
+          description: Language code (hl value).
+    LocationItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Canonical location string for use with the location parameter.
+        country_code:
+          type: string
+          description: Country this location is in.
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key passed in the request header.
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key passed as a query parameter.
