@@ -1,0 +1,18 @@
+{
+  "provider": "zenserp",
+  "sources": [
+    "zenserp-batch-api-openapi.yml",
+    "zenserp-lists-api-openapi.yml",
+    "zenserp-search-api-openapi.yml"
+  ],
+  "outputs": [
+    "zenserp-batch-api-openapi.yml",
+    "zenserp-lists-api-openapi.yml",
+    "zenserp-search-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
