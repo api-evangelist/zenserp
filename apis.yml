@@ -1,12 +1,11 @@
 aid: zenserp
 name: Zenserp
 description: >-
-  Zenserp is a Google SERP API that enables developers to fetch live, structured
-  search engine results in real time without interruption. The API supports web,
-  image, video, news, shopping, maps, YouTube, Bing, Yandex, DuckDuckGo, reverse
-  image, and trends search types across 200+ countries, returning clean JSON
-  responses. It offers geolocation-based queries, batch endpoints, keyword search
-  volume and CPC data, and a bulk index checker tool, with a 99.9% uptime SLA.
+  Zenserp is a Google SERP API that enables developers to fetch live, structured search engine results
+  in real time without interruption. The API supports web, image, video, news, shopping, maps, YouTube,
+  Bing, Yandex, DuckDuckGo, reverse image, and trends search types across 200+ countries, returning clean
+  JSON responses. It offers geolocation-based queries, batch endpoints, keyword search volume and CPC
+  data, and a bulk index checker tool, with a 99.9% uptime SLA.
 type: Index
 accessModel:
   pricing: freemium
@@ -19,37 +18,43 @@ accessModel:
   source:
   - plans
   - authentication
-  generated: '2026-07-22'
+  generated: '2026-08-13'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/zenserp.png
 url: https://raw.githubusercontent.com/api-evangelist/zenserp/refs/heads/main/apis.yml
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 tags:
-  - SERP
-  - Search Engine Results
-  - Google Search
-  - Web Scraping
-  - SEO
-  - Image Search
-  - News Search
-  - Shopping Search
-  - Maps
-  - YouTube Search
-  - Bing
-  - Yandex
-  - DuckDuckGo
-  - Geolocation
-  - Keyword Research
+- SERP
+- Search Engine Results
+- Google Search
+- Web Scraping
+- SEO
+- Image Search
+- News Search
+- Shopping Search
+- Maps
+- YouTube Search
+- Bing
+- Yandex
+- DuckDuckGo
+- Geolocation
+- Keyword Research
 apis:
 - aid: zenserp:zenserp-batch-api
   name: Zenserp Batch API
-  description: Batch processing for multiple simultaneous queries.
+  description: >-
+    Asynchronous batch endpoint for very large SERP datasets. Jobs are submitted together and results
+    are POSTed back to a caller-supplied webhook_url, or polled by batch id. Available on the Medium plan
+    and above. Served from the v1 base, not v2.
   humanURL: https://zenserp.com/
-  baseURL: https://app.zenserp.com/api/v2
+  baseURL: https://app.zenserp.com/api/v1
   tags:
   - Batch
+  - Asynchronous
+  - Webhooks
+  - Bulk
   properties:
   - type: OpenAPI
     url: openapi/zenserp-batch-api-openapi.yml
@@ -59,15 +64,26 @@ apis:
     url: https://zenserp.com/pricing-plans/
   - type: Authentication
     url: https://app.zenserp.com/documentation
-  - type: StatusPage
-    url: https://zenserp.freshstatus.io
+  - type: Overlay
+    url: overlays/zenserp-batch-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/zenserp-batch-webhooks.yml
+  - type: AgentSkill
+    url: skills/_index.yml
 - aid: zenserp:zenserp-lists-api
   name: Zenserp Lists API
-  description: Reference list endpoints for supported languages, countries, locations, and engines.
+  description: >-
+    Reference list endpoints publishing the enumerations the Search API parameters must draw from: supported
+    interface languages (hl), countries (gl), canonical Google geo-targeting locations, and search-engine
+    domains.
   humanURL: https://zenserp.com/
   baseURL: https://app.zenserp.com/api/v2
   tags:
   - Lists
+  - Reference Data
+  - Geolocation
+  - Languages
+  - Countries
   properties:
   - type: OpenAPI
     url: openapi/zenserp-lists-api-openapi.yml
@@ -77,15 +93,23 @@ apis:
     url: https://zenserp.com/pricing-plans/
   - type: Authentication
     url: https://app.zenserp.com/documentation
-  - type: StatusPage
-    url: https://zenserp.freshstatus.io
+  - type: Overlay
+    url: overlays/zenserp-lists-overlay.yaml
 - aid: zenserp:zenserp-search-api
   name: Zenserp Search API
-  description: Core search endpoints supporting all search types and engines.
+  description: >-
+    Core search endpoint. One GET operation returns Google web, image, video, news, shopping and maps
+    results (selected with tbm) plus Bing, Yandex, DuckDuckGo and YouTube results (selected with search_engine),
+    with geolocation targeting across 200+ countries. Includes the account quota endpoint.
   humanURL: https://zenserp.com/
   baseURL: https://app.zenserp.com/api/v2
   tags:
   - Search
+  - SERP
+  - Google Search
+  - Bing
+  - Yandex
+  - Quota
   properties:
   - type: OpenAPI
     url: openapi/zenserp-search-api-openapi.yml
@@ -95,37 +119,133 @@ apis:
     url: https://zenserp.com/pricing-plans/
   - type: Authentication
     url: https://app.zenserp.com/documentation
-  - type: StatusPage
-    url: https://zenserp.freshstatus.io
-common:
-  - type: AgenticAccess
-    url: agentic-access/zenserp-agentic-access.yml
-  - type: DomainSecurity
-    url: security/zenserp-domain-security.yml
-  - type: Authentication
-    url: authentication/zenserp-authentication.yml
-  - type: Website
-    url: https://zenserp.com/
-  - type: Documentation
+  - type: Overlay
+    url: overlays/zenserp-search-overlay.yaml
+  - type: AgentSkill
+    url: skills/_index.yml
+- aid: zenserp:zenserp-shopping-api
+  name: Zenserp Shopping Product Page API
+  description: >-
+    Google Shopping product page endpoint, resolving a single product variant by product_id or a full
+    product cluster across all merchants by gpc_id. Product ids are obtained from a shopping search. Served
+    from the v1 base, not v2.
+  humanURL: https://zenserp.com/google-shopping-api/
+  baseURL: https://app.zenserp.com/api/v1
+  tags:
+  - Shopping
+  - Google Shopping
+  - Product Data
+  - Pricing Data
+  properties:
+  - type: OpenAPI
+    url: openapi/zenserp-shopping-api-openapi.yml
+  - type: Overlay
+    url: overlays/zenserp-shopping-overlay.yaml
+  - &id001
+    type: Documentation
     url: https://app.zenserp.com/documentation
-  - type: Pricing
+  - &id002
+    type: Pricing
     url: https://zenserp.com/pricing-plans/
-  - type: StatusPage
-    url: https://zenserp.freshstatus.io
-  - type: Blog
-    url: https://zenserp.com/blog/
-  - type: GitHubOrg
-    url: https://github.com/zenserp
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/apilayer/
-  - type: X
-    url: https://twitter.com/apilayer
-  - type: Plans
-    url: plans/zenserp-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/zenserp-rate-limits.yml
-  - type: FinOps
-    url: finops/zenserp-finops.yml
+  - &id003
+    type: Authentication
+    url: authentication/zenserp-authentication.yml
+- aid: zenserp:zenserp-trends-api
+  name: Zenserp Trends API
+  description: >-
+    Google Trends endpoints exposing keyword interest over time for one or more keywords, and the currently
+    trending searches for a category, language and region. Served from the v1 base, not v2.
+  humanURL: https://zenserp.com/google-trends-api/
+  baseURL: https://app.zenserp.com/api/v1
+  tags:
+  - Trends
+  - Google Trends
+  - Keyword Research
+  - Search Volume
+  properties:
+  - type: OpenAPI
+    url: openapi/zenserp-trends-api-openapi.yml
+  - type: Overlay
+    url: overlays/zenserp-trends-overlay.yaml
+  - *id001
+  - *id002
+  - *id003
+common:
+- type: AgenticAccess
+  url: agentic-access/zenserp-agentic-access.yml
+- type: DomainSecurity
+  url: security/zenserp-domain-security.yml
+- type: Authentication
+  url: authentication/zenserp-authentication.yml
+- type: Website
+  url: https://zenserp.com/
+- type: Documentation
+  url: https://app.zenserp.com/documentation
+- type: Pricing
+  url: https://zenserp.com/pricing-plans/
+- type: Blog
+  url: https://zenserp.com/blog/
+- type: GitHubOrg
+  url: https://github.com/zenserp
+- type: LinkedIn
+  url: https://www.linkedin.com/company/apilayer/
+- type: X
+  url: https://twitter.com/apilayer
+- type: Plans
+  url: plans/zenserp-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/zenserp-rate-limits.yml
+- type: FinOps
+  url: finops/zenserp-finops.yml
+- type: Packages
+  url: packages/zenserp-packages.yml
+- type: SDKs
+  url: packages/zenserp-packages.yml
+- type: LLMsTxt
+  url: llms/zenserp-llms.txt
+- type: Conventions
+  url: conventions/zenserp-conventions.yml
+- type: ErrorCatalog
+  url: errors/zenserp-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/zenserp-lifecycle.yml
+- type: Conformance
+  url: conformance/zenserp-conformance.yml
+- type: DataModel
+  url: data-model/zenserp-data-model.yml
+- type: Sandbox
+  url: sandbox/zenserp-sandbox.yml
+- type: Webhooks
+  url: asyncapi/zenserp-batch-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  url: overlays/zenserp-search-overlay.yaml
+- type: Postman
+  url: https://www.postman.com/collections/a888b56749cd50cc525d
+- type: APIReference
+  url: https://app.zenserp.com/documentation
+- type: DeveloperPortal
+  url: https://app.zenserp.com/
+- type: SignUp
+  url: https://app.zenserp.com/register
+- type: Login
+  url: https://app.zenserp.com/login
+- type: Support
+  url: https://apilayer.com/support
+- type: Contact
+  url: https://zenserp.com/contact/
+- type: TermsOfService
+  url: https://zenserp.com/terms-of-service/
+- type: PrivacyPolicy
+  url: https://zenserp.com/privacy-policy/
+- type: GitHubOrganization
+  url: https://github.com/zenserp
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v1
