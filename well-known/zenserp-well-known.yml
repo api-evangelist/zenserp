@@ -1,0 +1,129 @@
+generated: '2026-08-13'
+method: probed
+source: direct unauthenticated HTTPS probes of every host in apis.yml and every OpenAPI servers[] host
+name: Zenserp .well-known Probe
+description: >-
+  No .well-known document is served on any Zenserp host. On app.zenserp.com every
+  path returns a hard 404. On zenserp.com every path returns HTTP 200 with the
+  SAME 155,092-byte WordPress page that the site root returns -- a catch-all
+  soft-404, not a document. This was confirmed with a control probe of a
+  guaranteed-nonexistent path, which returned the identical body and byte count.
+  NO WellKnown or SecurityTxt pointer is emitted for this provider: nothing here
+  is a hit.
+hit_count: 0
+soft_404_host: zenserp.com
+soft_404_control:
+  url: https://zenserp.com/definitely-not-a-real-page-xyz/
+  status: 200
+  content_type: text/html; charset=UTF-8
+  bytes: 155092
+  note: Control probe. Any 200 on zenserp.com with this byte count is the catch-all page.
+
+probes:
+  - host: app.zenserp.com
+    path: /.well-known/security.txt
+    url: https://app.zenserp.com/.well-known/security.txt
+    status: 404
+    hit: false
+    file: null
+  - host: app.zenserp.com
+    path: /.well-known/openid-configuration
+    url: https://app.zenserp.com/.well-known/openid-configuration
+    status: 404
+    hit: false
+    file: null
+  - host: app.zenserp.com
+    path: /.well-known/oauth-authorization-server
+    url: https://app.zenserp.com/.well-known/oauth-authorization-server
+    status: 404
+    hit: false
+    file: null
+  - host: app.zenserp.com
+    path: /.well-known/api-catalog
+    url: https://app.zenserp.com/.well-known/api-catalog
+    status: 404
+    hit: false
+    file: null
+  - host: app.zenserp.com
+    path: /.well-known/ai-plugin.json
+    url: https://app.zenserp.com/.well-known/ai-plugin.json
+    status: 404
+    hit: false
+    file: null
+  - host: app.zenserp.com
+    path: /.well-known/agent-card.json
+    url: https://app.zenserp.com/.well-known/agent-card.json
+    status: 404
+    hit: false
+    file: null
+  - host: app.zenserp.com
+    path: /.well-known/agent.json
+    url: https://app.zenserp.com/.well-known/agent.json
+    status: 404
+    hit: false
+    file: null
+  - host: zenserp.com
+    path: /.well-known/security.txt
+    url: https://zenserp.com/.well-known/security.txt
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- 155,092-byte WordPress catch-all page, content-type text/html, not a security.txt
+  - host: zenserp.com
+    path: /.well-known/openid-configuration
+    url: https://zenserp.com/.well-known/openid-configuration
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- identical catch-all HTML body
+  - host: zenserp.com
+    path: /.well-known/oauth-authorization-server
+    url: https://zenserp.com/.well-known/oauth-authorization-server
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- identical catch-all HTML body
+  - host: zenserp.com
+    path: /.well-known/api-catalog
+    url: https://zenserp.com/.well-known/api-catalog
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- identical catch-all HTML body
+  - host: zenserp.com
+    path: /.well-known/ai-plugin.json
+    url: https://zenserp.com/.well-known/ai-plugin.json
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- identical catch-all HTML body
+  - host: zenserp.com
+    path: /.well-known/agent-card.json
+    url: https://zenserp.com/.well-known/agent-card.json
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- identical catch-all HTML body
+  - host: zenserp.com
+    path: /.well-known/agent.json
+    url: https://zenserp.com/.well-known/agent.json
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- identical catch-all HTML body (legacy pre-0.3 A2A path)
+  - host: zenserp.com
+    path: /security.txt
+    url: https://zenserp.com/security.txt
+    status: 200
+    hit: false
+    file: null
+    note: soft-404 -- identical catch-all HTML body
+
+a2a:
+  agent_card_found: false
+  note: >-
+    No A2A Agent Card on any host. app.zenserp.com hard-404s both
+    /.well-known/agent-card.json and the legacy /.well-known/agent.json;
+    zenserp.com answers 200 for both but with the site catch-all HTML, which fails
+    the AgentCard shape test (not a JSON object, no name/url/version/
+    protocolVersion/capabilities/skills). Nothing was written to a2a/.

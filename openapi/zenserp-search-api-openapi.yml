@@ -1,7 +1,10 @@
 openapi: 3.0.3
 info:
-  title: Zenserp Batch Search API
-  description: REST API for scraping real-time Google search results including organic results, paid ads, featured snippets, knowledge graphs, related questions, maps, news, shopping, images, videos, YouTube, Bing, Yandex, and DuckDuckGo search results. Supports geolocation targeting across 200+ countries and languages.
+  title: Zenserp Search API
+  description: REST API for scraping real-time Google search results including organic results, paid ads,
+    featured snippets, knowledge graphs, related questions, maps, news, shopping, images, videos, YouTube,
+    Bing, Yandex, and DuckDuckGo search results. Supports geolocation targeting across 200+ countries
+    and languages.
   version: '2.0'
   contact:
     name: Zenserp Support
@@ -10,6 +13,8 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
+    + live unauthenticated probes 2026-08-13
 servers:
 - url: https://app.zenserp.com/api/v2
   description: Zenserp API v2
@@ -24,7 +29,9 @@ paths:
     get:
       operationId: search
       summary: Universal Search
-      description: Submit a search query to Google (default), Bing, Yandex, or DuckDuckGo. The search type is controlled via the `tbm` parameter for Google variants (images, news, shopping, maps, video, trends) and via `engine` for alternative search engines.
+      description: Submit a search query to Google (default), Bing, Yandex, or DuckDuckGo. The search
+        type is controlled via the `tbm` parameter for Google variants (images, news, shopping, maps,
+        video, trends) and via `engine` for alternative search engines.
       tags:
       - Search
       parameters:
@@ -44,7 +51,9 @@ paths:
       - name: tbm
         in: query
         required: false
-        description: Google search type modifier. Omit for web search. Use `isch` for image search, `nws` for news, `shop` for shopping, `map` for maps, `vid` for YouTube/video search, `trends` for Google Trends.
+        description: Google search type modifier. Omit for web search. Use `isch` for image search, `nws`
+          for news, `shop` for shopping, `map` for maps, `vid` for YouTube/video search, `trends` for
+          Google Trends.
         schema:
           type: string
           enum:
@@ -57,7 +66,8 @@ paths:
       - name: engine
         in: query
         required: false
-        description: Target search engine. Defaults to `google`. Set to `bing`, `yandex`, or `duckduckgo` for alternative engines.
+        description: Target search engine. Defaults to `google`. Set to `bing`, `yandex`, or `duckduckgo`
+          for alternative engines.
         schema:
           type: string
           enum:
@@ -69,7 +79,8 @@ paths:
       - name: gl
         in: query
         required: false
-        description: Country code for geolocation targeting (ISO 3166-1 alpha-2). Determines the country-specific Google domain and results.
+        description: Country code for geolocation targeting (ISO 3166-1 alpha-2). Determines the country-specific
+          Google domain and results.
         schema:
           type: string
         example: us
@@ -83,7 +94,8 @@ paths:
       - name: location
         in: query
         required: false
-        description: Canonical location name used for geolocation-specific results. Use the /locations list endpoint to get valid values.
+        description: Canonical location name used for geolocation-specific results. Use the /locations
+          list endpoint to get valid values.
         schema:
           type: string
         example: New York,New York,United States
@@ -118,7 +130,8 @@ paths:
       - name: tbs
         in: query
         required: false
-        description: 'Advanced Google search filters (time range, etc.). Example: `qdr:d` for past day, `qdr:w` for past week.'
+        description: 'Advanced Google search filters (time range, etc.). Example: `qdr:d` for past day,
+          `qdr:w` for past week.'
         schema:
           type: string
       - name: cr
@@ -146,7 +159,8 @@ paths:
       - name: reverse
         in: query
         required: false
-        description: Set to `true` to perform a reverse image search. Requires `tbm=isch` and supplying an image URL via `q`.
+        description: Set to `true` to perform a reverse image search. Requires `tbm=isch` and supplying
+          an image URL via `q`.
         schema:
           type: boolean
           default: false
@@ -175,20 +189,96 @@ paths:
                   domain: en.wikipedia.org
                   description: The Pied Piper of Hamelin is a character in a German legend...
                   favicon: https://www.google.com/s2/favicons?domain=en.wikipedia.org
-        '401':
-          description: Unauthorized – invalid or missing API key.
+        '500':
+          description: Internal Server Error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        '429':
-          description: Rate limit exceeded.
+        '422':
+          description: Validation failed -- one or more request parameters were rejected.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /status:
+    get:
+      operationId: getStatus
+      summary: Status & Left Requests
+      description: This endpoint allows you to check the remaining requests of your API Key.
+      tags:
+      - Search
+      responses:
+        '200':
+          description: Remaining request quota for the API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+              example:
+                remaining_requests: 1500
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
-          description: Internal server error.
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      operationId: getStatusPost
+      summary: Status & Left Requests
+      description: This endpoint allows you to check the remaining requests of your API Key.
+      tags:
+      - Search
+      responses:
+        '200':
+          description: Remaining request quota for the API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+              example:
+                remaining_requests: 1500
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
           content:
             application/json:
               schema:
@@ -362,14 +452,13 @@ components:
           description: Related query text.
     ErrorResponse:
       type: object
-      description: API error response.
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
+        API: {"error": "No apikey provided."}'
       properties:
         error:
           type: string
           description: Human-readable error message.
-        code:
-          type: integer
-          description: HTTP status code.
+          example: No apikey provided.
     NewsResult:
       type: object
       description: A single news article result.
@@ -553,6 +642,30 @@ components:
         displayed_url:
           type: string
           description: The URL as displayed in the ad.
+    StatusResponse:
+      type: object
+      description: Remaining request quota for the authenticated API key.
+      properties:
+        remaining_requests:
+          type: integer
+          description: Number of searches left in the current billing period.
+          example: 1500
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
+        the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
   securitySchemes:
     apiKeyHeader:
       type: apiKey

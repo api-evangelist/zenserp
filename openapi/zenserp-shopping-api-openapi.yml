@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: Zenserp Shopping Product Page API
+  description: Google Shopping product page endpoint, resolving a single product variant by product_id
+    or a full product cluster across merchants by gpc_id. Served from the Zenserp v1 API surface.
+  version: '1.0'
+  contact:
+    name: Zenserp Support
+    url: https://zenserp.com/
+    email: support@zenserp.com
+  termsOfService: https://zenserp.com/terms-of-service/
+  x-logo:
+    url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
+    + live unauthenticated probes 2026-08-13
+servers:
+- url: https://app.zenserp.com/api/v1
+  description: Zenserp API v1
+security:
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags:
+- name: Shopping
+  description: Google Shopping product page lookup by product or product-cluster id.
+paths:
+  /shopping:
+    get:
+      operationId: shoppingProductPage
+      summary: Google Shopping Product Page
+      description: This endpoint gives you access to shopping product pages by their product_id or gpc_id,
+        which can be obtained from a shopping search. Pass product_id to get a single product variant,
+        or gpc_id (Google Product Cluster ID) to get the full product cluster across all merchants.
+      tags:
+      - Shopping
+      parameters:
+      - name: product_id
+        in: query
+        required: false
+        description: Google Shopping product id -- returns a single product variant.
+        schema:
+          type: string
+      - name: gpc_id
+        in: query
+        required: false
+        description: Google Product Cluster ID -- returns the full product cluster across all merchants.
+        schema:
+          type: string
+      - name: location
+        in: query
+        required: false
+        description: Canonical geo location string (see the /api/v2/locations list endpoint).
+        schema:
+          type: string
+      - name: search_engine
+        in: query
+        required: false
+        description: Google domain to query, e.g. google.com.
+        schema:
+          type: string
+      - name: hl
+        in: query
+        required: false
+        description: Interface language code.
+        schema:
+          type: string
+      - name: gl
+        in: query
+        required: false
+        description: Country code.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Google Shopping product page payload.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
+        API: {"error": "No apikey provided."}'
+      properties:
+        error:
+          type: string
+          description: Human-readable error message.
+          example: No apikey provided.
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
+        the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key passed in the request header. Recommended -- works with all requests.
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key passed as a URL parameter. Supported on GET requests.

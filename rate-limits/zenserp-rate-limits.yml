@@ -1,3 +1,29 @@
+generated: '2026-08-13'
+method: searched
+source: https://zenserp.com/pricing-plans/
+docs: https://app.zenserp.com/documentation
+verified: '2026-08-13'
+limit_count: 8
+responseHeaders:
+  published: []
+  probed: '2026-08-13'
+  probe_url: https://app.zenserp.com/api/v2/search?q=test
+  probe_status: 403
+  note: >-
+    NO rate-limit response headers. A live unauthenticated request returned only
+    date, content-type, server, cache-control, x-robots-tag and the CORS headers --
+    no X-RateLimit-*, no RateLimit-*, no Retry-After. Quota is discoverable only
+    out of band, by calling GET /api/v2/status, which returns
+    {"remaining_requests": <n>}. An agent cannot back off from a response; it must
+    poll /status.
+  quota_endpoint: GET /api/v2/status
+statusOnExhaustion: 403
+statusOnExhaustionNote: >-
+  Quota exhaustion returns 403, the same status as a wrong key and the same status
+  as calling an endpoint the plan does not entitle. The published error table says
+  so explicitly: "403 Forbidden -- API key is wrong, you don't have enough requests
+  or you don't have enough rights to access it." There is no 429 anywhere in the
+  documented catalog.
 name: Zenserp Rate Limits
 description: >-
   Zenserp enforces monthly search quota limits based on the subscribed plan.

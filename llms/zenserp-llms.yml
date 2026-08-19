@@ -1,0 +1,28 @@
+generated: '2026-08-13'
+method: searched
+source: https://zenserp.com/llms.txt
+name: Zenserp llms.txt
+description: >-
+  Zenserp serves a real llms.txt at the root of its marketing site. Saved verbatim
+  to llms/zenserp-llms.txt.
+file: llms/zenserp-llms.txt
+x-evidence:
+  fetched: '2026-08-13'
+  url: https://zenserp.com/llms.txt
+  http_status: 200
+  content_type: text/plain; charset=UTF-8
+  bytes: 20688
+verbatim: true
+generated_by_provider: true
+coverage:
+  indexes: zenserp.com marketing pages, product landing pages and the blog archive
+  omits:
+    - The API documentation at https://app.zenserp.com/documentation
+    - The API playground at https://app.zenserp.com/playground
+    - Any endpoint, parameter, authentication or error information
+  note: >-
+    This is an SEO-surface llms.txt, not a developer-surface one. It points an
+    agent at the pages that sell the API and none of the pages that describe how to
+    call it -- app.zenserp.com, where all the technical documentation lives, does
+    not appear in it at all, and app.zenserp.com/llms.txt returns 404. An agent
+    that reads only this file learns what Zenserp is for and cannot make a request.

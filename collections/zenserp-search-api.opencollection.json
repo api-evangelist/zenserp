@@ -1,0 +1,151 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zenserp Search API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Universal Search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v2/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "pied piper",
+                "type": "query",
+                "description": "The search query string."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Zenserp API key (alternative to header-based auth)."
+              },
+              {
+                "name": "tbm",
+                "value": "",
+                "type": "query",
+                "description": "Google search type modifier. Omit for web search. Use `isch` for image search, `nws` for news, `shop` for shopping, `map` for maps, `vid` for YouTube/video search, `trends` for Google Trends."
+              },
+              {
+                "name": "engine",
+                "value": "",
+                "type": "query",
+                "description": "Target search engine. Defaults to `google`. Set to `bing`, `yandex`, or `duckduckgo` for alternative engines."
+              },
+              {
+                "name": "gl",
+                "value": "us",
+                "type": "query",
+                "description": "Country code for geolocation targeting (ISO 3166-1 alpha-2). Determines the country-specific Google domain and results."
+              },
+              {
+                "name": "hl",
+                "value": "en",
+                "type": "query",
+                "description": "Language code for results (IETF BCP 47 / Google hl parameter)."
+              },
+              {
+                "name": "location",
+                "value": "New York,New York,United States",
+                "type": "query",
+                "description": "Canonical location name used for geolocation-specific results. Use the /locations list endpoint to get valid values."
+              },
+              {
+                "name": "num",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return (1–100)."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Offset for pagination (0-based index of the first result)."
+              },
+              {
+                "name": "device",
+                "value": "",
+                "type": "query",
+                "description": "Emulate results for a specific device type."
+              },
+              {
+                "name": "tbs",
+                "value": "",
+                "type": "query",
+                "description": "Advanced Google search filters (time range, etc.). Example: `qdr:d` for past day, `qdr:w` for past week."
+              },
+              {
+                "name": "cr",
+                "value": "",
+                "type": "query",
+                "description": "Filter results to a specific country using a `country<ISO>` value (e.g., `countryUS`)."
+              },
+              {
+                "name": "lr",
+                "value": "",
+                "type": "query",
+                "description": "Restrict results to a specific language (e.g., `lang_en`)."
+              },
+              {
+                "name": "safe",
+                "value": "",
+                "type": "query",
+                "description": "Safe search setting."
+              },
+              {
+                "name": "reverse",
+                "value": "",
+                "type": "query",
+                "description": "Set to `true` to perform a reverse image search. Requires `tbm=isch` and supplying an image URL via `q`."
+              }
+            ]
+          },
+          "docs": "Submit a search query to Google (default), Bing, Yandex, or DuckDuckGo. The search type is controlled via the `tbm` parameter for Google variants (images, news, shopping, maps, video, trends) and via `engine` for alternative search engines."
+        },
+        {
+          "info": {
+            "name": "Status & Left Requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v2/status"
+          },
+          "docs": "This endpoint allows you to check the remaining requests of your API Key."
+        },
+        {
+          "info": {
+            "name": "Status & Left Requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.zenserp.com/api/v2/status"
+          },
+          "docs": "This endpoint allows you to check the remaining requests of your API Key."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

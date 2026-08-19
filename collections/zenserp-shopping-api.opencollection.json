@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zenserp Shopping Product Page API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shopping",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Google Shopping Product Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v1/shopping",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "Google Shopping product id -- returns a single product variant."
+              },
+              {
+                "name": "gpc_id",
+                "value": "",
+                "type": "query",
+                "description": "Google Product Cluster ID -- returns the full product cluster across all merchants."
+              },
+              {
+                "name": "location",
+                "value": "",
+                "type": "query",
+                "description": "Canonical geo location string (see the /api/v2/locations list endpoint)."
+              },
+              {
+                "name": "search_engine",
+                "value": "",
+                "type": "query",
+                "description": "Google domain to query, e.g. google.com."
+              },
+              {
+                "name": "hl",
+                "value": "",
+                "type": "query",
+                "description": "Interface language code."
+              },
+              {
+                "name": "gl",
+                "value": "",
+                "type": "query",
+                "description": "Country code."
+              }
+            ]
+          },
+          "docs": "This endpoint gives you access to shopping product pages by their product_id or gpc_id, which can be obtained from a shopping search. Pass product_id to get a single product variant, or gpc_id (Google Product Cluster ID) to get the full product cluster across all merchants."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

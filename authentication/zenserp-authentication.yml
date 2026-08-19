@@ -1,24 +1,105 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/zenserp-search-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://app.zenserp.com/documentation#authentification (read verbatim from the
+  docs SPA bundle /js/app.js), confirmed against a live unauthenticated probe of
+  https://app.zenserp.com/api/v2/search on 2026-08-13; cross-checked against
+  openapi/ securitySchemes
+docs: https://app.zenserp.com/documentation#authentification
 summary:
   types:
-  - apiKey
+    - apiKey
   api_key_in:
-  - header
-  - query
+    - header
+    - query
+    - form
+  oauth2: false
+  oidc: false
+  mtls: false
+  environments: 1
+  key_prefix: null
+  rotation_documented: false
+description: >-
+  Zenserp uses a single static API key. Verbatim from the documentation: "Zenserp
+  uses API keys to allow access to the API. You can register a new API key at our
+  developer portal." The key may be presented three ways, and the header form is
+  the one Zenserp recommends. There is no OAuth, no scopes, no token exchange, no
+  test/live key separation and no documented rotation or revocation procedure.
+
 schemes:
-- name: apiKeyHeader
-  type: apiKey
-  in: header
-  parameter: apikey
-  description: API key passed in the request header.
-  sources:
-  - openapi/zenserp-search-openapi.yml
-- name: apiKeyQuery
-  type: apiKey
-  in: query
-  parameter: apikey
-  description: API key passed as a query parameter.
-  sources:
-  - openapi/zenserp-search-openapi.yml
+  - name: apiKeyHeader
+    type: apiKey
+    in: header
+    parameter: apikey
+    recommended: true
+    description: >-
+      API key in the `apikey` request header. Zenserp's own wording: "Zenserp
+      looks for the API key in a header that looks like the following
+      (recommended, works with all requests)."
+    example: 'curl "https://app.zenserp.com/api/v2/search" -H "apikey: <key>"'
+    sources:
+      - https://app.zenserp.com/documentation#authentification
+      - openapi/zenserp-search-api-openapi.yml
+      - openapi/zenserp-lists-api-openapi.yml
+      - openapi/zenserp-batch-api-openapi.yml
+      - openapi/zenserp-trends-api-openapi.yml
+      - openapi/zenserp-shopping-api-openapi.yml
+
+  - name: apiKeyQuery
+    type: apiKey
+    in: query
+    parameter: apikey
+    recommended: false
+    applies_to: GET requests
+    description: >-
+      API key as a URL query parameter. Convenient, and the reason a Zenserp key
+      routinely ends up in browser history, proxy logs, referrer headers and
+      server access logs. Prefer the header.
+    example: 'curl "https://app.zenserp.com/api/v2/search?apikey=<key>"'
+    sources:
+      - https://app.zenserp.com/documentation#authentification
+      - openapi/zenserp-search-api-openapi.yml
+
+  - name: apiKeyFormField
+    type: apiKey
+    in: form
+    parameter: apikey
+    recommended: false
+    applies_to: POST requests
+    description: >-
+      API key as a multipart/form field on POST requests. Documented only in a
+      curl example. NOT REPRESENTABLE in OpenAPI 3.0 securitySchemes, so it is
+      absent from every OpenAPI in this repo and is carried instead as
+      x-apiKeyFormField in the overlays.
+    example: 'curl "https://app.zenserp.com/api/v2/search" -F "apikey=<key>"'
+    sources:
+      - https://app.zenserp.com/documentation#authentification
+
+registration:
+  self_serve: true
+  url: https://app.zenserp.com/register
+  free_plan_url: https://app.zenserp.com/register?plan=free
+  credit_card_required: false
+  note: 50 free searches per month on signup.
+
+failure_behavior:
+  status: 403
+  body: '{"error": "No apikey provided."}'
+  probed:
+    url: https://app.zenserp.com/api/v2/search?q=test
+    status: 403
+    content_type: application/json
+    fetched: '2026-08-13'
+  note: >-
+    A missing key, a wrong key, an exhausted quota and an unentitled plan all
+    return 403. There is no 401 and no distinct code, so a client cannot
+    programmatically tell "fix your credentials" from "top up your plan" -- it has
+    to call GET /api/v2/status to find out which.
+
+gaps:
+  - No key prefix or environment marker; a key cannot be identified by inspection.
+  - No test/live separation; the only key is a production key.
+  - No scopes or per-key permissions; every key can call every endpoint the plan entitles.
+  - No documented rotation, expiry or revocation procedure.
+  - No OAuth, no OIDC, no service accounts, no delegated access.
+  - Authentication failure is indistinguishable from quota exhaustion (both 403).

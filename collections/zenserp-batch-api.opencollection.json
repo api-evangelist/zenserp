@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zenserp Batch API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get All Batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v1/batches"
+          },
+          "docs": "This endpoint lists all submitted batches of your apikey."
+        },
+        {
+          "info": {
+            "name": "Submitting a new Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.zenserp.com/api/v1/batches",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a batch of SERP jobs to be fetched asynchronously. Results are POSTed back to webhook_url when the batch completes; polling by id is possible but the webhook notification system is recommended by Zenserp."
+        },
+        {
+          "info": {
+            "name": "Get Batch By Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v1/batches/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The batch identifier returned when the batch was submitted."
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to check the status of a batch and retrieve it's results. Zenserp highly recommends the webhook notification system over manual polling."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

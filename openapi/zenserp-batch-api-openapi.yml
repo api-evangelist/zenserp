@@ -1,7 +1,9 @@
 openapi: 3.0.3
 info:
-  title: Zenserp Search Batch API
-  description: REST API for scraping real-time Google search results including organic results, paid ads, featured snippets, knowledge graphs, related questions, maps, news, shopping, images, videos, YouTube, Bing, Yandex, and DuckDuckGo search results. Supports geolocation targeting across 200+ countries and languages.
+  title: Zenserp Batch API
+  description: Asynchronous batch endpoint for very large SERP datasets. Jobs are submitted as a batch
+    and results are delivered to a webhook URL, or polled by batch id. Available on the Medium plan and
+    above.
   version: '2.0'
   contact:
     name: Zenserp Support
@@ -10,9 +12,11 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
+    + live unauthenticated probes 2026-08-13
 servers:
-- url: https://app.zenserp.com/api/v2
-  description: Zenserp API v2
+- url: https://app.zenserp.com/api/v1
+  description: Zenserp API v1 -- batches live under /api/v1, not /api/v2
 security:
 - apiKeyHeader: []
 - apiKeyQuery: []
@@ -20,11 +24,47 @@ tags:
 - name: Batch
   description: Batch processing for multiple simultaneous queries.
 paths:
-  /batch:
+  /batches:
+    get:
+      operationId: listBatches
+      summary: Get All Batches
+      description: This endpoint lists all submitted batches of your apikey.
+      tags:
+      - Batch
+      responses:
+        '200':
+          description: Array of submitted batches.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BatchResponse'
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
-      operationId: batchSearch
-      summary: Batch Search
-      description: Submit multiple search queries in a single API request. Available on Medium plan and above. Each item in the batch uses the same parameters as the `/search` endpoint.
+      operationId: submitBatch
+      summary: Submitting a new Batch
+      description: Submit a batch of SERP jobs to be fetched asynchronously. Results are POSTed back to
+        webhook_url when the batch completes; polling by id is possible but the webhook notification system
+        is recommended by Zenserp.
       tags:
       - Batch
       requestBody:
@@ -34,34 +74,85 @@ paths:
             schema:
               $ref: '#/components/schemas/BatchRequest'
             example:
-              queries:
-              - q: pied piper
-                gl: us
-                hl: en
-              - q: silicon valley tv show
-                gl: us
+              webhook_url: https://example.com/zenserp-callback
+              name: nightly-rank-check
+              jobs:
+              - type: search
+                q: pied piper
+                location: New York,New York,United States
+              - type: search
+                q: silicon valley tv show
+                gl: US
                 hl: en
       responses:
         '200':
-          description: Batch search results array.
+          description: Batch accepted.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponse'
-        '401':
-          description: Unauthorized.
+        '422':
+          description: Validation failed -- one or more request parameters were rejected.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        '402':
-          description: Plan does not support batch requests.
+        '404':
+          description: Not Found -- There were no results found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        '429':
-          description: Rate limit exceeded.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /batches/{id}:
+    get:
+      operationId: getBatch
+      summary: Get Batch By Id
+      description: This endpoint allows you to check the status of a batch and retrieve it's results.
+        Zenserp highly recommends the webhook notification system over manual polling.
+      tags:
+      - Batch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The batch identifier returned when the batch was submitted.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Batch information including all available responses.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponse'
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
           content:
             application/json:
               schema:
@@ -235,14 +326,13 @@ components:
           description: Related query text.
     ErrorResponse:
       type: object
-      description: API error response.
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
+        API: {"error": "No apikey provided."}'
       properties:
         error:
           type: string
           description: Human-readable error message.
-        code:
-          type: integer
-          description: HTTP status code.
+          example: No apikey provided.
     NewsResult:
       type: object
       description: A single news article result.
@@ -326,42 +416,54 @@ components:
           description: Originating website domain.
     BatchRequest:
       type: object
-      description: Batch search request body.
+      description: Batch submission body, documented at https://app.zenserp.com/documentation#batches
       required:
-      - queries
+      - jobs
       properties:
-        queries:
+        webhook_url:
+          type: string
+          format: uri
+          description: optional, string -- The URL where the results will be posted back to.
+        name:
+          type: string
+          description: optional, string -- A name for the batch.
+        jobs:
           type: array
-          description: Array of search query objects (same parameters as /search).
+          description: required, array -- List of jobs to be done. Each job carries the parameters of
+            the endpoint named by its type.
           minItems: 1
-          maxItems: 100
           items:
             type: object
-            required:
-            - q
             properties:
+              type:
+                type: string
+                description: 'optional -- Which endpoint to use, default: search.'
+                enum:
+                - search
+                - shopping
+                - trends
+                default: search
+              custom_id:
+                type: string
+                description: Optional caller-supplied identifier. When submitted it is echoed back in
+                  the request object of the webhook response.
               q:
                 type: string
               gl:
                 type: string
               hl:
                 type: string
-              num:
-                type: integer
-                minimum: 1
-                maximum: 100
-              engine:
-                type: string
-                enum:
-                - google
-                - bing
-                - yandex
-                - duckduckgo
-              tbm:
-                type: string
               location:
                 type: string
+              num:
+                type: integer
+              start:
+                type: integer
+              tbm:
+                type: string
               device:
+                type: string
+              search_engine:
                 type: string
     QueryInfo:
       type: object
@@ -390,15 +492,25 @@ components:
           description: Geo location used.
     BatchResponse:
       type: object
-      description: Batch search response.
+      description: A submitted batch and, once complete, its job results.
       properties:
-        request_info:
-          $ref: '#/components/schemas/RequestInfo'
-        results:
+        id:
+          type: string
+          description: Batch identifier.
+        name:
+          type: string
+        status:
+          type: string
+        webhook_url:
+          type: string
+          format: uri
+        jobs:
           type: array
-          description: Array of search result objects, one per query.
+          description: Job results. Each entry is the response of the corresponding API with an added
+            job_id field.
           items:
-            $ref: '#/components/schemas/SearchResponse'
+            type: object
+            additionalProperties: true
     TrendsResult:
       type: object
       description: A Google Trends comparison data point.
@@ -476,6 +588,22 @@ components:
         displayed_url:
           type: string
           description: The URL as displayed in the ad.
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
+        the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
   securitySchemes:
     apiKeyHeader:
       type: apiKey

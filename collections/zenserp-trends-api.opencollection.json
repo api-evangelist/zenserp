@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zenserp Trends API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Trends",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Trends Search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v1/trends",
+            "params": [
+              {
+                "name": "keyword[]",
+                "value": "",
+                "type": "query",
+                "description": "One or more keywords to compare. Repeat the parameter for multiple keywords."
+              },
+              {
+                "name": "cat",
+                "value": "",
+                "type": "query",
+                "description": "Google Trends category filter."
+              },
+              {
+                "name": "timeframe",
+                "value": "",
+                "type": "query",
+                "description": "Time window for the trend series."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Trends result type."
+              },
+              {
+                "name": "hl",
+                "value": "",
+                "type": "query",
+                "description": "Interface language code (see the /api/v2/hl list endpoint)."
+              },
+              {
+                "name": "geo",
+                "value": "",
+                "type": "query",
+                "description": "Geographic region code for the trend series."
+              }
+            ]
+          },
+          "docs": "This endpoint gives you access to google trends results."
+        },
+        {
+          "info": {
+            "name": "Trends - Trending",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v1/trends/trending",
+            "params": [
+              {
+                "name": "cat",
+                "value": "",
+                "type": "query",
+                "description": "Google Trends category filter."
+              },
+              {
+                "name": "hl",
+                "value": "",
+                "type": "query",
+                "description": "Interface language code."
+              },
+              {
+                "name": "geo",
+                "value": "",
+                "type": "query",
+                "description": "Geographic region code."
+              }
+            ]
+          },
+          "docs": "Returns currently trending Google searches."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

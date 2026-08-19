@@ -1,0 +1,1109 @@
+{
+  "item": [
+    {
+      "id": "5bec0fce-3240-408f-845d-603eaf209a63",
+      "name": "Search",
+      "description": {
+        "content": "Core search endpoints supporting all search types and engines.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7f783e87-5021-41e0-99c5-6374979cd3d3",
+          "name": "Universal Search",
+          "request": {
+            "name": "Universal Search",
+            "description": {
+              "content": "Submit a search query to Google (default), Bing, Yandex, or DuckDuckGo. The search type is controlled via the `tbm` parameter for Google variants (images, news, shopping, maps, video, trends) and via `engine` for alternative search engines.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) The search query string."
+                },
+                {
+                  "disabled": false,
+                  "key": "apikey",
+                  "value": "<string>",
+                  "description": "Your Zenserp API key (alternative to header-based auth)."
+                },
+                {
+                  "disabled": false,
+                  "key": "tbm",
+                  "value": "<string>",
+                  "description": "Google search type modifier. Omit for web search. Use `isch` for image search, `nws` for news, `shop` for shopping, `map` for maps, `vid` for YouTube/video search, `trends` for Google Trends."
+                },
+                {
+                  "disabled": false,
+                  "key": "engine",
+                  "value": "google",
+                  "description": "Target search engine. Defaults to `google`. Set to `bing`, `yandex`, or `duckduckgo` for alternative engines."
+                },
+                {
+                  "disabled": false,
+                  "key": "gl",
+                  "value": "<string>",
+                  "description": "Country code for geolocation targeting (ISO 3166-1 alpha-2). Determines the country-specific Google domain and results."
+                },
+                {
+                  "disabled": false,
+                  "key": "hl",
+                  "value": "<string>",
+                  "description": "Language code for results (IETF BCP 47 / Google hl parameter)."
+                },
+                {
+                  "disabled": false,
+                  "key": "location",
+                  "value": "<string>",
+                  "description": "Canonical location name used for geolocation-specific results. Use the /locations list endpoint to get valid values."
+                },
+                {
+                  "disabled": false,
+                  "key": "num",
+                  "value": "10",
+                  "description": "Number of results to return (1–100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "0",
+                  "description": "Offset for pagination (0-based index of the first result)."
+                },
+                {
+                  "disabled": false,
+                  "key": "device",
+                  "value": "desktop",
+                  "description": "Emulate results for a specific device type."
+                },
+                {
+                  "disabled": false,
+                  "key": "tbs",
+                  "value": "<string>",
+                  "description": "Advanced Google search filters (time range, etc.). Example: `qdr:d` for past day, `qdr:w` for past week."
+                },
+                {
+                  "disabled": false,
+                  "key": "cr",
+                  "value": "<string>",
+                  "description": "Filter results to a specific country using a `country<ISO>` value (e.g., `countryUS`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "lr",
+                  "value": "<string>",
+                  "description": "Restrict results to a specific language (e.g., `lang_en`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "safe",
+                  "value": "false",
+                  "description": "Safe search setting."
+                },
+                {
+                  "disabled": false,
+                  "key": "reverse",
+                  "value": "false",
+                  "description": "Set to `true` to perform a reverse image search. Requires `tbm=isch` and supplying an image URL via `q`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d96dcb2-ad3b-4a14-820a-305fcc46875e",
+              "name": "Successful search response with structured JSON results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "pied piper"
+                    },
+                    {
+                      "key": "apikey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tbm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engine",
+                      "value": "google"
+                    },
+                    {
+                      "key": "gl",
+                      "value": "us"
+                    },
+                    {
+                      "key": "hl",
+                      "value": "en"
+                    },
+                    {
+                      "key": "location",
+                      "value": "New York,New York,United States"
+                    },
+                    {
+                      "key": "num",
+                      "value": "10"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "device",
+                      "value": "desktop"
+                    },
+                    {
+                      "key": "tbs",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safe",
+                      "value": "false"
+                    },
+                    {
+                      "key": "reverse",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_info\": {\n    \"success\": true,\n    \"credits_used\": 1,\n    \"credits_remaining\": 99\n  },\n  \"query\": {\n    \"q\": \"pied piper\",\n    \"gl\": \"us\",\n    \"hl\": \"en\",\n    \"num\": 10,\n    \"engine\": \"google\"\n  },\n  \"organic_results\": [\n    {\n      \"position\": 1,\n      \"title\": \"Pied Piper - Wikipedia\",\n      \"url\": \"https://en.wikipedia.org/wiki/Pied_Piper\",\n      \"domain\": \"en.wikipedia.org\",\n      \"description\": \"The Pied Piper of Hamelin is a character in a German legend...\",\n      \"favicon\": \"https://www.google.com/s2/favicons?domain=en.wikipedia.org\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9371b703-11e4-427b-836c-dcd81cc9fd34",
+              "name": "Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "pied piper"
+                    },
+                    {
+                      "key": "apikey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tbm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engine",
+                      "value": "google"
+                    },
+                    {
+                      "key": "gl",
+                      "value": "us"
+                    },
+                    {
+                      "key": "hl",
+                      "value": "en"
+                    },
+                    {
+                      "key": "location",
+                      "value": "New York,New York,United States"
+                    },
+                    {
+                      "key": "num",
+                      "value": "10"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "device",
+                      "value": "desktop"
+                    },
+                    {
+                      "key": "tbs",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safe",
+                      "value": "false"
+                    },
+                    {
+                      "key": "reverse",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "981825ff-d5ab-424b-b2f1-a85ba7cd88a0",
+              "name": "Not Found -- There were no results found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "pied piper"
+                    },
+                    {
+                      "key": "apikey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tbm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engine",
+                      "value": "google"
+                    },
+                    {
+                      "key": "gl",
+                      "value": "us"
+                    },
+                    {
+                      "key": "hl",
+                      "value": "en"
+                    },
+                    {
+                      "key": "location",
+                      "value": "New York,New York,United States"
+                    },
+                    {
+                      "key": "num",
+                      "value": "10"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "device",
+                      "value": "desktop"
+                    },
+                    {
+                      "key": "tbs",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safe",
+                      "value": "false"
+                    },
+                    {
+                      "key": "reverse",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c58f2aa-d3b0-4e42-a015-d7dad1ab579c",
+              "name": "Validation failed -- one or more request parameters were rejected.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "pied piper"
+                    },
+                    {
+                      "key": "apikey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tbm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engine",
+                      "value": "google"
+                    },
+                    {
+                      "key": "gl",
+                      "value": "us"
+                    },
+                    {
+                      "key": "hl",
+                      "value": "en"
+                    },
+                    {
+                      "key": "location",
+                      "value": "New York,New York,United States"
+                    },
+                    {
+                      "key": "num",
+                      "value": "10"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "device",
+                      "value": "desktop"
+                    },
+                    {
+                      "key": "tbs",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safe",
+                      "value": "false"
+                    },
+                    {
+                      "key": "reverse",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"q\": \"no query specified.\",\n      \"search_engine\": \"search engine not found.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b27c9a1-061c-46a9-8b48-67988c3ef9a8",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "pied piper"
+                    },
+                    {
+                      "key": "apikey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tbm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engine",
+                      "value": "google"
+                    },
+                    {
+                      "key": "gl",
+                      "value": "us"
+                    },
+                    {
+                      "key": "hl",
+                      "value": "en"
+                    },
+                    {
+                      "key": "location",
+                      "value": "New York,New York,United States"
+                    },
+                    {
+                      "key": "num",
+                      "value": "10"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "device",
+                      "value": "desktop"
+                    },
+                    {
+                      "key": "tbs",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lr",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "safe",
+                      "value": "false"
+                    },
+                    {
+                      "key": "reverse",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "23fe7800-b3a4-485d-b629-cc3b0a9bf2e5",
+          "name": "Status & Left Requests",
+          "request": {
+            "name": "Status & Left Requests",
+            "description": {
+              "content": "This endpoint allows you to check the remaining requests of your API Key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4b361d4d-3e27-4bdb-971c-5b34f17d2669",
+              "name": "Remaining request quota for the API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"remaining_requests\": 1500\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf1f59e9-eb3d-44ac-8abf-6e44890b889e",
+              "name": "Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fc34a90-4353-4634-961a-7d2de2efb71b",
+              "name": "Not Found -- There were no results found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8d409c4-590c-478e-83ca-cb2eb4b38798",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d734502f-4dde-4e96-938e-7efacb9953b3",
+          "name": "Status & Left Requests",
+          "request": {
+            "name": "Status & Left Requests",
+            "description": {
+              "content": "This endpoint allows you to check the remaining requests of your API Key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0cc713c0-56a0-47ac-a7ad-728517842be0",
+              "name": "Remaining request quota for the API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"remaining_requests\": 1500\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e22588c9-9fb0-4ff4-8acb-46122eff342b",
+              "name": "Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adf58d59-1d8c-4879-a40c-a94848e690bb",
+              "name": "Not Found -- There were no results found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cdfa8cc-8abc-4566-abbf-3849a3a353d4",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.zenserp.com/api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8617da45-4bf9-4314-b7dc-cb8eb6adcb74",
+    "name": "Zenserp Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST API for scraping real-time Google search results including organic results, paid ads, featured snippets, knowledge graphs, related questions, maps, news, shopping, images, videos, YouTube, Bing, Yandex, and DuckDuckGo search results. Supports geolocation targeting across 200+ countries and languages.\n\nContact Support:\n Name: Zenserp Support\n Email: support@zenserp.com",
+      "type": "text/plain"
+    }
+  }
+}

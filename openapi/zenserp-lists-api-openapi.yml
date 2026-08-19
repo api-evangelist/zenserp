@@ -1,7 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Zenserp Search Batch Lists API
-  description: REST API for scraping real-time Google search results including organic results, paid ads, featured snippets, knowledge graphs, related questions, maps, news, shopping, images, videos, YouTube, Bing, Yandex, and DuckDuckGo search results. Supports geolocation targeting across 200+ countries and languages.
+  title: Zenserp Lists API
+  description: Reference list endpoints returning the language (hl), country (gl), geo location and search
+    engine values accepted by the Zenserp Search API.
   version: '2.0'
   contact:
     name: Zenserp Support
@@ -10,6 +11,8 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
+    + live unauthenticated probes 2026-08-13
 servers:
 - url: https://app.zenserp.com/api/v2
   description: Zenserp API v2
@@ -20,11 +23,11 @@ tags:
 - name: Lists
   description: Reference list endpoints for supported languages, countries, locations, and engines.
 paths:
-  /languages:
+  /hl:
     get:
       operationId: listLanguages
-      summary: List Supported Languages
-      description: Returns a list of all supported language codes (hl parameter values).
+      summary: Google Languages (hl)
+      description: This endpoint gives you access to all supported hl parameters.
       tags:
       - Lists
       responses:
@@ -36,11 +39,30 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LanguageItem'
-  /countries:
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /gl:
     get:
       operationId: listCountries
-      summary: List Supported Countries
-      description: Returns a list of all supported country codes (gl parameter values).
+      summary: Google Countries (gl)
+      description: This endpoint gives you access to all supported gl parameters.
       tags:
       - Lists
       responses:
@@ -52,21 +74,33 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CountryItem'
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /locations:
     get:
       operationId: listLocations
-      summary: List Geo Locations
-      description: Returns a list of canonical geo location strings for use with the `location` parameter.
+      summary: Geo Locations
+      description: This endpoint gives you access to all supported geo locations. A list of all the locations
+        can be found in the CSVs provided by Google at https://developers.google.com/adwords/api/docs/appendix/geotargeting
       tags:
       - Lists
-      parameters:
-      - name: q
-        in: query
-        required: false
-        description: Filter locations by name prefix.
-        schema:
-          type: string
-        example: New York
       responses:
         '200':
           description: Array of location objects.
@@ -76,11 +110,30 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationItem'
-  /engines:
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /search_engines:
     get:
       operationId: listEngines
-      summary: List Search Engines
-      description: Returns a list of supported search engines.
+      summary: Google Search Engines
+      description: This endpoint gives you access to all supported google search engines.
       tags:
       - Lists
       responses:
@@ -92,6 +145,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/EngineItem'
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     EngineItem:
@@ -130,6 +202,31 @@ components:
         country_code:
           type: string
           description: Country this location is in.
+    ErrorResponse:
+      type: object
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
+        API: {"error": "No apikey provided."}'
+      properties:
+        error:
+          type: string
+          description: Human-readable error message.
+          example: No apikey provided.
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the "Error Codes" section
+        of the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
   securitySchemes:
     apiKeyHeader:
       type: apiKey

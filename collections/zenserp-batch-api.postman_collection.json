@@ -1,0 +1,811 @@
+{
+  "item": [
+    {
+      "id": "57153695-a2b2-47df-a418-e8036c89622c",
+      "name": "Batch",
+      "description": {
+        "content": "Batch processing for multiple simultaneous queries.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4fbfff42-de04-4ac7-96de-5a8081872d8a",
+          "name": "Get All Batches",
+          "request": {
+            "name": "Get All Batches",
+            "description": {
+              "content": "This endpoint lists all submitted batches of your apikey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batches"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c5c67a48-372e-465f-89ee-f884e1beb898",
+              "name": "Array of submitted batches.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"webhook_url\": \"http://imlWONxRLkvZTHBiwSyuviVDtRquD.scmiJDuKShbCFfAeWuO+u-2iU10as0kuknoED6Gh4xY\",\n    \"jobs\": [\n      {\n        \"key_0\": 7005\n      },\n      {\n        \"key_0\": true\n      }\n    ]\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"string\",\n    \"webhook_url\": \"https://dgIftDlWeUG.uetoyrh6rFIN1TANNIGtN2,7\",\n    \"jobs\": [\n      {\n        \"key_0\": 598.3546440218124,\n        \"key_1\": 9387.337156496775\n      },\n      {\n        \"key_0\": false\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e0ee22f-913d-4dd6-8048-e1146ab22bdb",
+              "name": "Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abdf690b-06c6-4f00-bc8e-3936d557ce8d",
+              "name": "Not Found -- There were no results found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40e8a344-9a03-4409-b067-2d64c6a95b4c",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ffb83879-adef-44d7-9879-6bc74358aca1",
+          "name": "Submitting a new Batch",
+          "request": {
+            "name": "Submitting a new Batch",
+            "description": {
+              "content": "Submit a batch of SERP jobs to be fetched asynchronously. Results are POSTed back to webhook_url when the batch completes; polling by id is possible but the webhook notification system is recommended by Zenserp.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batches"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobs\": [\n    {\n      \"type\": \"search\",\n      \"custom_id\": \"<string>\",\n      \"q\": \"<string>\",\n      \"gl\": \"<string>\",\n      \"hl\": \"<string>\",\n      \"location\": \"<string>\",\n      \"num\": \"<integer>\",\n      \"start\": \"<integer>\",\n      \"tbm\": \"<string>\",\n      \"device\": \"<string>\",\n      \"search_engine\": \"<string>\"\n    }\n  ],\n  \"webhook_url\": \"<uri>\",\n  \"name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d62442bd-75ca-404c-af84-9ed8516d7ae0",
+              "name": "Batch accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_url\": \"https://example.com/zenserp-callback\",\n  \"name\": \"nightly-rank-check\",\n  \"jobs\": [\n    {\n      \"type\": \"search\",\n      \"q\": \"pied piper\",\n      \"location\": \"New York,New York,United States\"\n    },\n    {\n      \"type\": \"search\",\n      \"q\": \"silicon valley tv show\",\n      \"gl\": \"US\",\n      \"hl\": \"en\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"status\": \"string\",\n  \"webhook_url\": \"https://zNAFoUvAmajiXgXa.mliej,0e.oehiuyEnnX49UBq,Y9H06blvDbZFE9R2snk6Q0dTxI55-GccPY\",\n  \"jobs\": [\n    {\n      \"key_0\": 8674.475861408853,\n      \"key_1\": 6325,\n      \"key_2\": 4721\n    },\n    {\n      \"key_0\": 8196,\n      \"key_1\": 8663.370486420552,\n      \"key_2\": 8439\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8d932d8-75c6-48f5-ad6e-5f5de60ca183",
+              "name": "Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_url\": \"https://example.com/zenserp-callback\",\n  \"name\": \"nightly-rank-check\",\n  \"jobs\": [\n    {\n      \"type\": \"search\",\n      \"q\": \"pied piper\",\n      \"location\": \"New York,New York,United States\"\n    },\n    {\n      \"type\": \"search\",\n      \"q\": \"silicon valley tv show\",\n      \"gl\": \"US\",\n      \"hl\": \"en\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a31e7ad5-5618-42d4-8ad8-f26f7e804bb7",
+              "name": "Not Found -- There were no results found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_url\": \"https://example.com/zenserp-callback\",\n  \"name\": \"nightly-rank-check\",\n  \"jobs\": [\n    {\n      \"type\": \"search\",\n      \"q\": \"pied piper\",\n      \"location\": \"New York,New York,United States\"\n    },\n    {\n      \"type\": \"search\",\n      \"q\": \"silicon valley tv show\",\n      \"gl\": \"US\",\n      \"hl\": \"en\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "621d4946-6014-48ba-9c7a-be1af53c97fd",
+              "name": "Validation failed -- one or more request parameters were rejected.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_url\": \"https://example.com/zenserp-callback\",\n  \"name\": \"nightly-rank-check\",\n  \"jobs\": [\n    {\n      \"type\": \"search\",\n      \"q\": \"pied piper\",\n      \"location\": \"New York,New York,United States\"\n    },\n    {\n      \"type\": \"search\",\n      \"q\": \"silicon valley tv show\",\n      \"gl\": \"US\",\n      \"hl\": \"en\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"q\": \"no query specified.\",\n      \"search_engine\": \"search engine not found.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85fa6652-105e-4979-ae81-05dbf2cc6883",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"webhook_url\": \"https://example.com/zenserp-callback\",\n  \"name\": \"nightly-rank-check\",\n  \"jobs\": [\n    {\n      \"type\": \"search\",\n      \"q\": \"pied piper\",\n      \"location\": \"New York,New York,United States\"\n    },\n    {\n      \"type\": \"search\",\n      \"q\": \"silicon valley tv show\",\n      \"gl\": \"US\",\n      \"hl\": \"en\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f84ea96b-f148-43f7-8196-4513dcd43b7e",
+          "name": "Get Batch By Id",
+          "request": {
+            "name": "Get Batch By Id",
+            "description": {
+              "content": "This endpoint allows you to check the status of a batch and retrieve it's results. Zenserp highly recommends the webhook notification system over manual polling.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batches",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The batch identifier returned when the batch was submitted."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "93eeedcc-76c2-4918-a5b8-ecb6d728fdcc",
+              "name": "Batch information including all available responses.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The batch identifier returned when the batch was submitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"status\": \"string\",\n  \"webhook_url\": \"https://zNAFoUvAmajiXgXa.mliej,0e.oehiuyEnnX49UBq,Y9H06blvDbZFE9R2snk6Q0dTxI55-GccPY\",\n  \"jobs\": [\n    {\n      \"key_0\": 8674.475861408853,\n      \"key_1\": 6325,\n      \"key_2\": 4721\n    },\n    {\n      \"key_0\": 8196,\n      \"key_1\": 8663.370486420552,\n      \"key_2\": 8439\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "171f598e-1523-482b-b408-97ad02b81d5a",
+              "name": "Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The batch identifier returned when the batch was submitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ab27e12-01ae-457b-9483-fbfe63a9f8c4",
+              "name": "Not Found -- There were no results found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The batch identifier returned when the batch was submitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "125c8052-d58d-42fa-b9b3-1165ef73baf9",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batches",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The batch identifier returned when the batch was submitted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No apikey provided.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.zenserp.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "cd7e7f8b-09b1-436b-baaa-2e781aae7238",
+    "name": "Zenserp Batch API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Asynchronous batch endpoint for very large SERP datasets. Jobs are submitted as a batch and results are delivered to a webhook URL, or polled by batch id. Available on the Medium plan and above.\n\nContact Support:\n Name: Zenserp Support\n Email: support@zenserp.com",
+      "type": "text/plain"
+    }
+  }
+}

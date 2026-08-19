@@ -1,0 +1,71 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://app.zenserp.com/documentation, https://app.zenserp.com/playground,
+  https://zenserp.com/pricing-plans/, probed 2026-08-13
+name: Zenserp Test and Try-It Surface
+description: >-
+  Zenserp has no sandbox in the usual sense -- there is no test mode, no test key
+  prefix, no fixture data and no simulated responses. What it offers instead is a
+  hosted API Playground and a free tier that calls production. Every request an
+  evaluator makes is a real scrape against a real search engine and consumes real
+  quota, so there is no way to exercise the API without spending from the plan.
+sandbox: false
+test_mode: false
+test_credentials: false
+
+environments:
+  - name: production
+    base_urls:
+      - https://app.zenserp.com/api/v2
+      - https://app.zenserp.com/api/v1
+    key_prefix: null
+    note: The only environment. No separate test host.
+
+keys:
+  test_live_separation: false
+  prefix_scheme: none
+  note: >-
+    One opaque `apikey` value with no prefix or environment marker. A key cannot be
+    identified as test or production by inspection, and there are no test values to
+    publish.
+
+try_it:
+  - name: API Playground
+    url: https://app.zenserp.com/playground
+    status: 200
+    auth_required: true
+    live: true
+    note: >-
+      Hosted request builder linked from every endpoint section of the docs as
+      "Configure in Playground". It composes and fires a real request against
+      production using the signed-in account's key.
+  - name: Documentation code snippets
+    url: https://app.zenserp.com/documentation
+    auth_required: false
+    note: >-
+      Verbatim from the docs: "Register your free apikey here and all code snippets
+      below will contain your private apikey." Snippets are rendered with the
+      signed-in user's real key substituted in -- convenient, and also a reason not
+      to screenshot or paste a docs page.
+  - name: Postman collection
+    url: https://www.postman.com/collections/a888b56749cd50cc525d
+    auth_required: true
+    note: Public collection covering the endpoints, but it runs against production with a real key.
+
+free_tier:
+  available: true
+  url: https://app.zenserp.com/register?plan=free
+  quota: 50 searches per month
+  note: >-
+    The de facto evaluation path. 50 production searches per month, no credit
+    card. Zenserp states that "we only charge you for successful responses. Invalid
+    requests are not going to affect your usage volume!", so a failed experiment
+    does not burn the allowance -- but a successful one does.
+
+not_available:
+  - test cards or test payment instruments (not a payments API)
+  - fixture or canned SERP responses
+  - time simulation / test clocks
+  - webhook trigger tooling for batch callbacks
+  - a mock server

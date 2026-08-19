@@ -1,0 +1,84 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://app.zenserp.com/documentation#batches (Batches, Submitting a new Batch
+  and Webhook Response sections, read verbatim from the docs SPA bundle /js/app.js)
+docs: https://app.zenserp.com/documentation#batches
+name: Zenserp Batch Webhooks
+description: >-
+  Zenserp has one event surface: batch completion. A caller submits a batch of
+  SERP jobs to POST /api/v1/batches with a `webhook_url`, and Zenserp POSTs the
+  results back to that URL. This is a caller-registered callback per batch, not a
+  subscription-managed webhook system -- there is no endpoint to register, list,
+  rotate or delete a webhook, no event catalog, and no signing secret.
+asyncapi_published: false
+asyncapi_url: null
+webhook_count: 1
+subscription_management: per-request
+registration: >-
+  Per batch, via the optional `webhook_url` field in the POST /api/v1/batches body.
+  There is no webhook management API.
+
+webhooks:
+  - name: batch.completed
+    documented_name: Webhook Response
+    direction: outbound
+    transport: HTTPS
+    method: POST
+    target: caller-supplied webhook_url
+    trigger: A submitted batch finishes and its job results are available.
+    payload_shape: array
+    payload_description: >-
+      Verbatim from the docs: "The results will be sent via POST request to the URL
+      specified when submitting. The response is an array equal to an results of
+      the corresponding API. The only field added to each response is
+      \"job_id\", a unique identifier. If you have submitted a custom_id it will be
+      available in the \"request\" object inside the response."
+    added_fields:
+      - name: job_id
+        description: Server-assigned unique identifier for the job, added to each response object.
+      - name: request.custom_id
+        description: >-
+          The caller's own identifier, echoed back inside the `request` object when
+          `custom_id` was supplied on the job.
+    job_types:
+      - search
+      - shopping
+      - trends
+    polling_fallback:
+      operation: getBatch
+      path: GET /api/v1/batches/{id}
+      note: >-
+        Documented but explicitly discouraged: "Even though this endpoint allows
+        you to check for results manually, we highly recommend the use of our
+        webhook notification system."
+
+security:
+  signature: none
+  signing_header: null
+  shared_secret: false
+  replay_protection: false
+  ip_allowlist_published: false
+  note: >-
+    No signature header, no HMAC secret, no timestamp and no published source IP
+    range. A receiver cannot verify that a delivery came from Zenserp. The only
+    practical mitigations available to a consumer are an unguessable webhook_url
+    path and matching the returned `job_id` against a batch the consumer actually
+    submitted.
+
+delivery:
+  retries_documented: false
+  backoff_documented: false
+  ordering_guarantee: none
+  at_least_once: unknown
+  note: >-
+    Retry behaviour, timeout, expected 2xx acknowledgement and failure handling
+    are all undocumented. A consumer whose endpoint is down during delivery has no
+    documented recovery path other than falling back to polling
+    GET /api/v1/batches/{id}.
+
+availability:
+  plans: Medium and above
+  note: >-
+    The batch endpoint -- and therefore the entire event surface -- is a paid
+    feature. It is not available on the Free or Small plans.

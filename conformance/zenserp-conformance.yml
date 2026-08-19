@@ -1,0 +1,127 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/ (all five specs), https://app.zenserp.com/documentation,
+  https://zenserp.com/pricing-plans/, https://zenserp.com/privacy-policy/,
+  security/zenserp-domain-security.yml, and live probes on 2026-08-13
+name: Zenserp Standards Conformance
+description: >-
+  Zenserp asserts no industry standard, no certification and no regulatory
+  regime. It is a plain API-key REST API returning bespoke JSON. This file records
+  each check against the evidence actually available, including the negatives --
+  an honest zero is data. No Compliance pointer is emitted for this provider
+  because no certification or compliance program is published.
+conforms_count: 3
+asserted_count: 0
+
+conformance:
+  - id: openapi
+    conforms: true
+    version: 3.0.3
+    evidence: >-
+      Five OpenAPI 3.0.3 documents in openapi/, describing the eleven live
+      endpoints. AUTHORED BY API EVANGELIST from the provider's published
+      documentation and confirmed against live probes -- Zenserp itself publishes
+      no OpenAPI at any location (probed: /openapi.json, /openapi.yaml,
+      /swagger.json, /api-docs, /api/v2/openapi.json on app.zenserp.com, all 404;
+      /openapi.json on zenserp.com is the site catch-all page).
+    provider_published: false
+  - id: tls
+    conforms: true
+    evidence: >-
+      TLSv1.3 on both zenserp.com and app.zenserp.com; valid certificates. See
+      security/zenserp-domain-security.yml.
+  - id: cors
+    conforms: true
+    evidence: >-
+      Access-Control-Allow-Origin *, Access-Control-Allow-Methods GET, POST,
+      OPTIONS, observed live on https://app.zenserp.com/api/v2/search 2026-08-13.
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No OAuth 2.0. Authentication is a static `apikey` header, query parameter or
+      form field. /.well-known/oauth-authorization-server returns 404 on
+      app.zenserp.com.
+  - id: oidc
+    conforms: false
+    evidence: /.well-known/openid-configuration returns 404 on app.zenserp.com.
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      Errors are bespoke JSON ({"error": "..."} and {"errors": [{...}]}), served as
+      application/json. No application/problem+json, no type URI, no title/detail
+      members. See errors/zenserp-problem-types.yml.
+  - id: rfc8594
+    conforms: false
+    evidence: No Sunset or Deprecation response headers; no deprecation policy published.
+  - id: rfc9110-rate-limit-headers
+    conforms: false
+    evidence: >-
+      No RateLimit-*, X-RateLimit-* or Retry-After header observed on any probed
+      response. Quota is only readable out of band from GET /api/v2/status.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No idempotency key on POST /api/v1/batches, the API's only non-GET
+      operation. No de-duplication semantics documented.
+  - id: pagination
+    conforms: true
+    style: offset
+    evidence: >-
+      Documented `start`/`num` offset pagination, default page size 10, hard
+      ceiling of 300 results imposed upstream by Google. No cursor, no next-page
+      link, no trustworthy total.
+  - id: json-api
+    conforms: false
+    evidence: Responses are bespoke SERP objects; no JSON:API document structure or media type.
+  - id: hal
+    conforms: false
+    evidence: No hypermedia links in responses.
+  - id: asyncapi
+    conforms: false
+    evidence: >-
+      An event surface exists (batch completion webhooks) but no AsyncAPI document
+      is published. Captured as a webhook catalog in
+      asyncapi/zenserp-batch-webhooks.yml.
+  - id: webhook-signing
+    conforms: false
+    evidence: >-
+      Batch webhook deliveries carry no signature header, HMAC secret, timestamp
+      or published source IP range. A receiver cannot authenticate a delivery.
+  - id: mcp
+    conforms: false
+    evidence: >-
+      No MCP server. POST /mcp on app.zenserp.com returns the Laravel router 404
+      {"message": "The route mcp could not be found."}.
+  - id: a2a
+    conforms: false
+    evidence: >-
+      No Agent Card. /.well-known/agent-card.json and /.well-known/agent.json
+      hard-404 on app.zenserp.com and return the site catch-all page on zenserp.com.
+  - id: llmstxt
+    conforms: true
+    evidence: >-
+      https://zenserp.com/llms.txt is served -- HTTP 200, text/plain, 20,688 bytes,
+      a genuine llms.txt index of the marketing site. Saved verbatim to
+      llms/zenserp-llms.txt. NOTE it indexes zenserp.com marketing and blog pages
+      only; the API documentation at app.zenserp.com is not in it, so it does not
+      help an agent call the API.
+
+certifications:
+  published: []
+  trust_center: null
+  note: >-
+    No SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP or GDPR certification is claimed
+    on zenserp.com or app.zenserp.com, and no trust center exists. Legal terms are
+    Idera, Inc. corporate documents (ideracorp.com Terms of Use and Privacy
+    Policy) rather than a Zenserp-specific compliance program. probe-security-programs.py
+    returned vdp=none trust=none on 2026-08-13.
+
+regulatory:
+  regimes: []
+  note: >-
+    A public-web SERP data API. No sector regime (PSD2, FDX, HIPAA, FHIR, FAPI,
+    CDR) applies. Zenserp states on its own documentation that it "is not endorsed
+    or affiliated by any search engine prodiver in any way and does not make use of
+    any API provided by any search engine" -- a scraping-posture disclaimer, not a
+    compliance claim.

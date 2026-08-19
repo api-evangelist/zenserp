@@ -1,0 +1,191 @@
+openapi: 3.0.3
+info:
+  title: Zenserp Trends API
+  description: Google Trends endpoints exposing keyword interest over time and currently trending searches.
+    Served from the Zenserp v1 API surface.
+  version: '1.0'
+  contact:
+    name: Zenserp Support
+    url: https://zenserp.com/
+    email: support@zenserp.com
+  termsOfService: https://zenserp.com/terms-of-service/
+  x-logo:
+    url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
+    + live unauthenticated probes 2026-08-13
+servers:
+- url: https://app.zenserp.com/api/v1
+  description: Zenserp API v1
+security:
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags:
+- name: Trends
+  description: Google Trends keyword interest and trending search endpoints.
+paths:
+  /trends:
+    get:
+      operationId: trendsSearch
+      summary: Trends Search
+      description: This endpoint gives you access to google trends results.
+      tags:
+      - Trends
+      parameters:
+      - name: keyword[]
+        in: query
+        required: true
+        description: One or more keywords to compare. Repeat the parameter for multiple keywords.
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+      - name: cat
+        in: query
+        required: false
+        description: Google Trends category filter.
+        schema:
+          type: string
+      - name: timeframe
+        in: query
+        required: false
+        description: Time window for the trend series.
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        description: Trends result type.
+        schema:
+          type: string
+      - name: hl
+        in: query
+        required: false
+        description: Interface language code (see the /api/v2/hl list endpoint).
+        schema:
+          type: string
+      - name: geo
+        in: query
+        required: false
+        description: Geographic region code for the trend series.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Google Trends result payload.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /trends/trending:
+    get:
+      operationId: trendsTrending
+      summary: Trends - Trending
+      description: Returns currently trending Google searches.
+      tags:
+      - Trends
+      parameters:
+      - name: cat
+        in: query
+        required: false
+        description: Google Trends category filter.
+        schema:
+          type: string
+      - name: hl
+        in: query
+        required: false
+        description: Interface language code.
+        schema:
+          type: string
+      - name: geo
+        in: query
+        required: false
+        description: Geographic region code.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Currently trending searches.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '403':
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
+            enough rights to access it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found -- There were no results found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
+        API: {"error": "No apikey provided."}'
+      properties:
+        error:
+          type: string
+          description: Human-readable error message.
+          example: No apikey provided.
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
+        the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: apikey
+      description: API key passed in the request header. Recommended -- works with all requests.
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key passed as a URL parameter. Supported on GET requests.

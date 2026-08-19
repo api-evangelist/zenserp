@@ -1,0 +1,95 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://app.zenserp.com/documentation#errorCodes (Error Codes table and error
+  template, read verbatim from the docs SPA bundle /js/app.js) + a live
+  unauthenticated probe of https://app.zenserp.com/api/v2/search on 2026-08-13
+docs: https://app.zenserp.com/documentation#errorCodes
+name: Zenserp Error Catalog
+description: >-
+  Zenserp publishes a three-row HTTP error table and one JSON error template. It
+  does NOT use RFC 9457 application/problem+json, does not return a machine-readable
+  error code or type URI, and does not distinguish authentication failure from
+  quota exhaustion -- the documentation states plainly that 403 covers "API key is
+  wrong, you don't have enough requests or you don't have enough rights". There is
+  no 401 and no 429 in the published catalog, and a caller therefore cannot tell a
+  bad key from an exhausted plan from an unentitled endpoint without calling
+  /api/v2/status separately.
+format: custom-json
+rfc9457: false
+content_type: application/json
+error_code_field: null
+error_message_field: error
+
+envelopes:
+  - name: request error
+    shape: '{"error": "<message>"}'
+    observed: true
+    example:
+      error: No apikey provided.
+    evidence:
+      url: https://app.zenserp.com/api/v2/search?q=test
+      status: 403
+      content_type: application/json
+      fetched: '2026-08-13'
+    note: >-
+      Observed verbatim on a live unauthenticated request. Returned for every
+      endpoint probed (/api/v2/search, /api/v2/status, /api/v2/hl, /api/v2/gl,
+      /api/v2/locations, /api/v2/search_engines, /api/v1/batches, /api/v1/trends,
+      /api/v1/shopping) -- all 403 with this body.
+  - name: validation error
+    shape: '{"errors": [{"<parameter>": "<message>"}]}'
+    observed: false
+    documented: true
+    example:
+      errors:
+        - q: no query specified.
+          search_engine: search engine not found.
+    note: >-
+      The template published verbatim under "The API returns errors in this
+      template" in the Error Codes section. Keys are parameter names, values are
+      human-readable messages. The two envelopes are not reconciled anywhere in
+      the docs -- `error` (singular string) and `errors` (array of parameter maps)
+      are different shapes a client has to handle on the same API.
+
+problem_types:
+  - status: 403
+    title: Forbidden
+    detail: >-
+      API key is wrong, you don't have enough requests or you don't have enough
+      rights to access it.
+    source: docs
+    remediation: >-
+      Three distinct causes share this status. Check the key is present as an
+      `apikey` header or query parameter; then call GET /api/v2/status to see
+      remaining_requests; then check the plan entitles the endpoint (the batch
+      endpoint, keyword search volume and keyword CPC require the Medium plan or
+      above). Retrying will not help for any of the three.
+    retryable: false
+  - status: 404
+    title: Not Found
+    detail: Not Found -- There were no results found.
+    source: docs
+    remediation: >-
+      Zenserp overloads 404 to mean "the query returned no SERP results", not
+      "this endpoint does not exist". Treat it as an empty result set, not a
+      routing error. (A genuinely unknown path on app.zenserp.com returns a
+      text/html Laravel 404 page rather than this JSON envelope, which is how the
+      two cases can be told apart.)
+    retryable: false
+  - status: 500
+    title: Internal Server Error
+    detail: Internal Server Error
+    source: docs
+    remediation: >-
+      Transient upstream/scrape failure. Retry with backoff. Zenserp states that
+      failed and invalid requests do not consume plan quota, so a retry is not
+      billed twice.
+    retryable: true
+
+gaps:
+  - No 429 in the published catalog, and no Retry-After or RateLimit-* response header was observed.
+  - No 401; authentication failure is folded into 403.
+  - No stable machine-readable error code or type URI -- clients must string-match `error`.
+  - Two incompatible error envelopes (`error` string vs `errors` array) with no documented rule for which applies where.
+  - No application/problem+json (RFC 9457) representation.

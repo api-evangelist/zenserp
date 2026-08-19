@@ -1,0 +1,46 @@
+overlay: 1.0.0
+info:
+  title: Zenserp shopping API enrichment overlay
+  version: 1.0.0
+  x-generated: '2026-08-13'
+  x-method: generated
+  x-source: openapi/zenserp-shopping-api-openapi.yml
+  x-description: API Evangelist enhancements to the Zenserp OpenAPI. Applies runtime semantics, provenance
+    and agent-facing hints that the base document does not carry. Never mutates the base spec.
+extends: openapi/zenserp-shopping-api-openapi.yml
+actions:
+- target: $.info
+  description: 'Record the provenance of this description: the endpoint inventory came from the Zenserp
+    documentation SPA bundle and was confirmed against live unauthenticated probes.'
+  update:
+    x-provenance:
+      harvested-by: API Evangelist
+      harvested: '2026-08-13'
+      source: https://app.zenserp.com/documentation
+      method: docs + live probe
+      note: Zenserp publishes no OpenAPI. Every path in this document returned application/json on a live
+        unauthenticated request (HTTP 403 {"error":"No apikey provided."}), which is how the paths were
+        confirmed to exist.
+- target: $.info
+  description: Point consumers at the runtime semantics that OpenAPI cannot express for this API.
+  update:
+    x-conventions: conventions/zenserp-conventions.yml
+    x-error-catalog: errors/zenserp-problem-types.yml
+    x-rate-limits: rate-limits/zenserp-rate-limits.yml
+    x-lifecycle: lifecycle/zenserp-lifecycle.yml
+- target: $.components.securitySchemes
+  description: Zenserp accepts the API key in a third channel -- a form field on POST requests -- which
+    OpenAPI 3.0 securitySchemes cannot represent. Recorded as an extension so it is not lost.
+  update:
+    x-apiKeyFormField:
+      x-type: apiKey
+      x-in: formData
+      x-name: apikey
+      description: 'For POST requests the API key may be sent as a form field: curl "https://app.zenserp.com/api/v2/search"
+        -F "apikey=<key>". Documented at https://app.zenserp.com/documentation#authentification.'
+- target: $.paths.*.*
+  description: Flag that Zenserp returns no rate-limit response headers -- quota must be read out of band
+    from GET /api/v2/status.
+  update:
+    x-rate-limit-headers: none
+    x-quota-endpoint: GET /api/v2/status

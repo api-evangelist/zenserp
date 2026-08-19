@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zenserp Lists API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Google Languages (hl)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v2/hl"
+          },
+          "docs": "This endpoint gives you access to all supported hl parameters."
+        },
+        {
+          "info": {
+            "name": "Google Countries (gl)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v2/gl"
+          },
+          "docs": "This endpoint gives you access to all supported gl parameters."
+        },
+        {
+          "info": {
+            "name": "Geo Locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v2/locations"
+          },
+          "docs": "This endpoint gives you access to all supported geo locations. A list of all the locations can be found in the CSVs provided by Google at https://developers.google.com/adwords/api/docs/appendix/geotargeting"
+        },
+        {
+          "info": {
+            "name": "Google Search Engines",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.zenserp.com/api/v2/search_engines"
+          },
+          "docs": "This endpoint gives you access to all supported google search engines."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

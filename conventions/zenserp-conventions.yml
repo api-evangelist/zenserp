@@ -1,0 +1,163 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://app.zenserp.com/documentation (Authentification, Status & Left Requests,
+  Endpoints, Batches, Error Codes and Common Use Cases sections, read verbatim
+  from the docs SPA bundle /js/app.js) + live unauthenticated probes of
+  app.zenserp.com on 2026-08-13, cross-checked against openapi/
+docs: https://app.zenserp.com/documentation
+name: Zenserp API Conventions
+description: >-
+  Cross-cutting runtime semantics for the Zenserp SERP API. Zenserp is a
+  read-mostly query API: one GET endpoint does nearly all the work, parameterised
+  by `tbm` and `search_engine`, with a single asynchronous write flow (batches) on
+  top. The conventions below are what an agent actually needs at runtime -- how to
+  authenticate, how to page, what an error looks like, and what the API does NOT
+  signal.
+
+authentication:
+  style: api-key
+  schemes:
+    - name: header
+      value: 'apikey: <key>'
+      recommended: true
+      note: 'Verbatim from the docs: "Zenserp looks for the API key in a header that looks like the following (recommended, works with all requests)".'
+    - name: query
+      value: '?apikey=<key>'
+      applies_to: GET requests
+    - name: form-field
+      value: 'apikey=<key>'
+      applies_to: POST requests
+      note: >-
+        A third auth channel documented only in a curl -F example. It is absent
+        from every OpenAPI representation of this API because OpenAPI 3.0
+        securitySchemes cannot express an apiKey carried in a form body.
+  oauth2: false
+  oidc: false
+  mtls: false
+  key_prefix: null
+  environments: 1
+  note: >-
+    One key, one environment. There is no test/live key separation and no key
+    prefix, so a key cannot be identified as production by inspection and a
+    leaked key is immediately a billable production key. Registration is
+    self-serve at https://app.zenserp.com/register.
+  cross_reference: authentication/zenserp-authentication.yml
+
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No idempotency key, no request de-duplication, and no documented replay
+    semantics. This is materially less risky here than on a payments API -- the
+    only non-GET operation is POST /api/v1/batches, and Zenserp states that only
+    successful responses consume quota -- but a retried batch submission will be
+    accepted twice and fetched twice, and the caller has no server-side handle to
+    prevent it. `custom_id` on a job is an echo-back label, not a de-duplication key.
+
+pagination:
+  style: offset
+  parameters:
+    - name: start
+      description: Zero-based offset into the SERP. Set 100 for results 101-200, 200 for results 201-300.
+    - name: num
+      description: Number of results to return in one response.
+  default_page_size: 10
+  max_total: 300
+  response_fields: []
+  note: >-
+    Verbatim from the docs: "our API returns 10 search results per default" and
+    "Google does only return 300 search results". The offset ceiling is imposed
+    upstream by Google, not by Zenserp. There is no cursor, no next-page link and
+    no total-count field a client can trust -- `number_of_results` is Google's
+    claimed corpus size and the docs explicitly warn it is "a common
+    misunderstanding" that it describes what is retrievable. An agent must page by
+    incrementing `start` and stop at 300.
+
+field_selection:
+  expansion: false
+  sparse_fieldsets: false
+  note: >-
+    Response shape is selected by search type (`tbm`) and engine
+    (`search_engine`), not by field selection. There is no way to ask for a subset
+    of a SERP response.
+
+metadata:
+  supported: partial
+  fields:
+    - name: custom_id
+      scope: batch jobs
+      description: >-
+        Caller-supplied identifier on a batch job. Echoed back inside the
+        `request` object of the webhook response. The only caller-controlled
+        correlation handle in the API.
+  note: No metadata on synchronous /api/v2/search requests.
+
+tracing:
+  request_id_header: null
+  correlation: none
+  note: >-
+    No X-Request-Id, no trace header, and no request identifier in a synchronous
+    response body. A failed synchronous search cannot be correlated with a support
+    ticket by id. Batch jobs get a server-assigned `job_id` in the webhook payload.
+
+versioning:
+  scheme: path
+  current: v2
+  versions:
+    - version: v2
+      base: https://app.zenserp.com/api/v2
+      endpoints: [/search, /status, /hl, /gl, /locations, /search_engines]
+    - version: v1
+      base: https://app.zenserp.com/api/v1
+      endpoints: ['/batches', '/batches/{id}', /trends, /trends/trending, /shopping]
+  note: >-
+    v1 and v2 run side by side and are not interchangeable -- v1 is not a
+    superseded generation of v2, it holds endpoints that were never migrated
+    (batches, trends, shopping product pages). A client integrating Zenserp is
+    integrating two base URLs. Nothing in the documentation says so; the split is
+    only visible from the endpoint paths.
+
+errors:
+  envelope: '{"error": "<message>"}'
+  validation_envelope: '{"errors": [{"<parameter>": "<message>"}]}'
+  rfc9457: false
+  status_codes: [403, 404, 500]
+  note: >-
+    403 covers wrong key, exhausted quota AND missing plan entitlement. 404 means
+    "no results found", not "no such endpoint". See errors/zenserp-problem-types.yml.
+  cross_reference: errors/zenserp-problem-types.yml
+
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: 403
+  retry_after: false
+  note: >-
+    PROBED 2026-08-13 -- no X-RateLimit-*, no RateLimit-*, no Retry-After on any
+    response. Quota is discoverable ONLY by a separate call to GET /api/v2/status,
+    which returns {"remaining_requests": <n>}. There is no in-band runtime signal,
+    so an agent cannot back off from a response; it has to poll /status out of
+    band. Concurrency is capped at 400 concurrent connections and exhaustion of
+    the monthly plan quota surfaces as a 403 indistinguishable from a bad key.
+  cross_reference: rate-limits/zenserp-rate-limits.yml
+
+async:
+  supported: true
+  mechanism: batch submission with webhook callback
+  endpoint: POST /api/v1/batches
+  callback: webhook_url
+  polling_fallback: GET /api/v1/batches/{id}
+  cross_reference: asyncapi/zenserp-batch-webhooks.yml
+
+content_types:
+  request: [application/json, application/x-www-form-urlencoded]
+  response: [application/json]
+  alternate_output: >-
+    The /api/v2/search endpoint accepts an `output` parameter; JSON is the
+    documented and default representation.
+
+cors:
+  enabled: true
+  access_control_allow_origin: '*'
+  access_control_allow_methods: GET, POST, OPTIONS
+  note: Observed on a live response from https://app.zenserp.com/api/v2/search on 2026-08-13.

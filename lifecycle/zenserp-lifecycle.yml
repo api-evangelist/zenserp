@@ -1,0 +1,107 @@
+generated: '2026-08-13'
+method: probed
+source: >-
+  https://app.zenserp.com/documentation, https://zenserp.com/pricing-plans/, and
+  live probes of https://zenserp.freshstatus.io, https://zenserp.com/changelog/
+  and the OpenAPI path inventory, all on 2026-08-13
+name: Zenserp API Lifecycle
+description: >-
+  Zenserp publishes no versioning policy, no deprecation policy, no changelog and
+  no working status page. The status page it does link from its own documentation
+  footer returns a 404. Version discipline exists only as a path segment, and two
+  generations (v1 and v2) are live simultaneously with no statement about which is
+  current or supported.
+
+versioning:
+  scheme: path
+  policy_published: false
+  policy_url: null
+  current: v2
+  supported:
+    - v1
+    - v2
+  note: >-
+    Both v1 and v2 are live and required. Not a migration in progress -- v1 holds
+    endpoints (batches, trends, shopping) that were never present in v2. No
+    statement anywhere about support windows for either.
+
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: >-
+    No RFC 8594 Sunset or Deprecation headers observed, no deprecation policy
+    page, and no operation in any Zenserp OpenAPI is marked deprecated. There is
+    no published mechanism by which a consumer would learn an endpoint is going
+    away. NOTE: this profile's own catalog specs previously named four endpoints
+    (/languages, /countries, /engines, /batch) that return 404 on the live host --
+    those were an API Evangelist scaffolding error, corrected 2026-08-13, and are
+    not Zenserp deprecations.
+
+changelog:
+  published: false
+  url: null
+  evidence:
+    - url: https://zenserp.com/changelog/
+      status: 200
+      note: >-
+        Soft-404. Returns the same 155,092-byte WordPress catch-all page as the
+        site root and as a control probe of a guaranteed-nonexistent path. No
+        changelog exists.
+  note: >-
+    The blog at https://zenserp.com/blog/ carries tutorials and SEO content, not
+    dated API change entries.
+
+status_page:
+  published: false
+  linked_url: https://zenserp.freshstatus.io
+  reachable: false
+  evidence:
+    - url: https://zenserp.freshstatus.io
+      status: 200
+      note: >-
+        DEAD. The Freshstatus subdomain resolves and serves a Next.js shell whose
+        rendered content is "Error 404 - Page Not Found". The status page was
+        never provisioned or has been torn down.
+  note: >-
+    This is a live defect on Zenserp's side, not a discovery gap. Both
+    https://app.zenserp.com/documentation (footer "Status Page" and "API Status"
+    links) and this profile previously pointed at it. The docs footer simultaneously
+    renders the text "All systems operational" -- a static string, not a health
+    read. Consumers have no working incident channel. The StatusPage pointer has
+    been removed from apis.yml because the page is not served.
+
+sla:
+  published: true
+  url: https://zenserp.com/pricing-plans/
+  uptime_target: 99.9%
+  availability: Medium plan and above
+  note: >-
+    "Service Level Agreement" is listed as a plan feature on the Medium, Large,
+    Premium and Enterprise tiers. It is not offered on Free or Small, and the SLA
+    document itself is not published -- only the line item on the pricing table.
+
+support:
+  channels:
+    - type: email
+      value: support@zenserp.com
+    - type: contact-form
+      url: https://zenserp.com/contact/
+    - type: help-center
+      url: https://apilayer.com/support
+    - type: discord
+      url: https://discord.com/invite/hgjA78638n
+  personal_support: Medium plan and above
+  concierge_onboarding: Medium plan and above
+
+ownership:
+  brand: Zenserp
+  operator: apilayer
+  parent: Idera, Inc.
+  evidence: >-
+    app.zenserp.com/documentation footers to apilayer.com, apilayer.com/support and
+    the apilayer social accounts, and links legal to ideracorp.com Terms of Use and
+    Privacy Policy. The LinkedIn and X accounts on this profile are apilayer's.

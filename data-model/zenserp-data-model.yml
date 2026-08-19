@@ -1,0 +1,237 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/zenserp-search-api-openapi.yml, openapi/zenserp-batch-api-openapi.yml,
+  openapi/zenserp-lists-api-openapi.yml, openapi/zenserp-trends-api-openapi.yml,
+  openapi/zenserp-shopping-api-openapi.yml -- $ref graph plus the parameter/value
+  coupling documented at https://app.zenserp.com/documentation
+name: Zenserp Data Model
+description: >-
+  Zenserp's object model is a projection, not a database. There are no persistent
+  resources with identifiers, no CRUD, and no entity a client can fetch by id --
+  with one exception, Batch. Everything else is a shape carved out of one SERP
+  response, selected by the `tbm` and `search_engine` request parameters. The
+  useful relationships in this API are therefore mostly PARAMETER relationships:
+  the list endpoints publish the enumerations that the search parameters must draw
+  from.
+entity_count: 22
+identified_entities: 2
+
+entities:
+  - name: SearchResponse
+    root: true
+    identifier: null
+    description: >-
+      The single top-level response of GET /api/v2/search. Which of its result
+      arrays is populated depends on `tbm`; the others are absent.
+    operations: [search]
+    fields_of_note: [request_info, query, number_of_results]
+
+  - name: RequestInfo
+    identifier: null
+    description: Per-request metadata -- success flag, credits used, credits remaining.
+    embedded_in: [SearchResponse, BatchResponse]
+
+  - name: QueryInfo
+    identifier: null
+    description: Echo of the effective query parameters (q, gl, hl, num, engine, tbm, location).
+    embedded_in: [SearchResponse]
+
+  - name: OrganicResult
+    identifier: null
+    description: A non-paid SERP result. Carries sitelinks as an inline sub-array.
+    populated_when: default (no tbm)
+
+  - name: PaidResult
+    identifier: null
+    description: An advertisement result. The object an ad-verification workflow reads.
+    populated_when: default (no tbm)
+
+  - name: FeaturedSnippet
+    identifier: null
+    populated_when: default (no tbm)
+
+  - name: KnowledgeGraph
+    identifier: null
+    populated_when: default (no tbm)
+
+  - name: RelatedQuestion
+    identifier: null
+    description: A People Also Ask pair.
+    populated_when: default (no tbm)
+
+  - name: RelatedSearch
+    identifier: null
+    populated_when: default (no tbm)
+
+  - name: ImageResult
+    identifier: null
+    populated_when: tbm=isch
+
+  - name: NewsResult
+    identifier: null
+    populated_when: tbm=nws
+
+  - name: ShoppingResult
+    identifier: null
+    populated_when: tbm=shop
+    note: >-
+      The one result type that yields a follow-on lookup: a shopping result's
+      product id feeds GET /api/v1/shopping.
+
+  - name: MapResult
+    identifier: null
+    populated_when: tbm=lcl or tbm=map
+
+  - name: VideoResult
+    identifier: null
+    populated_when: tbm=vid, or search_engine=youtube.com
+
+  - name: TrendsResult
+    identifier: null
+    populated_when: tbm=trends, or the /api/v1/trends endpoint
+
+  - name: Batch
+    root: true
+    identifier: id
+    id_field: id
+    description: >-
+      The only addressable, persistent resource in the API. Created by POST
+      /api/v1/batches, listed by GET /api/v1/batches, fetched by GET
+      /api/v1/batches/{id}, and pushed to a webhook_url on completion.
+    operations: [submitBatch, listBatches, getBatch]
+
+  - name: BatchJob
+    identifier: job_id
+    id_field: job_id
+    description: >-
+      One unit of work inside a batch. `job_id` is assigned by Zenserp and appears
+      only in the webhook/poll response, never in the submission. `custom_id` is
+      the caller's own label, echoed back in the `request` object.
+    embedded_in: [Batch]
+
+  - name: LanguageItem
+    identifier: hl code
+    description: A supported interface language. Published by GET /api/v2/hl.
+
+  - name: CountryItem
+    identifier: gl code
+    description: A supported country. Published by GET /api/v2/gl.
+
+  - name: LocationItem
+    identifier: canonical location string
+    description: >-
+      A canonical Google geo-targeting location. Published by GET
+      /api/v2/locations, sourced upstream from Google's geotargeting CSVs.
+
+  - name: EngineItem
+    identifier: engine domain
+    description: A supported search-engine domain. Published by GET /api/v2/search_engines.
+
+  - name: StatusResponse
+    identifier: null
+    description: '{"remaining_requests": <n>} -- the account quota read.'
+    operations: [getStatus]
+
+  - name: ErrorResponse
+    identifier: null
+    description: '{"error": "<message>"}. See errors/zenserp-problem-types.yml.'
+
+relationships:
+  - from: SearchResponse
+    to: RequestInfo
+    type: has_one
+    via: request_info
+  - from: SearchResponse
+    to: QueryInfo
+    type: has_one
+    via: query
+  - from: SearchResponse
+    to: OrganicResult
+    type: has_many
+    via: organic_results
+  - from: SearchResponse
+    to: PaidResult
+    type: has_many
+    via: paid_results
+  - from: SearchResponse
+    to: FeaturedSnippet
+    type: has_one
+    via: featured_snippet
+  - from: SearchResponse
+    to: KnowledgeGraph
+    type: has_one
+    via: knowledge_graph
+  - from: SearchResponse
+    to: RelatedQuestion
+    type: has_many
+    via: related_questions
+  - from: SearchResponse
+    to: RelatedSearch
+    type: has_many
+    via: related_searches
+  - from: SearchResponse
+    to: ImageResult
+    type: has_many
+    via: image_results
+  - from: SearchResponse
+    to: NewsResult
+    type: has_many
+    via: news_results
+  - from: SearchResponse
+    to: ShoppingResult
+    type: has_many
+    via: shopping_results
+  - from: SearchResponse
+    to: MapResult
+    type: has_many
+    via: map_results
+  - from: SearchResponse
+    to: VideoResult
+    type: has_many
+    via: video_results
+  - from: SearchResponse
+    to: TrendsResult
+    type: has_many
+    via: trends_results
+  - from: Batch
+    to: BatchJob
+    type: has_many
+    via: jobs
+  - from: BatchJob
+    to: SearchResponse
+    type: has_one
+    via: 'job result payload (the response of the endpoint named by jobs.type, plus job_id)'
+  - from: ShoppingResult
+    to: ShoppingProductPage
+    type: references
+    via: 'product_id / gpc_id -> GET /api/v1/shopping'
+    note: >-
+      The only id-carried navigation in the API. A shopping search yields product
+      ids; those ids are the input to the product page endpoint.
+
+parameter_relationships:
+  - parameter: hl
+    enumerated_by: GET /api/v2/hl
+    consumed_by: [search, trendsSearch, trendsTrending, shoppingProductPage]
+  - parameter: gl
+    enumerated_by: GET /api/v2/gl
+    consumed_by: [search, shoppingProductPage]
+  - parameter: location
+    enumerated_by: GET /api/v2/locations
+    consumed_by: [search, shoppingProductPage]
+    note: >-
+      The docs stress that ad-verification accuracy depends on passing a location
+      string that Google actually publishes -- so the list endpoint is not
+      optional reference material, it is a precondition for correct results.
+  - parameter: search_engine
+    enumerated_by: GET /api/v2/search_engines
+    consumed_by: [search, shoppingProductPage]
+    note: >-
+      Also the switch for non-Google engines -- bing.com, yandex.com,
+      youtube.com are passed here rather than through a separate endpoint.
+
+id_prefixes: []
+note: >-
+  No prefixed identifiers anywhere in this API. Batch ids and job ids are opaque
+  and undocumented in shape.

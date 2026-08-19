@@ -1,0 +1,116 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org/pypi/zenserp/json, rubygems.org API,
+  crates.io API, packagist.org search, api.github.com/users/zenserp/repos,
+  and https://app.zenserp.com/documentation (Postman collection link)
+name: Zenserp Client Libraries
+description: >-
+  Zenserp publishes one first-party client library: a Python client on PyPI,
+  developed in the zenserp GitHub account. There is no first-party JavaScript,
+  Ruby, Go, PHP, Java, .NET or Rust SDK. The Python client's last release
+  predates the v2 API surface documented today, and the repository has not been
+  pushed to since 2021 -- consumers integrating in 2026 are effectively writing
+  raw HTTP against the documented endpoints, which is also what every code
+  snippet in the Zenserp documentation shows (curl / requests / fetch, not an SDK).
+official_count: 1
+third_party_count: 3
+
+packages:
+  - name: zenserp
+    registry: pypi
+    language: Python
+    official: true
+    url: https://pypi.org/project/zenserp/
+    repository: https://github.com/zenserp/zenserp-python
+    version: '0.2'
+    published: '2019-07-24'
+    license: MIT
+    summary: Zenserp Python Client
+    author: zenserp <office@zenserp.com>
+    releases:
+      - '0.1'
+      - '0.1.1'
+      - '0.2'
+    note: >-
+      First-party: published from an @zenserp.com address and hosted in the
+      company's own GitHub account. DECAY SIGNAL -- the last PyPI release is
+      2019-07-24 and the GitHub repository was last pushed 2021-04-02, while the
+      documented API surface today includes /api/v2/status, /api/v2/search_engines,
+      the /api/v1/batches webhook flow, /api/v1/trends and /api/v1/shopping. The
+      SDK predates most of the API it wraps.
+
+  - name: zenserp-python
+    registry: github
+    language: Python
+    official: true
+    url: https://github.com/zenserp/zenserp-python
+    version: null
+    published: '2021-04-02'
+    note: >-
+      Source repository for the PyPI package; the only repository in the zenserp
+      GitHub account. No tagged releases, so version is null -- the published
+      artifact is the PyPI package above. `published` records the last push date
+      returned by api.github.com. 1 star.
+
+  - name: wdevs/laravel-zenserp
+    registry: packagist
+    language: PHP
+    official: false
+    url: https://packagist.org/packages/wdevs/laravel-zenserp
+    repository: https://github.com/Paulsky/laravel-zenserp
+    version: '1.2'
+    published: '2020-10-23'
+    summary: Easily work with the Zenserp API in a Laravel application.
+    note: Community Laravel wrapper. Not published or endorsed by Zenserp.
+
+  - name: '@pipedream/zenserp'
+    registry: npm
+    language: JavaScript
+    official: false
+    url: https://www.npmjs.com/package/@pipedream/zenserp
+    version: 0.2.0
+    published: '2026-05-13'
+    summary: Pipedream Zenserp Components
+    note: >-
+      Integration components published by Pipedream, an integration platform --
+      not a Zenserp SDK and not first-party.
+
+  - name: '@keystrokehq/zenserp'
+    registry: npm
+    language: JavaScript
+    official: false
+    url: https://www.npmjs.com/package/@keystrokehq/zenserp
+    repository: https://github.com/keystrokehq/keystroke
+    version: 0.1.6
+    published: '2026-07-19'
+    note: Third-party connector shipped inside the Keystroke platform monorepo. Not first-party.
+
+registries_checked:
+  - registry: npm
+    result: no first-party package (registry.npmjs.org/zenserp -> 404)
+  - registry: pypi
+    result: 'first-party package found: zenserp 0.2'
+  - registry: rubygems
+    result: no package (rubygems.org/api/v1/gems/zenserp.json -> 404)
+  - registry: crates.io
+    result: no package
+  - registry: packagist
+    result: one third-party package
+  - registry: maven-central
+    result: no package
+  - registry: nuget
+    result: no package
+  - registry: pkg.go.dev
+    result: no package
+
+collections:
+  - name: Zenserp API
+    type: postman
+    official: true
+    url: https://www.postman.com/collections/a888b56749cd50cc525d
+    note: >-
+      Public Postman collection linked from the Authentification section of
+      https://app.zenserp.com/documentation ("we also created a Postman collection
+      covering all of our endpoints"). Fetched 2026-08-13, HTTP 200,
+      application/json, 720,421 bytes.

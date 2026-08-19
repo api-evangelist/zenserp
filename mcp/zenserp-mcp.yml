@@ -1,0 +1,139 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/zenserp-search-api-openapi.yml, openapi/zenserp-lists-api-openapi.yml,
+  openapi/zenserp-batch-api-openapi.yml, openapi/zenserp-trends-api-openapi.yml,
+  openapi/zenserp-shopping-api-openapi.yml -- plus a negative search of
+  zenserp.com, app.zenserp.com/documentation, the zenserp GitHub account, npm and PyPI
+name: Zenserp MCP (candidate)
+status: candidate
+description: >-
+  Zenserp does not ship an MCP server. There is no hosted /mcp endpoint on either
+  zenserp.com or app.zenserp.com, no MCP package in npm or PyPI under a Zenserp
+  name, no MCP mention anywhere in the documentation SPA bundle, and the only
+  repository in the zenserp GitHub account is a 2021 Python client. The tools
+  below are a CANDIDATE surface derived from the provider's real, live REST
+  operations -- they are what an MCP server for Zenserp would expose, not
+  something Zenserp publishes.
+
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: >-
+    mode:none -- nobody at Zenserp ships an MCP server, remote or stdio. Auth is
+    recorded as api-key because that is how the underlying REST API authenticates
+    (an `apikey` header or query parameter); it describes the API a server would
+    have to wrap, not a server that exists.
+
+third_party:
+  - name: Zenserp toolkit on Composio
+    url: https://composio.dev/toolkits/zenserp
+    operator: Composio
+    official: false
+    note: >-
+      Composio, an integration platform, exposes Zenserp through its own hosted
+      MCP surface. This is Composio's server wrapping Zenserp's REST API -- it is
+      not operated, published or endorsed by Zenserp, and it is not counted as a
+      Zenserp agent surface.
+
+tools:
+  - name: search
+    rest: search
+    method: GET
+    path: /api/v2/search
+    description: >-
+      Run a SERP query against Google (default), Bing, Yandex or DuckDuckGo.
+      Search type is selected with `tbm` (isch images, nws news, shop shopping,
+      lcl/map maps, vid video) and engine with `search_engine`.
+    read_only: true
+  - name: get_status
+    rest: getStatus
+    method: GET
+    path: /api/v2/status
+    description: Check the remaining request quota on the API key.
+    read_only: true
+  - name: list_languages
+    rest: listLanguages
+    method: GET
+    path: /api/v2/hl
+    description: List every supported `hl` (interface language) value.
+    read_only: true
+  - name: list_countries
+    rest: listCountries
+    method: GET
+    path: /api/v2/gl
+    description: List every supported `gl` (country) value.
+    read_only: true
+  - name: list_locations
+    rest: listLocations
+    method: GET
+    path: /api/v2/locations
+    description: List every supported canonical geo location string for the `location` parameter.
+    read_only: true
+  - name: list_search_engines
+    rest: listEngines
+    method: GET
+    path: /api/v2/search_engines
+    description: List every supported Google search-engine domain.
+    read_only: true
+  - name: submit_batch
+    rest: submitBatch
+    method: POST
+    path: /api/v1/batches
+    description: >-
+      Submit a batch of SERP jobs for asynchronous fetching, with results POSTed
+      to a webhook_url. Medium plan and above.
+    read_only: false
+  - name: list_batches
+    rest: listBatches
+    method: GET
+    path: /api/v1/batches
+    description: List all batches submitted with this API key.
+    read_only: true
+  - name: get_batch
+    rest: getBatch
+    method: GET
+    path: /api/v1/batches/{id}
+    description: Retrieve a batch's status and any available job results.
+    read_only: true
+  - name: trends_search
+    rest: trendsSearch
+    method: GET
+    path: /api/v1/trends
+    description: Google Trends keyword interest over time for one or more keywords.
+    read_only: true
+  - name: trends_trending
+    rest: trendsTrending
+    method: GET
+    path: /api/v1/trends/trending
+    description: Currently trending Google searches for a category, language and region.
+    read_only: true
+  - name: shopping_product_page
+    rest: shoppingProductPage
+    method: GET
+    path: /api/v1/shopping
+    description: >-
+      Google Shopping product page by `product_id` (single variant) or `gpc_id`
+      (full product cluster across merchants).
+    read_only: true
+
+negative_probes:
+  - url: https://app.zenserp.com/mcp
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    status: 404
+    response: '{"message": "The route mcp could not be found."}'
+    note: Laravel router 404 -- there is no MCP route on the API host.
+  - url: https://zenserp.com/mcp
+    status: 200
+    note: soft-404 -- 155,092-byte WordPress catch-all page, not an MCP endpoint.
+  - url: https://app.zenserp.com/.well-known/oauth-authorization-server
+    status: 404
+  - url: https://app.zenserp.com/.well-known/oauth-protected-resource
+    status: 404
+  - url: https://registry.npmjs.org/zenserp
+    status: 404
