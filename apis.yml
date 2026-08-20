@@ -53,6 +53,11 @@ apis:
   tags:
   - Batch
   - Asynchronous
+  - Webhook
+  - Bulk
+  tags_raw:
+  - Batch
+  - Asynchronous
   - Webhooks
   - Bulk
   properties:
@@ -79,6 +84,12 @@ apis:
   humanURL: https://zenserp.com/
   baseURL: https://app.zenserp.com/api/v2
   tags:
+  - List
+  - Reference Data
+  - Geolocation
+  - Language
+  - Countries
+  tags_raw:
   - Lists
   - Reference Data
   - Geolocation
