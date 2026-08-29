@@ -1,8 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Zenserp Lists API
-  description: Reference list endpoints returning the language (hl), country (gl), geo location and search
-    engine values accepted by the Zenserp Search API.
+  description: Zenserp SERP API. Real-time and historical search engine result pages for Google (web, images, video, news, shopping, maps, reverse image, YouTube, trends), Bing, Yandex and DuckDuckGo, plus asynchronous batch fetching with webhook delivery, Google Shopping product pages, Google Trends, and the reference list endpoints for languages, countries, geo locations and search engines. Endpoint inventory taken from the Zenserp documentation and confirmed against live unauthenticated probes; the v2 and v1 surfaces run side by side.
   version: '2.0'
   contact:
     name: Zenserp Support
@@ -11,11 +10,10 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
-  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
-    + live unauthenticated probes 2026-08-13
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js) + live unauthenticated probes 2026-08-13
 servers:
-- url: https://app.zenserp.com/api/v2
-  description: Zenserp API v2
+- url: https://app.zenserp.com
+  description: Zenserp API host. Search, status and the list endpoints are under /api/v2; batches, trends and shopping product pages are under /api/v1.
 security:
 - apiKeyHeader: []
 - apiKeyQuery: []
@@ -23,7 +21,7 @@ tags:
 - name: Lists
   description: Reference list endpoints for supported languages, countries, locations, and engines.
 paths:
-  /hl:
+  /api/v2/hl:
     get:
       operationId: listLanguages
       summary: Google Languages (hl)
@@ -40,8 +38,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/LanguageItem'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -58,7 +55,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /gl:
+  /api/v2/gl:
     get:
       operationId: listCountries
       summary: Google Countries (gl)
@@ -75,8 +72,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/CountryItem'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -93,12 +89,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /locations:
+  /api/v2/locations:
     get:
       operationId: listLocations
       summary: Geo Locations
-      description: This endpoint gives you access to all supported geo locations. A list of all the locations
-        can be found in the CSVs provided by Google at https://developers.google.com/adwords/api/docs/appendix/geotargeting
+      description: This endpoint gives you access to all supported geo locations. A list of all the locations can be found in the CSVs provided by Google at https://developers.google.com/adwords/api/docs/appendix/geotargeting
       tags:
       - Lists
       responses:
@@ -111,8 +106,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/LocationItem'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -129,7 +123,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /search_engines:
+  /api/v2/search_engines:
     get:
       operationId: listEngines
       summary: Google Search Engines
@@ -146,8 +140,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/EngineItem'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -166,33 +159,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    EngineItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Human-readable engine name.
-        value:
-          type: string
-          description: Engine identifier for use with the engine parameter.
-    CountryItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Human-readable country name.
-        code:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (gl value).
-    LanguageItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Human-readable language name.
-        code:
-          type: string
-          description: Language code (hl value).
     LocationItem:
       type: object
       properties:
@@ -202,31 +168,41 @@ components:
         country_code:
           type: string
           description: Country this location is in.
+    LanguageItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable language name.
+        code:
+          type: string
+          description: Language code (hl value).
+    EngineItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable engine name.
+        value:
+          type: string
+          description: Engine identifier for use with the engine parameter.
     ErrorResponse:
       type: object
-      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
-        API: {"error": "No apikey provided."}'
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
       properties:
         error:
           type: string
           description: Human-readable error message.
           example: No apikey provided.
-    ValidationErrorResponse:
+    CountryItem:
       type: object
-      description: Zenserp validation error envelope, documented verbatim in the "Error Codes" section
-        of the Zenserp documentation.
       properties:
-        errors:
-          type: array
-          description: One object per failing request, keyed by parameter name.
-          items:
-            type: object
-            additionalProperties:
-              type: string
-      example:
-        errors:
-        - q: no query specified.
-          search_engine: search engine not found.
+        name:
+          type: string
+          description: Human-readable country name.
+        code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (gl value).
   securitySchemes:
     apiKeyHeader:
       type: apiKey

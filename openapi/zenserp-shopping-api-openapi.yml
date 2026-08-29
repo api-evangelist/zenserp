@@ -1,9 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Zenserp Shopping Product Page API
-  description: Google Shopping product page endpoint, resolving a single product variant by product_id
-    or a full product cluster across merchants by gpc_id. Served from the Zenserp v1 API surface.
-  version: '1.0'
+  title: Zenserp Shopping API
+  description: Zenserp SERP API. Real-time and historical search engine result pages for Google (web, images, video, news, shopping, maps, reverse image, YouTube, trends), Bing, Yandex and DuckDuckGo, plus asynchronous batch fetching with webhook delivery, Google Shopping product pages, Google Trends, and the reference list endpoints for languages, countries, geo locations and search engines. Endpoint inventory taken from the Zenserp documentation and confirmed against live unauthenticated probes; the v2 and v1 surfaces run side by side.
+  version: '2.0'
   contact:
     name: Zenserp Support
     url: https://zenserp.com/
@@ -11,11 +10,10 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
-  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
-    + live unauthenticated probes 2026-08-13
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js) + live unauthenticated probes 2026-08-13
 servers:
-- url: https://app.zenserp.com/api/v1
-  description: Zenserp API v1
+- url: https://app.zenserp.com
+  description: Zenserp API host. Search, status and the list endpoints are under /api/v2; batches, trends and shopping product pages are under /api/v1.
 security:
 - apiKeyHeader: []
 - apiKeyQuery: []
@@ -23,13 +21,11 @@ tags:
 - name: Shopping
   description: Google Shopping product page lookup by product or product-cluster id.
 paths:
-  /shopping:
+  /api/v1/shopping:
     get:
       operationId: shoppingProductPage
       summary: Google Shopping Product Page
-      description: This endpoint gives you access to shopping product pages by their product_id or gpc_id,
-        which can be obtained from a shopping search. Pass product_id to get a single product variant,
-        or gpc_id (Google Product Cluster ID) to get the full product cluster across all merchants.
+      description: This endpoint gives you access to shopping product pages by their product_id or gpc_id, which can be obtained from a shopping search. Pass product_id to get a single product variant, or gpc_id (Google Product Cluster ID) to get the full product cluster across all merchants.
       tags:
       - Shopping
       parameters:
@@ -78,8 +74,7 @@ paths:
                 type: object
                 additionalProperties: true
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -100,37 +95,20 @@ components:
   schemas:
     ErrorResponse:
       type: object
-      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
-        API: {"error": "No apikey provided."}'
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
       properties:
         error:
           type: string
           description: Human-readable error message.
           example: No apikey provided.
-    ValidationErrorResponse:
-      type: object
-      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
-        the Zenserp documentation.
-      properties:
-        errors:
-          type: array
-          description: One object per failing request, keyed by parameter name.
-          items:
-            type: object
-            additionalProperties:
-              type: string
-      example:
-        errors:
-        - q: no query specified.
-          search_engine: search engine not found.
   securitySchemes:
     apiKeyHeader:
       type: apiKey
       in: header
       name: apikey
-      description: API key passed in the request header. Recommended -- works with all requests.
+      description: API key passed in the request header.
     apiKeyQuery:
       type: apiKey
       in: query
       name: apikey
-      description: API key passed as a URL parameter. Supported on GET requests.
+      description: API key passed as a query parameter.

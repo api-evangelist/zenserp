@@ -1,10 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Zenserp Search API
-  description: REST API for scraping real-time Google search results including organic results, paid ads,
-    featured snippets, knowledge graphs, related questions, maps, news, shopping, images, videos, YouTube,
-    Bing, Yandex, and DuckDuckGo search results. Supports geolocation targeting across 200+ countries
-    and languages.
+  description: Zenserp SERP API. Real-time and historical search engine result pages for Google (web, images, video, news, shopping, maps, reverse image, YouTube, trends), Bing, Yandex and DuckDuckGo, plus asynchronous batch fetching with webhook delivery, Google Shopping product pages, Google Trends, and the reference list endpoints for languages, countries, geo locations and search engines. Endpoint inventory taken from the Zenserp documentation and confirmed against live unauthenticated probes; the v2 and v1 surfaces run side by side.
   version: '2.0'
   contact:
     name: Zenserp Support
@@ -13,11 +10,10 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
-  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
-    + live unauthenticated probes 2026-08-13
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js) + live unauthenticated probes 2026-08-13
 servers:
-- url: https://app.zenserp.com/api/v2
-  description: Zenserp API v2
+- url: https://app.zenserp.com
+  description: Zenserp API host. Search, status and the list endpoints are under /api/v2; batches, trends and shopping product pages are under /api/v1.
 security:
 - apiKeyHeader: []
 - apiKeyQuery: []
@@ -25,13 +21,11 @@ tags:
 - name: Search
   description: Core search endpoints supporting all search types and engines.
 paths:
-  /search:
+  /api/v2/search:
     get:
       operationId: search
       summary: Universal Search
-      description: Submit a search query to Google (default), Bing, Yandex, or DuckDuckGo. The search
-        type is controlled via the `tbm` parameter for Google variants (images, news, shopping, maps,
-        video, trends) and via `engine` for alternative search engines.
+      description: Submit a search query to Google (default), Bing, Yandex, or DuckDuckGo. The search type is controlled via the `tbm` parameter for Google variants (images, news, shopping, maps, video, trends) and via `engine` for alternative search engines.
       tags:
       - Search
       parameters:
@@ -51,9 +45,7 @@ paths:
       - name: tbm
         in: query
         required: false
-        description: Google search type modifier. Omit for web search. Use `isch` for image search, `nws`
-          for news, `shop` for shopping, `map` for maps, `vid` for YouTube/video search, `trends` for
-          Google Trends.
+        description: Google search type modifier. Omit for web search. Use `isch` for image search, `nws` for news, `shop` for shopping, `map` for maps, `vid` for YouTube/video search, `trends` for Google Trends.
         schema:
           type: string
           enum:
@@ -66,8 +58,7 @@ paths:
       - name: engine
         in: query
         required: false
-        description: Target search engine. Defaults to `google`. Set to `bing`, `yandex`, or `duckduckgo`
-          for alternative engines.
+        description: Target search engine. Defaults to `google`. Set to `bing`, `yandex`, or `duckduckgo` for alternative engines.
         schema:
           type: string
           enum:
@@ -79,8 +70,7 @@ paths:
       - name: gl
         in: query
         required: false
-        description: Country code for geolocation targeting (ISO 3166-1 alpha-2). Determines the country-specific
-          Google domain and results.
+        description: Country code for geolocation targeting (ISO 3166-1 alpha-2). Determines the country-specific Google domain and results.
         schema:
           type: string
         example: us
@@ -94,8 +84,7 @@ paths:
       - name: location
         in: query
         required: false
-        description: Canonical location name used for geolocation-specific results. Use the /locations
-          list endpoint to get valid values.
+        description: Canonical location name used for geolocation-specific results. Use the /locations list endpoint to get valid values.
         schema:
           type: string
         example: New York,New York,United States
@@ -130,8 +119,7 @@ paths:
       - name: tbs
         in: query
         required: false
-        description: 'Advanced Google search filters (time range, etc.). Example: `qdr:d` for past day,
-          `qdr:w` for past week.'
+        description: 'Advanced Google search filters (time range, etc.). Example: `qdr:d` for past day, `qdr:w` for past week.'
         schema:
           type: string
       - name: cr
@@ -159,8 +147,7 @@ paths:
       - name: reverse
         in: query
         required: false
-        description: Set to `true` to perform a reverse image search. Requires `tbm=isch` and supplying
-          an image URL via `q`.
+        description: Set to `true` to perform a reverse image search. Requires `tbm=isch` and supplying an image URL via `q`.
         schema:
           type: boolean
           default: false
@@ -202,8 +189,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ValidationErrorResponse'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -214,7 +200,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /status:
+  /api/v2/status:
     get:
       operationId: getStatus
       summary: Status & Left Requests
@@ -231,8 +217,7 @@ paths:
               example:
                 remaining_requests: 1500
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -265,8 +250,7 @@ paths:
               example:
                 remaining_requests: 1500
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -285,54 +269,38 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    KnowledgeGraph:
+    TrendsResult:
       type: object
-      description: Google Knowledge Graph panel data.
+      description: A Google Trends comparison data point.
       properties:
-        title:
+        query:
           type: string
-        type:
+          description: The search term being tracked.
+        date:
           type: string
-        description:
-          type: string
-        url:
-          type: string
-          format: uri
-        image:
-          type: string
-          format: uri
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-          description: Key-value entity attributes from the knowledge panel.
-    ShoppingResult:
+          description: Date or time period.
+        value:
+          type: integer
+          description: Relative popularity score (0-100).
+    PaidResult:
       type: object
-      description: A single Google Shopping product result.
+      description: A paid advertisement result.
       properties:
         position:
           type: integer
+          description: Ad position.
         title:
           type: string
         url:
           type: string
           format: uri
-        price:
+        domain:
           type: string
-          description: Product price as a formatted string (e.g., "$29.99").
-        store:
+        description:
           type: string
-          description: Merchant/store name.
-        rating:
-          type: number
-          format: float
-          description: Product rating (0-5).
-        reviews:
-          type: integer
-          description: Number of reviews.
-        thumbnail:
+        displayed_url:
           type: string
-          format: uri
+          description: The URL as displayed in the ad.
     RelatedQuestion:
       type: object
       description: A People Also Ask question-answer pair.
@@ -346,41 +314,6 @@ components:
           format: uri
         title:
           type: string
-    OrganicResult:
-      type: object
-      description: A single organic (non-paid) search result.
-      properties:
-        position:
-          type: integer
-          description: 1-based ranking position in results.
-        title:
-          type: string
-          description: Title of the result.
-        url:
-          type: string
-          format: uri
-          description: URL of the result page.
-        domain:
-          type: string
-          description: Domain of the result.
-        description:
-          type: string
-          description: Snippet/description text for the result.
-        favicon:
-          type: string
-          format: uri
-          description: URL of the site favicon.
-        sitelinks:
-          type: array
-          description: Additional sub-links shown below the main result.
-          items:
-            type: object
-            properties:
-              title:
-                type: string
-              url:
-                type: string
-                format: uri
     SearchResponse:
       type: object
       description: Top-level search result object returned by the /search endpoint.
@@ -443,17 +376,30 @@ components:
           description: Google Trends data points (when tbm=trends).
           items:
             $ref: '#/components/schemas/TrendsResult'
-    RelatedSearch:
+    KnowledgeGraph:
       type: object
-      description: A related search suggestion.
+      description: Google Knowledge Graph panel data.
       properties:
-        query:
+        title:
           type: string
-          description: Related query text.
+        type:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+          format: uri
+        image:
+          type: string
+          format: uri
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value entity attributes from the knowledge panel.
     ErrorResponse:
       type: object
-      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
-        API: {"error": "No apikey provided."}'
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
       properties:
         error:
           type: string
@@ -479,67 +425,20 @@ components:
         thumbnail:
           type: string
           format: uri
-    RequestInfo:
+    FeaturedSnippet:
       type: object
-      description: Metadata about the API request.
+      description: Google featured snippet (answer box).
       properties:
-        success:
-          type: boolean
-          description: Whether the request was successful.
-        credits_used:
-          type: integer
-          description: Number of API credits consumed by this request.
-        credits_remaining:
-          type: integer
-          description: Remaining credits in the current billing period.
-    VideoResult:
-      type: object
-      description: A single YouTube/video search result.
-      properties:
-        position:
-          type: integer
         title:
           type: string
         url:
           type: string
           format: uri
-        channel:
+        description:
           type: string
-          description: Channel or uploader name.
-        published_at:
+        type:
           type: string
-          description: Video publication date or relative time.
-        duration:
-          type: string
-          description: Video duration (e.g., "5:32").
-        views:
-          type: string
-          description: View count as formatted string.
-        thumbnail:
-          type: string
-          format: uri
-    ImageResult:
-      type: object
-      description: A single image search result.
-      properties:
-        position:
-          type: integer
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        image_url:
-          type: string
-          format: uri
-          description: Direct URL to the image.
-        thumbnail:
-          type: string
-          format: uri
-          description: URL to thumbnail version.
-        source:
-          type: string
-          description: Originating website domain.
+          description: Snippet type (paragraph, table, list, etc.).
     QueryInfo:
       type: object
       description: Echo of the query parameters used for this search.
@@ -565,19 +464,98 @@ components:
         location:
           type: string
           description: Geo location used.
-    TrendsResult:
+    StatusResponse:
       type: object
-      description: A Google Trends comparison data point.
+      description: Remaining request quota for the authenticated API key.
+      properties:
+        remaining_requests:
+          type: integer
+          description: Number of searches left in the current billing period.
+          example: 1500
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
+    ShoppingResult:
+      type: object
+      description: A single Google Shopping product result.
+      properties:
+        position:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        price:
+          type: string
+          description: Product price as a formatted string (e.g., "$29.99").
+        store:
+          type: string
+          description: Merchant/store name.
+        rating:
+          type: number
+          format: float
+          description: Product rating (0-5).
+        reviews:
+          type: integer
+          description: Number of reviews.
+        thumbnail:
+          type: string
+          format: uri
+    ImageResult:
+      type: object
+      description: A single image search result.
+      properties:
+        position:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        image_url:
+          type: string
+          format: uri
+          description: Direct URL to the image.
+        thumbnail:
+          type: string
+          format: uri
+          description: URL to thumbnail version.
+        source:
+          type: string
+          description: Originating website domain.
+    RequestInfo:
+      type: object
+      description: Metadata about the API request.
+      properties:
+        success:
+          type: boolean
+          description: Whether the request was successful.
+        credits_used:
+          type: integer
+          description: Number of API credits consumed by this request.
+        credits_remaining:
+          type: integer
+          description: Remaining credits in the current billing period.
+    RelatedSearch:
+      type: object
+      description: A related search suggestion.
       properties:
         query:
           type: string
-          description: The search term being tracked.
-        date:
-          type: string
-          description: Date or time period.
-        value:
-          type: integer
-          description: Relative popularity score (0-100).
+          description: Related query text.
     MapResult:
       type: object
       description: A single Google Maps local business result.
@@ -609,63 +587,67 @@ components:
         longitude:
           type: number
           format: double
-    FeaturedSnippet:
+    OrganicResult:
       type: object
-      description: Google featured snippet (answer box).
-      properties:
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        description:
-          type: string
-        type:
-          type: string
-          description: Snippet type (paragraph, table, list, etc.).
-    PaidResult:
-      type: object
-      description: A paid advertisement result.
+      description: A single organic (non-paid) search result.
       properties:
         position:
           type: integer
-          description: Ad position.
+          description: 1-based ranking position in results.
+        title:
+          type: string
+          description: Title of the result.
+        url:
+          type: string
+          format: uri
+          description: URL of the result page.
+        domain:
+          type: string
+          description: Domain of the result.
+        description:
+          type: string
+          description: Snippet/description text for the result.
+        favicon:
+          type: string
+          format: uri
+          description: URL of the site favicon.
+        sitelinks:
+          type: array
+          description: Additional sub-links shown below the main result.
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+                format: uri
+    VideoResult:
+      type: object
+      description: A single YouTube/video search result.
+      properties:
+        position:
+          type: integer
         title:
           type: string
         url:
           type: string
           format: uri
-        domain:
+        channel:
           type: string
-        description:
+          description: Channel or uploader name.
+        published_at:
           type: string
-        displayed_url:
+          description: Video publication date or relative time.
+        duration:
           type: string
-          description: The URL as displayed in the ad.
-    StatusResponse:
-      type: object
-      description: Remaining request quota for the authenticated API key.
-      properties:
-        remaining_requests:
-          type: integer
-          description: Number of searches left in the current billing period.
-          example: 1500
-    ValidationErrorResponse:
-      type: object
-      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
-        the Zenserp documentation.
-      properties:
-        errors:
-          type: array
-          description: One object per failing request, keyed by parameter name.
-          items:
-            type: object
-            additionalProperties:
-              type: string
-      example:
-        errors:
-        - q: no query specified.
-          search_engine: search engine not found.
+          description: Video duration (e.g., "5:32").
+        views:
+          type: string
+          description: View count as formatted string.
+        thumbnail:
+          type: string
+          format: uri
   securitySchemes:
     apiKeyHeader:
       type: apiKey

@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Zenserp Batch API
-  description: Asynchronous batch endpoint for very large SERP datasets. Jobs are submitted as a batch
-    and results are delivered to a webhook URL, or polled by batch id. Available on the Medium plan and
-    above.
+  description: Zenserp SERP API. Real-time and historical search engine result pages for Google (web, images, video, news, shopping, maps, reverse image, YouTube, trends), Bing, Yandex and DuckDuckGo, plus asynchronous batch fetching with webhook delivery, Google Shopping product pages, Google Trends, and the reference list endpoints for languages, countries, geo locations and search engines. Endpoint inventory taken from the Zenserp documentation and confirmed against live unauthenticated probes; the v2 and v1 surfaces run side by side.
   version: '2.0'
   contact:
     name: Zenserp Support
@@ -12,11 +10,10 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
-  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
-    + live unauthenticated probes 2026-08-13
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js) + live unauthenticated probes 2026-08-13
 servers:
-- url: https://app.zenserp.com/api/v1
-  description: Zenserp API v1 -- batches live under /api/v1, not /api/v2
+- url: https://app.zenserp.com
+  description: Zenserp API host. Search, status and the list endpoints are under /api/v2; batches, trends and shopping product pages are under /api/v1.
 security:
 - apiKeyHeader: []
 - apiKeyQuery: []
@@ -24,7 +21,7 @@ tags:
 - name: Batch
   description: Batch processing for multiple simultaneous queries.
 paths:
-  /batches:
+  /api/v1/batches:
     get:
       operationId: listBatches
       summary: Get All Batches
@@ -41,8 +38,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/BatchResponse'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -62,9 +58,7 @@ paths:
     post:
       operationId: submitBatch
       summary: Submitting a new Batch
-      description: Submit a batch of SERP jobs to be fetched asynchronously. Results are POSTed back to
-        webhook_url when the batch completes; polling by id is possible but the webhook notification system
-        is recommended by Zenserp.
+      description: Submit a batch of SERP jobs to be fetched asynchronously. Results are POSTed back to webhook_url when the batch completes; polling by id is possible but the webhook notification system is recommended by Zenserp.
       tags:
       - Batch
       requestBody:
@@ -98,8 +92,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ValidationErrorResponse'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -116,12 +109,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /batches/{id}:
+  /api/v1/batches/{id}:
     get:
       operationId: getBatch
       summary: Get Batch By Id
-      description: This endpoint allows you to check the status of a batch and retrieve it's results.
-        Zenserp highly recommends the webhook notification system over manual polling.
+      description: This endpoint allows you to check the status of a batch and retrieve it's results. Zenserp highly recommends the webhook notification system over manual polling.
       tags:
       - Batch
       parameters:
@@ -139,8 +131,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BatchResponse'
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -159,261 +150,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    KnowledgeGraph:
-      type: object
-      description: Google Knowledge Graph panel data.
-      properties:
-        title:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        url:
-          type: string
-          format: uri
-        image:
-          type: string
-          format: uri
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
-          description: Key-value entity attributes from the knowledge panel.
-    ShoppingResult:
-      type: object
-      description: A single Google Shopping product result.
-      properties:
-        position:
-          type: integer
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        price:
-          type: string
-          description: Product price as a formatted string (e.g., "$29.99").
-        store:
-          type: string
-          description: Merchant/store name.
-        rating:
-          type: number
-          format: float
-          description: Product rating (0-5).
-        reviews:
-          type: integer
-          description: Number of reviews.
-        thumbnail:
-          type: string
-          format: uri
-    RelatedQuestion:
-      type: object
-      description: A People Also Ask question-answer pair.
-      properties:
-        question:
-          type: string
-        answer:
-          type: string
-        url:
-          type: string
-          format: uri
-        title:
-          type: string
-    OrganicResult:
-      type: object
-      description: A single organic (non-paid) search result.
-      properties:
-        position:
-          type: integer
-          description: 1-based ranking position in results.
-        title:
-          type: string
-          description: Title of the result.
-        url:
-          type: string
-          format: uri
-          description: URL of the result page.
-        domain:
-          type: string
-          description: Domain of the result.
-        description:
-          type: string
-          description: Snippet/description text for the result.
-        favicon:
-          type: string
-          format: uri
-          description: URL of the site favicon.
-        sitelinks:
-          type: array
-          description: Additional sub-links shown below the main result.
-          items:
-            type: object
-            properties:
-              title:
-                type: string
-              url:
-                type: string
-                format: uri
-    SearchResponse:
-      type: object
-      description: Top-level search result object returned by the /search endpoint.
-      properties:
-        request_info:
-          $ref: '#/components/schemas/RequestInfo'
-        query:
-          $ref: '#/components/schemas/QueryInfo'
-        organic_results:
-          type: array
-          description: List of organic (non-paid) search results.
-          items:
-            $ref: '#/components/schemas/OrganicResult'
-        paid_results:
-          type: array
-          description: List of paid advertisement results.
-          items:
-            $ref: '#/components/schemas/PaidResult'
-        featured_snippet:
-          $ref: '#/components/schemas/FeaturedSnippet'
-        knowledge_graph:
-          $ref: '#/components/schemas/KnowledgeGraph'
-        related_questions:
-          type: array
-          description: People Also Ask questions and answers.
-          items:
-            $ref: '#/components/schemas/RelatedQuestion'
-        related_searches:
-          type: array
-          description: Related search suggestions.
-          items:
-            $ref: '#/components/schemas/RelatedSearch'
-        image_results:
-          type: array
-          description: Image results (when tbm=isch).
-          items:
-            $ref: '#/components/schemas/ImageResult'
-        news_results:
-          type: array
-          description: News article results (when tbm=nws).
-          items:
-            $ref: '#/components/schemas/NewsResult'
-        shopping_results:
-          type: array
-          description: Shopping product results (when tbm=shop).
-          items:
-            $ref: '#/components/schemas/ShoppingResult'
-        map_results:
-          type: array
-          description: Local business results (when tbm=map).
-          items:
-            $ref: '#/components/schemas/MapResult'
-        video_results:
-          type: array
-          description: Video/YouTube results (when tbm=vid).
-          items:
-            $ref: '#/components/schemas/VideoResult'
-        trends_results:
-          type: array
-          description: Google Trends data points (when tbm=trends).
-          items:
-            $ref: '#/components/schemas/TrendsResult'
-    RelatedSearch:
-      type: object
-      description: A related search suggestion.
-      properties:
-        query:
-          type: string
-          description: Related query text.
-    ErrorResponse:
-      type: object
-      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
-        API: {"error": "No apikey provided."}'
-      properties:
-        error:
-          type: string
-          description: Human-readable error message.
-          example: No apikey provided.
-    NewsResult:
-      type: object
-      description: A single news article result.
-      properties:
-        position:
-          type: integer
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        source:
-          type: string
-          description: News source name.
-        published_at:
-          type: string
-          description: Publication timestamp or relative time.
-        thumbnail:
-          type: string
-          format: uri
-    RequestInfo:
-      type: object
-      description: Metadata about the API request.
-      properties:
-        success:
-          type: boolean
-          description: Whether the request was successful.
-        credits_used:
-          type: integer
-          description: Number of API credits consumed by this request.
-        credits_remaining:
-          type: integer
-          description: Remaining credits in the current billing period.
-    VideoResult:
-      type: object
-      description: A single YouTube/video search result.
-      properties:
-        position:
-          type: integer
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        channel:
-          type: string
-          description: Channel or uploader name.
-        published_at:
-          type: string
-          description: Video publication date or relative time.
-        duration:
-          type: string
-          description: Video duration (e.g., "5:32").
-        views:
-          type: string
-          description: View count as formatted string.
-        thumbnail:
-          type: string
-          format: uri
-    ImageResult:
-      type: object
-      description: A single image search result.
-      properties:
-        position:
-          type: integer
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        image_url:
-          type: string
-          format: uri
-          description: Direct URL to the image.
-        thumbnail:
-          type: string
-          format: uri
-          description: URL to thumbnail version.
-        source:
-          type: string
-          description: Originating website domain.
     BatchRequest:
       type: object
       description: Batch submission body, documented at https://app.zenserp.com/documentation#batches
@@ -429,8 +165,7 @@ components:
           description: optional, string -- A name for the batch.
         jobs:
           type: array
-          description: required, array -- List of jobs to be done. Each job carries the parameters of
-            the endpoint named by its type.
+          description: required, array -- List of jobs to be done. Each job carries the parameters of the endpoint named by its type.
           minItems: 1
           items:
             type: object
@@ -445,8 +180,7 @@ components:
                 default: search
               custom_id:
                 type: string
-                description: Optional caller-supplied identifier. When submitted it is echoed back in
-                  the request object of the webhook response.
+                description: Optional caller-supplied identifier. When submitted it is echoed back in the request object of the webhook response.
               q:
                 type: string
               gl:
@@ -465,31 +199,21 @@ components:
                 type: string
               search_engine:
                 type: string
-    QueryInfo:
+    ValidationErrorResponse:
       type: object
-      description: Echo of the query parameters used for this search.
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of the Zenserp documentation.
       properties:
-        q:
-          type: string
-          description: The search query.
-        gl:
-          type: string
-          description: Country code used.
-        hl:
-          type: string
-          description: Language code used.
-        num:
-          type: integer
-          description: Number of results requested.
-        engine:
-          type: string
-          description: Search engine used.
-        tbm:
-          type: string
-          description: Search type modifier used.
-        location:
-          type: string
-          description: Geo location used.
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
     BatchResponse:
       type: object
       description: A submitted batch and, once complete, its job results.
@@ -506,104 +230,18 @@ components:
           format: uri
         jobs:
           type: array
-          description: Job results. Each entry is the response of the corresponding API with an added
-            job_id field.
+          description: Job results. Each entry is the response of the corresponding API with an added job_id field.
           items:
             type: object
             additionalProperties: true
-    TrendsResult:
+    ErrorResponse:
       type: object
-      description: A Google Trends comparison data point.
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
       properties:
-        query:
+        error:
           type: string
-          description: The search term being tracked.
-        date:
-          type: string
-          description: Date or time period.
-        value:
-          type: integer
-          description: Relative popularity score (0-100).
-    MapResult:
-      type: object
-      description: A single Google Maps local business result.
-      properties:
-        position:
-          type: integer
-        title:
-          type: string
-        address:
-          type: string
-        phone:
-          type: string
-        website:
-          type: string
-          format: uri
-        rating:
-          type: number
-          format: float
-        reviews:
-          type: integer
-        category:
-          type: string
-        hours:
-          type: string
-          description: Business hours summary.
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-    FeaturedSnippet:
-      type: object
-      description: Google featured snippet (answer box).
-      properties:
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        description:
-          type: string
-        type:
-          type: string
-          description: Snippet type (paragraph, table, list, etc.).
-    PaidResult:
-      type: object
-      description: A paid advertisement result.
-      properties:
-        position:
-          type: integer
-          description: Ad position.
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        domain:
-          type: string
-        description:
-          type: string
-        displayed_url:
-          type: string
-          description: The URL as displayed in the ad.
-    ValidationErrorResponse:
-      type: object
-      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
-        the Zenserp documentation.
-      properties:
-        errors:
-          type: array
-          description: One object per failing request, keyed by parameter name.
-          items:
-            type: object
-            additionalProperties:
-              type: string
-      example:
-        errors:
-        - q: no query specified.
-          search_engine: search engine not found.
+          description: Human-readable error message.
+          example: No apikey provided.
   securitySchemes:
     apiKeyHeader:
       type: apiKey

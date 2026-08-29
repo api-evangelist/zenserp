@@ -1,9 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Zenserp Trends API
-  description: Google Trends endpoints exposing keyword interest over time and currently trending searches.
-    Served from the Zenserp v1 API surface.
-  version: '1.0'
+  description: Zenserp SERP API. Real-time and historical search engine result pages for Google (web, images, video, news, shopping, maps, reverse image, YouTube, trends), Bing, Yandex and DuckDuckGo, plus asynchronous batch fetching with webhook delivery, Google Shopping product pages, Google Trends, and the reference list endpoints for languages, countries, geo locations and search engines. Endpoint inventory taken from the Zenserp documentation and confirmed against live unauthenticated probes; the v2 and v1 surfaces run side by side.
+  version: '2.0'
   contact:
     name: Zenserp Support
     url: https://zenserp.com/
@@ -11,11 +10,10 @@ info:
   termsOfService: https://zenserp.com/terms-of-service/
   x-logo:
     url: https://zenserp.com/wp-content/uploads/2019/07/zenserp-logo.png
-  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js)
-    + live unauthenticated probes 2026-08-13
+  x-source: https://app.zenserp.com/documentation (endpoint list decompiled from the docs SPA bundle /js/app.js) + live unauthenticated probes 2026-08-13
 servers:
-- url: https://app.zenserp.com/api/v1
-  description: Zenserp API v1
+- url: https://app.zenserp.com
+  description: Zenserp API host. Search, status and the list endpoints are under /api/v2; batches, trends and shopping product pages are under /api/v1.
 security:
 - apiKeyHeader: []
 - apiKeyQuery: []
@@ -23,7 +21,7 @@ tags:
 - name: Trends
   description: Google Trends keyword interest and trending search endpoints.
 paths:
-  /trends:
+  /api/v1/trends:
     get:
       operationId: trendsSearch
       summary: Trends Search
@@ -80,8 +78,7 @@ paths:
                 type: object
                 additionalProperties: true
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -98,7 +95,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /trends/trending:
+  /api/v1/trends/trending:
     get:
       operationId: trendsTrending
       summary: Trends - Trending
@@ -133,8 +130,7 @@ paths:
                 type: object
                 additionalProperties: true
         '403':
-          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have
-            enough rights to access it.
+          description: Forbidden -- API key is wrong, you don't have enough requests or you don't have enough rights to access it.
           content:
             application/json:
               schema:
@@ -155,37 +151,20 @@ components:
   schemas:
     ErrorResponse:
       type: object
-      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live
-        API: {"error": "No apikey provided."}'
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
       properties:
         error:
           type: string
           description: Human-readable error message.
           example: No apikey provided.
-    ValidationErrorResponse:
-      type: object
-      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of
-        the Zenserp documentation.
-      properties:
-        errors:
-          type: array
-          description: One object per failing request, keyed by parameter name.
-          items:
-            type: object
-            additionalProperties:
-              type: string
-      example:
-        errors:
-        - q: no query specified.
-          search_engine: search engine not found.
   securitySchemes:
     apiKeyHeader:
       type: apiKey
       in: header
       name: apikey
-      description: API key passed in the request header. Recommended -- works with all requests.
+      description: API key passed in the request header.
     apiKeyQuery:
       type: apiKey
       in: query
       name: apikey
-      description: API key passed as a URL parameter. Supported on GET requests.
+      description: API key passed as a query parameter.

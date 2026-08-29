@@ -1,18 +1,27 @@
 {
   "provider": "zenserp",
   "sources": [
-    "zenserp-batch-api-openapi.yml",
-    "zenserp-lists-api-openapi.yml",
-    "zenserp-search-api-openapi.yml"
+    "_original/zenserp-search-openapi.yml"
   ],
   "outputs": [
     "zenserp-batch-api-openapi.yml",
     "zenserp-lists-api-openapi.yml",
-    "zenserp-search-api-openapi.yml"
+    "zenserp-search-api-openapi.yml",
+    "zenserp-shopping-api-openapi.yml",
+    "zenserp-trends-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "zenserp-search-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+  ],
+  "skipped": [
+    "zenserp-batch-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenserp-lists-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenserp-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenserp-shopping-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zenserp-trends-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
