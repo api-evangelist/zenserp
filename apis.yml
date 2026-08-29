@@ -7,6 +7,18 @@ description: >-
   JSON responses. It offers geolocation-based queries, batch endpoints, keyword search volume and CPC
   data, and a bulk index checker tool, with a 99.9% uptime SLA.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
