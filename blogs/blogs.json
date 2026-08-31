@@ -16,6 +16,13 @@
       "method": "none"
     },
     {
+      "source": "https://zenserp.com/pricing-plans/feed/",
+      "feed_url": "https://zenserp.com/pricing-plans/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://zenserp.com/pricing-plans/",
       "feed_url": "https://zenserp.com/pricing-plans/feed/",
       "title": "",
@@ -23,6 +30,6 @@
       "method": "discovered"
     }
   ],
-  "fetched": "2026-08-22T20:20:02Z",
+  "fetched": "2026-08-30T22:33:40Z",
   "post_count": 10
 }
