@@ -2,20 +2,18 @@
   "repo": "zenserp",
   "feeds": [
     {
+      "source": "https://zenserp.com/pricing-plans/",
+      "feed_url": "https://zenserp.com/pricing-plans/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    },
+    {
       "source": "https://zenserp.com/feed/",
       "feed_url": "https://zenserp.com/feed/",
       "title": "",
       "saved": 0,
-      "method": "feed",
-      "nature": "undetermined",
-      "nature_basis": null
-    },
-    {
-      "source": "https://zenserp.freshstatus.io",
-      "feed_url": "https://zenserp.freshstatus.io",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "method": "feed"
     },
     {
       "source": "https://zenserp.com/pricing-plans/feed/",
@@ -25,14 +23,14 @@
       "method": "feed"
     },
     {
-      "source": "https://zenserp.com/pricing-plans/",
-      "feed_url": "https://zenserp.com/pricing-plans/feed/",
+      "source": "https://zenserp.freshstatus.io",
+      "feed_url": "https://zenserp.freshstatus.io",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "none"
     }
   ],
-  "fetched": "2026-08-30T22:33:40Z",
+  "fetched": "2026-09-06T19:17:18Z",
   "post_count": 10,
   "feed_nature": "undetermined",
   "feed_nature_basis": null,
