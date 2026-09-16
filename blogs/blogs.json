@@ -9,15 +9,15 @@
       "method": "discovered"
     },
     {
-      "source": "https://zenserp.com/feed/",
-      "feed_url": "https://zenserp.com/feed/",
+      "source": "https://zenserp.com/pricing-plans/feed/",
+      "feed_url": "https://zenserp.com/pricing-plans/feed/",
       "title": "",
       "saved": 0,
       "method": "feed"
     },
     {
-      "source": "https://zenserp.com/pricing-plans/feed/",
-      "feed_url": "https://zenserp.com/pricing-plans/feed/",
+      "source": "https://zenserp.com/feed/",
+      "feed_url": "https://zenserp.com/feed/",
       "title": "",
       "saved": 0,
       "method": "feed"
@@ -30,7 +30,7 @@
       "method": "none"
     }
   ],
-  "fetched": "2026-09-06T19:17:18Z",
+  "fetched": "2026-09-13T13:00:00Z",
   "post_count": 10,
   "feed_nature": "undetermined",
   "feed_nature_basis": null,
