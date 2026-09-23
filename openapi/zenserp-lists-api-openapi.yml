@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Zenserp Lists API
-  description: Zenserp SERP API. Real-time and historical search engine result pages for Google (web, images, video, news, shopping, maps, reverse image, YouTube, trends), Bing, Yandex and DuckDuckGo, plus asynchronous batch fetching with webhook delivery, Google Shopping product pages, Google Trends, and the reference list endpoints for languages, countries, geo locations and search engines. Endpoint inventory taken from the Zenserp documentation and confirmed against live unauthenticated probes; the v2 and v1 surfaces run side by side.
+  description: Zenserp SERP API.
   version: '2.0'
   contact:
     name: Zenserp Support
@@ -159,24 +159,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    LocationItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Canonical location string for use with the location parameter.
-        country_code:
-          type: string
-          description: Country this location is in.
-    LanguageItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Human-readable language name.
-        code:
-          type: string
-          description: Language code (hl value).
     EngineItem:
       type: object
       properties:
@@ -194,6 +176,15 @@ components:
           type: string
           description: Human-readable error message.
           example: No apikey provided.
+    LanguageItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable language name.
+        code:
+          type: string
+          description: Language code (hl value).
     CountryItem:
       type: object
       properties:
@@ -203,6 +194,15 @@ components:
         code:
           type: string
           description: ISO 3166-1 alpha-2 country code (gl value).
+    LocationItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Canonical location string for use with the location parameter.
+        country_code:
+          type: string
+          description: Country this location is in.
   securitySchemes:
     apiKeyHeader:
       type: apiKey

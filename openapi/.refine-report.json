@@ -15,7 +15,8 @@
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
-    "zenserp-search-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+    "zenserp-search-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "zenserp-batch-api-openapi.yml: previously refined output, superseded by openapi/_original/",

@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Zenserp Shopping API
-  description: Zenserp SERP API. Real-time and historical search engine result pages for Google (web, images, video, news, shopping, maps, reverse image, YouTube, trends), Bing, Yandex and DuckDuckGo, plus asynchronous batch fetching with webhook delivery, Google Shopping product pages, Google Trends, and the reference list endpoints for languages, countries, geo locations and search engines. Endpoint inventory taken from the Zenserp documentation and confirmed against live unauthenticated probes; the v2 and v1 surfaces run side by side.
+  description: Zenserp SERP API.
   version: '2.0'
   contact:
     name: Zenserp Support
