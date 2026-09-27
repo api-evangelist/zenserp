@@ -150,6 +150,29 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
+    ErrorResponse:
+      type: object
+      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
+      properties:
+        error:
+          type: string
+          description: Human-readable error message.
+          example: No apikey provided.
     BatchRequest:
       type: object
       description: Batch submission body, documented at https://app.zenserp.com/documentation#batches
@@ -199,29 +222,6 @@ components:
                 type: string
               search_engine:
                 type: string
-    ValidationErrorResponse:
-      type: object
-      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of the Zenserp documentation.
-      properties:
-        errors:
-          type: array
-          description: One object per failing request, keyed by parameter name.
-          items:
-            type: object
-            additionalProperties:
-              type: string
-      example:
-        errors:
-        - q: no query specified.
-          search_engine: search engine not found.
-    ErrorResponse:
-      type: object
-      description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
-      properties:
-        error:
-          type: string
-          description: Human-readable error message.
-          example: No apikey provided.
     BatchResponse:
       type: object
       description: A submitted batch and, once complete, its job results.
