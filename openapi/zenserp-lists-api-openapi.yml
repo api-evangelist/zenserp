@@ -159,15 +159,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    CountryItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Human-readable country name.
-        code:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (gl value).
     LocationItem:
       type: object
       properties:
@@ -177,6 +168,24 @@ components:
         country_code:
           type: string
           description: Country this location is in.
+    CountryItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable country name.
+        code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (gl value).
+    EngineItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable engine name.
+        value:
+          type: string
+          description: Engine identifier for use with the engine parameter.
     ErrorResponse:
       type: object
       description: 'Zenserp error envelope for request-level failures. Verbatim example from the live API: {"error": "No apikey provided."}'
@@ -194,15 +203,6 @@ components:
         code:
           type: string
           description: Language code (hl value).
-    EngineItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Human-readable engine name.
-        value:
-          type: string
-          description: Engine identifier for use with the engine parameter.
   securitySchemes:
     apiKeyHeader:
       type: apiKey
