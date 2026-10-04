@@ -159,24 +159,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    LocationItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Canonical location string for use with the location parameter.
-        country_code:
-          type: string
-          description: Country this location is in.
-    CountryItem:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Human-readable country name.
-        code:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (gl value).
     EngineItem:
       type: object
       properties:
@@ -194,6 +176,15 @@ components:
           type: string
           description: Human-readable error message.
           example: No apikey provided.
+    LocationItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Canonical location string for use with the location parameter.
+        country_code:
+          type: string
+          description: Country this location is in.
     LanguageItem:
       type: object
       properties:
@@ -203,6 +194,15 @@ components:
         code:
           type: string
           description: Language code (hl value).
+    CountryItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable country name.
+        code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (gl value).
   securitySchemes:
     apiKeyHeader:
       type: apiKey
