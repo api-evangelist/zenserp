@@ -1,4 +1,4 @@
-generated: '2026-08-13'
+generated: '2026-09-23'
 method: generated
 source: openapi/zenserp-batch-api-openapi.yml, openapi/zenserp-lists-api-openapi.yml, openapi/zenserp-search-api-openapi.yml,
   openapi/zenserp-shopping-api-openapi.yml, openapi/zenserp-trends-api-openapi.yml
@@ -8,14 +8,14 @@ description: Recommended x-agentic-access execution contracts, classified heuris
 summary:
   operations: 13
   by_action_class:
-    connected: 11
-    acting: 2
+    connected: 12
+    acting: 1
   by_consequence:
-    read: 11
-    write: 2
+    read: 12
+    write: 1
   human_in_the_loop_required: 0
 operations:
-- path: /batches
+- path: /api/v1/batches
   method: get
   operationId: listBatches
   x-agentic-access:
@@ -25,7 +25,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /batches
+- path: /api/v1/batches
   method: post
   operationId: submitBatch
   x-agentic-access:
@@ -41,7 +41,7 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /batches/{id}
+- path: /api/v1/batches/{id}
   method: get
   operationId: getBatch
   x-agentic-access:
@@ -51,7 +51,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /hl
+- path: /api/v2/hl
   method: get
   operationId: listLanguages
   x-agentic-access:
@@ -61,7 +61,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /gl
+- path: /api/v2/gl
   method: get
   operationId: listCountries
   x-agentic-access:
@@ -71,7 +71,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /locations
+- path: /api/v2/locations
   method: get
   operationId: listLocations
   x-agentic-access:
@@ -81,7 +81,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /search_engines
+- path: /api/v2/search_engines
   method: get
   operationId: listEngines
   x-agentic-access:
@@ -91,7 +91,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /search
+- path: /api/v2/search
   method: get
   operationId: search
   x-agentic-access:
@@ -101,7 +101,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /status
+- path: /api/v2/status
   method: get
   operationId: getStatus
   x-agentic-access:
@@ -111,23 +111,17 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /status
+- path: /api/v2/status
   method: post
   operationId: getStatusPost
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /shopping
+      max-ttl: 3600
+    audit: none
+- path: /api/v1/shopping
   method: get
   operationId: shoppingProductPage
   x-agentic-access:
@@ -137,7 +131,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /trends
+- path: /api/v1/trends
   method: get
   operationId: trendsSearch
   x-agentic-access:
@@ -147,7 +141,7 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /trends/trending
+- path: /api/v1/trends/trending
   method: get
   operationId: trendsTrending
   x-agentic-access:
