@@ -150,21 +150,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ValidationErrorResponse:
-      type: object
-      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of the Zenserp documentation.
-      properties:
-        errors:
-          type: array
-          description: One object per failing request, keyed by parameter name.
-          items:
-            type: object
-            additionalProperties:
-              type: string
-      example:
-        errors:
-        - q: no query specified.
-          search_engine: search engine not found.
     BatchRequest:
       type: object
       description: Batch submission body, documented at https://app.zenserp.com/documentation#batches
@@ -222,6 +207,21 @@ components:
           type: string
           description: Human-readable error message.
           example: No apikey provided.
+    ValidationErrorResponse:
+      type: object
+      description: Zenserp validation error envelope, documented verbatim in the Error Codes section of the Zenserp documentation.
+      properties:
+        errors:
+          type: array
+          description: One object per failing request, keyed by parameter name.
+          items:
+            type: object
+            additionalProperties:
+              type: string
+      example:
+        errors:
+        - q: no query specified.
+          search_engine: search engine not found.
     BatchResponse:
       type: object
       description: A submitted batch and, once complete, its job results.
