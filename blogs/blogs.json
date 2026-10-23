@@ -9,6 +9,13 @@
       "method": "discovered"
     },
     {
+      "source": "https://zenserp.com/blog/feed/",
+      "feed_url": "https://zenserp.com/blog/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://zenserp.com/pricing-plans/feed/",
       "feed_url": "https://zenserp.com/pricing-plans/feed/",
       "title": "",
@@ -30,7 +37,7 @@
       "method": "none"
     }
   ],
-  "fetched": "2026-10-10T13:15:00Z",
+  "fetched": "2026-10-17T14:53:57Z",
   "post_count": 10,
   "feed_nature": "undetermined",
   "feed_nature_basis": null,
